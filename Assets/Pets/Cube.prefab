@@ -122,6 +122,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   template: {fileID: 11400000, guid: 7e248950c54c35947830a897abc0dcb2, type: 2}
-  petName: 
-  rarity: 0
-  damage: 0
+  speed: 0.005
