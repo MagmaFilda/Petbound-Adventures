@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerStats : MonoBehaviour
 {
-    public int coins = 0;
+    public static int coins = 0;
     public static List<Transform> EquippedPets;
 
     private PlayerInput playerInput;
@@ -53,8 +53,11 @@ public class PlayerStats : MonoBehaviour
                 foreach (Transform p in EquippedPets)
                 {
                     Pet pet = p.GetComponent<Pet>();
-
-                    pet.ChangeMode("Attack", targetBreakable);
+                    if (pet.mode == "Follow")
+                    {
+                        pet.ChangeMode("Attack", targetBreakable);
+                        break;
+                    }                   
                 }
 
                 canClick = false;

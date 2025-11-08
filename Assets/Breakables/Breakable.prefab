@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1284872907842897687}
   - component: {fileID: 7264120668610761057}
   - component: {fileID: 7869353298861079279}
+  - component: {fileID: 7445709433530224938}
   m_Layer: 0
   m_Name: Breakable
   m_TagString: Breakable
@@ -108,3 +109,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7445709433530224938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879547452437214116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e765dfa51ebe0b4e80531dcb832d64c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  template: {fileID: 11400000, guid: 6b6558d0c6a7f0b429b974c9eac661ae, type: 2}

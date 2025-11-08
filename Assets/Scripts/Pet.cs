@@ -1,6 +1,5 @@
-using UnityEditor.SearchService;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Pet : MonoBehaviour
 {
@@ -10,27 +9,26 @@ public class Pet : MonoBehaviour
     public int damage { get; private set; }
 
     public float speed = 0.003f;
+    public string mode = "Follow";
 
-    private string mode = "Follow";
+    private bool canDamage = true;
     private Transform breakableTarget;
 
     private Transform Player;
     private Transform PetPositions;
+    private Transform[] positions;
+    private Transform petEquipSlot;
 
     private List<Transform> pets;
-    private Transform[] positions;
 
     private void Awake()
     {
         petName = template.petName;
         rarity = template.rarity;
         damage = Random.Range(template.minDamage, template.maxDamage);
-    }
-
+    }  
     private void Start()
     {
-        Debug.Log($"{petName} ({rarity}) spawned with damage {damage}");
-
         Player = GameObject.FindGameObjectWithTag("Player").transform;
         PetPositions = Player.Find("EquippedPetSlots");
 
@@ -38,6 +36,7 @@ public class Pet : MonoBehaviour
 
         positions = PetPositions.GetComponentsInChildren<Transform>();
         
+        FindFreeSlot();
     }
     private void Update()
     {
@@ -47,7 +46,7 @@ public class Pet : MonoBehaviour
         }
         else
         {
-            AttackBreakable(transform, breakableTarget);
+            AttackBreakable(transform);
         }
     }
 
@@ -56,37 +55,59 @@ public class Pet : MonoBehaviour
         mode = change;
         breakableTarget = b;
     }
+
     private void FollowPlayer()
     {
         pets = PlayerStats.EquippedPets;
-
-        foreach (Transform pet in pets) // bad kazdy pet kontroluje kazdeho peta, jako funguje, ale chce to pak udelat samostatne
+        GetToPositon(transform, petEquipSlot.position);
+    }
+    private void AttackBreakable(Transform pet)
+    {
+        if (breakableTarget != null)
         {
-            foreach (Transform pos in positions)
+            Breakable breakable = breakableTarget.GetComponent<Breakable>();
+            if (pet.position != breakableTarget.position)
             {
-                if (pos == PetPositions) continue;
-                if (!pos.CompareTag("Equipped"))
+                GetToPositon(pet, breakableTarget.position);
+            }
+            else
+            {
+                if (canDamage)
                 {
-                    GetToPositon(pet, pos.position);
-                    pos.tag = "Equipped";
-                    break;
-                }
+                    breakable.TakeDamage(damage);
+                    canDamage = false;
+
+                    StartCoroutine(waitToDamage());
+                }             
             }
         }
-
-        foreach (Transform pos in positions)
+        else
         {
-            pos.tag = "Untagged";
+            ChangeMode("Follow", breakableTarget);
         }
     }
 
-    private void AttackBreakable(Transform pet, Transform breakable)
+    private void FindFreeSlot()
     {
-        GetToPositon(pet, breakable.position);
+        foreach (Transform slot in positions)
+        {
+            if (slot == PetPositions) continue;
+            if (!slot.CompareTag("Equipped"))
+            {
+                petEquipSlot = slot;
+                slot.tag = "Equipped";
+                break;
+            }
+        }
     }
-
     private void GetToPositon(Transform pet, Vector3 followingPosition)
     {
         pet.position = Vector3.MoveTowards(pet.position, followingPosition, speed);
+    }
+
+    private IEnumerator<WaitForSeconds> waitToDamage()
+    {
+        yield return new WaitForSeconds(1);
+        canDamage = true;
     }
 }
