@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cd64188c4922f04bb4bb88fd666827c, type: 3}
+  m_Name: DirtEggTemplate
+  m_EditorClassIdentifier: 
+  petTemplates:
+  - {fileID: 11400000, guid: 7e248950c54c35947830a897abc0dcb2, type: 2}
+  - {fileID: 11400000, guid: 246cdd9dd36464c4cac1a793f6ec28ba, type: 2}
+  chance:
+  - 60
+  - 40
+  price: 5

@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   petName: Sphere
   rarity: 0
+  petPrefab: {fileID: 7998674013844017177, guid: b49c49a05dc72e1488e0f73e1327175e, type: 3}
   minDamage: 3
   maxDamage: 10

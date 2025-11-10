@@ -7,6 +7,7 @@ public class PetTemplate : ScriptableObject
 {
     public string petName;
     public Rarity rarity;
+    public Transform petPrefab;
     public int minDamage;
     public int maxDamage;
 }

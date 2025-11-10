@@ -5,8 +5,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerStats : MonoBehaviour
 {
-    public static int coins = 0;
+    public static int coins = 100;
+    public static int maxPets = 20;
+    public static int maxEquippedPets = 3;
     public static List<Transform> EquippedPets;
+    public static List<PetInInventory> PetsInInventory;
 
     private PlayerInput playerInput;
     private InputAction clickAction;
@@ -20,6 +23,7 @@ public class PlayerStats : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         clickAction = playerInput.actions.FindAction("Click");
         EquippedPets = new List<Transform>();
+        PetsInInventory = new List<PetInInventory>();
     }
 
     private void Update()

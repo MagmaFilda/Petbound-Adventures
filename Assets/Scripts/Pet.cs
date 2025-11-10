@@ -4,12 +4,12 @@ using UnityEngine;
 public class Pet : MonoBehaviour
 {
     public PetTemplate template;
-    public string petName { get; private set; }
     public Rarity rarity { get; private set; }
     public int damage { get; private set; }
 
     public float speed = 0.003f;
     public string mode = "Follow";
+    public Transform petEquipSlot;
 
     private bool canDamage = true;
     private Transform breakableTarget;
@@ -17,23 +17,15 @@ public class Pet : MonoBehaviour
     private Transform Player;
     private Transform PetPositions;
     private Transform[] positions;
-    private Transform petEquipSlot;
-
-    private List<Transform> pets;
 
     private void Awake()
     {
-        petName = template.petName;
         rarity = template.rarity;
-        damage = Random.Range(template.minDamage, template.maxDamage);
     }  
     private void Start()
     {
         Player = GameObject.FindGameObjectWithTag("Player").transform;
         PetPositions = Player.Find("EquippedPetSlots");
-
-        PlayerStats.EquippedPets.Add(transform);
-
         positions = PetPositions.GetComponentsInChildren<Transform>();
         
         FindFreeSlot();
@@ -46,8 +38,13 @@ public class Pet : MonoBehaviour
         }
         else
         {
-            AttackBreakable(transform);
+            AttackBreakable();
         }
+    }
+
+    public void SetDamage(int dmg)
+    {
+        damage = dmg;
     }
 
     public void ChangeMode(string change, Transform b)
@@ -58,17 +55,16 @@ public class Pet : MonoBehaviour
 
     private void FollowPlayer()
     {
-        pets = PlayerStats.EquippedPets;
         GetToPositon(transform, petEquipSlot.position);
     }
-    private void AttackBreakable(Transform pet)
+    private void AttackBreakable()
     {
         if (breakableTarget != null)
         {
             Breakable breakable = breakableTarget.GetComponent<Breakable>();
-            if (pet.position != breakableTarget.position)
+            if (transform.position != breakableTarget.position)
             {
-                GetToPositon(pet, breakableTarget.position);
+                GetToPositon(transform, breakableTarget.position);
             }
             else
             {

@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   petName: Cube
   rarity: 0
+  petPrefab: {fileID: 4477187399897986559, guid: 015966fdfac2d3b4887755467e188b3f, type: 3}
   minDamage: 1
   maxDamage: 5
