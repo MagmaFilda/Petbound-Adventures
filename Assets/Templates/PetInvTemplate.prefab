@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   petNameTxt: {fileID: 4234249406110862500}
   damageTxt: {fileID: 1373662878539740669}
-  UIPetSlotPrefab: {fileID: 6595393926808292777, guid: 9cf60e80274a0654fa8cda63deebd4d0, type: 3}
+  UIEquipPetSlotPrefab: {fileID: 6595393926808292777, guid: 9cf60e80274a0654fa8cda63deebd4d0, type: 3}
 --- !u!1 &2732847185576160900
 GameObject:
   m_ObjectHideFlags: 0

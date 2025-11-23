@@ -24,6 +24,8 @@ public class PetInInventory : MonoBehaviour
         PlayerStats.PetsInInventory.Add(this);
 
         SetSlotUI();
+
+        SortInventory();
     }
     public void UnEquipPet(PetTemplate template, int dmg)
     {
@@ -34,6 +36,10 @@ public class PetInInventory : MonoBehaviour
         damage = dmg;
 
         SetSlotUI();
+
+        PlayerStats.PetsInInventory.Add(this);
+
+        SortInventory();
     }
 
     public void Equip()
@@ -48,8 +54,22 @@ public class PetInInventory : MonoBehaviour
             EquipUISlot newUIPetSlot = Instantiate(UIEquipPetSlotPrefab, UIEquipPanel).GetComponent<EquipUISlot>();
             newUIPetSlot.SetValues(petName, damage.ToString(), petTemplate, transform.parent, newPetModel);
 
+            SortInventory();
+
+            PlayerStats.PetsInInventory.Remove(this);
             Destroy(gameObject);
         }
+    }
+
+    public void SetLayoutOrder(int orderNum)
+    {
+        transform.SetSiblingIndex(orderNum);
+    }
+
+    private void SortInventory()
+    {
+        Inventory inv = transform.parent.parent.parent.parent.GetComponent<Inventory>();
+        inv.SortInventoryByDamage();
     }
 
     private void SetSlotUI()
