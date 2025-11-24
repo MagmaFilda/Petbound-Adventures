@@ -14,8 +14,6 @@ public class Egg : MonoBehaviour
     public float[] chance { get; private set; }
     public int price { get; private set; }
 
-    private bool playerLook;
-
     private void Awake()
     {
         petTemplates = template.petTemplates;
@@ -39,7 +37,7 @@ public class Egg : MonoBehaviour
     {
         MouseHover();
 
-        if (playerLook && Keyboard.current.eKey.wasPressedThisFrame)
+        if (openUI.enabled && Keyboard.current.eKey.wasPressedThisFrame)
         {
             OpenEgg();
         }
@@ -47,9 +45,12 @@ public class Egg : MonoBehaviour
 
     public void OpenEgg()
     {
-        if (PlayerStats.coins >= price && PlayerStats.PetsInInventory.Count < PlayerStats.maxPets)
+        if (PlayerStats.coins >= price && PlayerStats.PetsInInventory.Count + PlayerStats.EquippedPets.Count < PlayerStats.maxPets)
         {
             PlayerStats.coins -= price;
+            Transform canvas = GameObject.Find("MainCanvas").transform;
+            canvas.Find("Inventory").GetComponent<Inventory>().UpdateCoins();
+
             PetTemplate newPet = GetPet();
 
             Transform newPetUI = Instantiate(petUISlotTemplate, petInventory);
@@ -83,18 +84,15 @@ public class Egg : MonoBehaviour
             if (hit.collider.gameObject == gameObject)
             {
                 openUI.enabled = true;
-                playerLook = true;
             }
             else
             {
                 openUI.enabled = false;
-                playerLook = false;
             }
         }
         else
         {
             openUI.enabled = false;
-            playerLook = false;
         }
     }
 }

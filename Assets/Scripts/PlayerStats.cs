@@ -10,6 +10,7 @@ public class PlayerStats : MonoBehaviour
     public static int maxEquippedPets = 3;
     public static List<Transform> EquippedPets;
     public static List<PetInInventory> PetsInInventory;
+    public static List<QuestTemplate> ActiveQuests;
 
     private PlayerInput playerInput;
     private InputAction clickAction;
