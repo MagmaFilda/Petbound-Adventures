@@ -6,9 +6,11 @@ public class Breakable : MonoBehaviour
 {
     public BreakableTemplate template;
     public Location spawnLocationName { get; private set; }
-    public Recources recources { get; private set; }
+    public Recources[] recources { get; private set; }
     public int health { get; private set; }
     public int[] rewards { get; private set; }
+
+    private PlayerStats playerStats = PlayerStats.Instance;
 
     private Transform spawnLocation;
     private Transform positionSlot;
@@ -44,15 +46,14 @@ public class Breakable : MonoBehaviour
         {
             foreach (int reward in rewards)
             {
-                PlayerStats.coins += reward;
+                playerStats.coins += reward;
             }
-            Transform canvas = GameObject.Find("MainCanvas").transform;
-            canvas.Find("Inventory").GetComponent<Inventory>().UpdateCoins();
 
-            GameObject newBreakable = Instantiate(gameObject);
-            positionSlot.tag = "Untagged";
+            GameObject newBreakable = Instantiate(gameObject);          
             newBreakable.name = "Breakable";
+            positionSlot.tag = "Untagged";
 
+            playerStats.totalBreakables++;
             Destroy(gameObject);
         }     
     }

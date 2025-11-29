@@ -8,6 +8,8 @@ public class PetInInventory : MonoBehaviour
     public Text damageTxt;
     public Transform UIEquipPetSlotPrefab;
 
+    private PlayerStats playerStats = PlayerStats.Instance;
+
     private PetTemplate petTemplate;
     public string petName { get; private set; }
     public Rarity rarity { get; private set; }
@@ -21,7 +23,7 @@ public class PetInInventory : MonoBehaviour
         rarity = template.rarity;
         damage = Random.Range(template.minDamage, template.maxDamage);
 
-        PlayerStats.PetsInInventory.Add(this);
+        playerStats.PetsInInventory.Add(this);
 
         SetSlotUI();
 
@@ -37,18 +39,18 @@ public class PetInInventory : MonoBehaviour
 
         SetSlotUI();
 
-        PlayerStats.PetsInInventory.Add(this);
+        playerStats.PetsInInventory.Add(this);
 
         SortInventory();
     }
 
     public void Equip()
     {
-        if (PlayerStats.EquippedPets.Count < PlayerStats.maxEquippedPets)
+        if (playerStats.EquippedPets.Count < playerStats.maxEquippedPets)
         {
             Transform newPetModel = Instantiate(petTemplate.petPrefab);
             newPetModel.GetComponent<Pet>().SetDamage(damage);
-            PlayerStats.EquippedPets.Add(newPetModel);
+            playerStats.EquippedPets.Add(newPetModel);
 
             Transform UIEquipPanel = GameObject.FindGameObjectWithTag("EquipPanel").transform;
             EquipUISlot newUIPetSlot = Instantiate(UIEquipPetSlotPrefab, UIEquipPanel).GetComponent<EquipUISlot>();
@@ -56,7 +58,7 @@ public class PetInInventory : MonoBehaviour
 
             SortInventory();
 
-            PlayerStats.PetsInInventory.Remove(this);
+            playerStats.PetsInInventory.Remove(this);
             Destroy(gameObject);
         }
     }
@@ -68,7 +70,7 @@ public class PetInInventory : MonoBehaviour
 
     private void SortInventory()
     {
-        Inventory inv = transform.parent.parent.parent.parent.GetComponent<Inventory>();
+        MainUI inv = transform.parent.parent.parent.parent.parent.GetComponent<MainUI>();
         inv.SortInventoryByDamage();
     }
 

@@ -7,6 +7,8 @@ public class EquipUISlot : MonoBehaviour
     public Text petDamageTxt;
     public Transform petUISlotTemplate;
 
+    private PlayerStats playerStats = PlayerStats.Instance;
+
     private PetTemplate petTemplate;
     private Transform petTransform;
     private Transform Inventory;
@@ -25,7 +27,7 @@ public class EquipUISlot : MonoBehaviour
         Transform newPetUI = Instantiate(petUISlotTemplate, Inventory);
         newPetUI.GetComponent<PetInInventory>().UnEquipPet(petTemplate, int.Parse(petDamageTxt.text));
 
-        PlayerStats.EquippedPets.Remove(petTransform);
+        playerStats.EquippedPets.Remove(petTransform);
         petTransform.GetComponent<Pet>().petEquipSlot.tag = "Untagged";
         Destroy(petTransform.gameObject);
         Destroy(gameObject);

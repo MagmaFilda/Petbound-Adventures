@@ -14,6 +14,8 @@ public class Egg : MonoBehaviour
     public float[] chance { get; private set; }
     public int price { get; private set; }
 
+    private PlayerStats playerStats = PlayerStats.Instance;
+
     private void Awake()
     {
         petTemplates = template.petTemplates;
@@ -45,11 +47,10 @@ public class Egg : MonoBehaviour
 
     public void OpenEgg()
     {
-        if (PlayerStats.coins >= price && PlayerStats.PetsInInventory.Count + PlayerStats.EquippedPets.Count < PlayerStats.maxPets)
+        if (playerStats.coins >= price && playerStats.PetsInInventory.Count + playerStats.EquippedPets.Count < playerStats.maxPets)
         {
-            PlayerStats.coins -= price;
-            Transform canvas = GameObject.Find("MainCanvas").transform;
-            canvas.Find("Inventory").GetComponent<Inventory>().UpdateCoins();
+            playerStats.coins -= price;
+            playerStats.totalOpenEggs++;
 
             PetTemplate newPet = GetPet();
 
