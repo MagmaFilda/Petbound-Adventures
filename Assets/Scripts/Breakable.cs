@@ -6,7 +6,7 @@ public class Breakable : MonoBehaviour
 {
     public BreakableTemplate template;
     public Location spawnLocationName { get; private set; }
-    public Recources[] recources { get; private set; }
+    public Resource[] resources { get; private set; }
     public int health { get; private set; }
     public int[] rewards { get; private set; }
 
@@ -19,6 +19,7 @@ public class Breakable : MonoBehaviour
     {
         spawnLocationName = template.location;
         health = template.health;
+        resources = template.recources;
         rewards = template.rewards;
     }
     private void Start()
@@ -44,9 +45,9 @@ public class Breakable : MonoBehaviour
     {
         if (health <= 0)
         {
-            foreach (int reward in rewards)
+            for (int reward = 0; reward < rewards.Length; reward++)
             {
-                playerStats.coins += reward;
+                playerStats.PlayerResources[resources[reward]] += rewards[reward];
             }
 
             GameObject newBreakable = Instantiate(gameObject);          

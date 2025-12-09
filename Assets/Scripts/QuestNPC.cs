@@ -7,7 +7,7 @@ public class QuestNPC : MonoBehaviour
 {
     public QuestTemplate[] quests;
     public Canvas openUI;
-    public Canvas conversationCanvas;
+    public Canvas mainCanvas;
 
     private PlayerStats playerStats = PlayerStats.Instance;
 
@@ -48,18 +48,18 @@ public class QuestNPC : MonoBehaviour
 
     private void QuestInteract()
     {
-        conversationCanvas.enabled = true;
-        Text conversation = conversationCanvas.transform.Find("Panel").Find("Text").GetComponent<Text>();
+        MainUI conversation = mainCanvas.GetComponent<MainUI>();
         canShowPanel = false;
+
+        if (actualQuestNum >= quests.Length)
+        {
+            conversation.Conversation(true, "You´ve done ALL my QUESTS. WP WP MAN!!!");
+            StartCoroutine(ConversationTimer(4f, conversation));
+            return;
+        }
+
         for (int i = 0; i < playerStats.ActiveQuests.Count; i++)
         {
-            if (actualQuestNum >= quests.Length)
-            {
-                conversation.text = "You´ve done ALL my QUESTS. WP WP MAN!!!";
-                StartCoroutine(ConversationTimer(4f));
-                return;
-            }
-
             if (quests[actualQuestNum].questName == playerStats.ActiveQuests[i].questName)
             {
                 if (actualQuestType == QuestType.CollectCoins)
@@ -83,8 +83,6 @@ public class QuestNPC : MonoBehaviour
                 else if (actualQuestType == QuestType.DestroyBreakables)
                 {
                     DestroyBreakablesQuest breakableQuest = quests[actualQuestNum] as DestroyBreakablesQuest;
-                    Debug.Log(actualBreakables);
-                    Debug.Log(breakableQuest.requiredBreakables);
                     if (actualBreakables >= breakableQuest.requiredBreakables)
                     {
                         EndQuest(breakableQuest, conversation);
@@ -92,19 +90,19 @@ public class QuestNPC : MonoBehaviour
                     }
                 }
 
-                conversation.text = "You now have one quest in process come to me when you will have done it";
-                StartCoroutine(ConversationTimer(4f));
+                conversation.Conversation(true, "You now have one quest in process come to me when you will have done it");
+                StartCoroutine(ConversationTimer(4f, conversation));
                 return;
             }
         }
 
         StartQuest(quests[actualQuestNum], conversation);
-        StartCoroutine(ConversationTimer(6f));
+        StartCoroutine(ConversationTimer(6f, conversation));
     }
-    private void StartQuest(QuestTemplate actualQuest, Text conversation)
+    private void StartQuest(QuestTemplate actualQuest, MainUI conversation)
     {
-        conversation.text = quests[actualQuestNum].startOfQuest;
-        playerStats.ActiveQuests.Add(quests[actualQuestNum]);
+        conversation.Conversation(true, actualQuest.startOfQuest);
+        playerStats.ActiveQuests.Add(actualQuest);
 
         actualQuestType = actualQuest.Type;
         if (actualQuestType == QuestType.CollectCoins)
@@ -120,18 +118,14 @@ public class QuestNPC : MonoBehaviour
             actualBreakables = 0;
         }
     }
-    private void CheckingQuest()
+    private void EndQuest(QuestTemplate quest, MainUI conversation)
     {
-
-    }
-    private void EndQuest(QuestTemplate quest, Text conversation)
-    {
-        conversation.text = quest.endOfQuest;
+        conversation.Conversation(true, quest.endOfQuest);
         playerStats.coins += quest.reward;
-        StartCoroutine(ConversationTimer(5f));
+        StartCoroutine(ConversationTimer(5f, conversation));
 
         actualQuestNum++;
-        playerStats.ActiveQuests.Remove(quests[actualQuestNum]);
+        playerStats.ActiveQuests.Remove(quest);
     }
 
     private void MouseHover()
@@ -154,11 +148,11 @@ public class QuestNPC : MonoBehaviour
         }
     }
 
-    private IEnumerator ConversationTimer(float delay)
+    private IEnumerator ConversationTimer(float delay, MainUI conversation)
     {
         yield return new WaitForSeconds(delay);
 
-        conversationCanvas.enabled = false;
+        conversation.Conversation(false, "");
         canShowPanel = true;
     }
 }

@@ -16,4 +16,4 @@ MonoBehaviour:
   startOfQuest: Hi this is your FIRST QUEST, and I NEED TO COLLECT 20 coins so GL.
   endOfQuest: You did it well done!. There is you reward 100 coins!!!
   reward: 100
-  requiredCoins: 20
+  requiredCoins: 1

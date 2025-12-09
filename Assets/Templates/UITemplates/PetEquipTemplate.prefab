@@ -229,7 +229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   petNameTxt: {fileID: 4733536551699460920}
   petDamageTxt: {fileID: 2892423062363328253}
-  petUISlotTemplate: {fileID: 1928769981341915345, guid: 26a1fad7335900d40bbfa243ccf04209, type: 3}
+  petUISlotTemplate: {fileID: 1928769981341915345, guid: 32a4617eae50ab34790a88b74d7864f7, type: 3}
 --- !u!1 &5932347353173175054
 GameObject:
   m_ObjectHideFlags: 0

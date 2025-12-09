@@ -4,8 +4,12 @@ using UnityEngine.UI;
 
 public class MainUI : MonoBehaviour
 {
-    public Transform Inventory;
+    public Transform btns;
     public Transform coinsPanel;
+    public Transform resourceContainer;
+    public Transform conversationPanel;
+
+    public Transform OfferTemplate;
 
     private PlayerStats playerStats = PlayerStats.Instance;
 
@@ -13,13 +17,17 @@ public class MainUI : MonoBehaviour
     {
         UpdateCoins();
     }
-    public void OpenInv()
-    {
-        Inventory.gameObject.SetActive(true);
+    public void OpenPanel(Transform openingPanel)
+    {     
+        btns.gameObject.SetActive(false);
+        coinsPanel.parent.gameObject.SetActive(false);
+        openingPanel.gameObject.SetActive(true);
     }
-    public void CloseInv()
+    public void ClosePanel(Transform closingPanel)
     {
-        Inventory.gameObject.SetActive(false);
+        closingPanel.gameObject.SetActive(false);
+        btns.gameObject.SetActive(true);
+        coinsPanel.parent.gameObject.SetActive(true);
     }
     
     public void SortInventoryByDamage()
@@ -40,5 +48,45 @@ public class MainUI : MonoBehaviour
     {
         Text coinsText = coinsPanel.GetComponent<Text>();
         coinsText.text = "Coins: "+playerStats.coins.ToString();
+    }
+
+    public void SetOffers()
+    {
+        foreach (Transform child in resourceContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Resource offerName in playerStats.PlayerResources.Keys)
+        {
+            if (playerStats.PlayerResources[offerName] > 0)
+            {
+                Transform newOffer = Instantiate(OfferTemplate, resourceContainer);
+                newOffer.Find("ResourceName").GetComponent<Text>().text = offerName.ToString();
+                newOffer.Find("SellingPanel").Find("MaxAmountText").GetComponent<Text>().text = "/" + playerStats.PlayerResources[offerName].ToString();
+
+                Button sellBtn = newOffer.Find("SellBtn").GetComponent<Button>();
+                Transform amountTransform = newOffer.Find("SellingPanel").Find("SellAmount").Find("Text");
+                sellBtn.onClick.AddListener(() => SellOffer(offerName, amountTransform));
+            }           
+        }
+    }
+
+    public void Conversation(bool status, string textInConversation)
+    {
+        conversationPanel.parent.gameObject.SetActive(status);
+
+        conversationPanel.GetComponent<Text>().text = textInConversation;
+    }
+
+    private void SellOffer(Resource resourceName, Transform amountTransform)
+    {
+        int sellAmount = int.Parse(amountTransform.GetComponent<Text>().text);
+        if (sellAmount <= playerStats.PlayerResources[resourceName])
+        {
+            playerStats.PlayerResources[resourceName] -= sellAmount;
+            playerStats.coins += sellAmount;  
+            SetOffers();
+        }
     }
 }

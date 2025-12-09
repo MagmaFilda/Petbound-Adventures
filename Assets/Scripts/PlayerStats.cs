@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Mono.Cecil;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,6 +16,7 @@ public class PlayerStats : MonoBehaviour
     public List<Transform> EquippedPets;
     public List<PetInInventory> PetsInInventory;
     public List<QuestTemplate> ActiveQuests;
+    public Dictionary<Resource, int> PlayerResources;
 
     public int totalOpenEggs = 0;
     public int totalBreakables = 0;
@@ -36,6 +38,7 @@ public class PlayerStats : MonoBehaviour
         Instance = this;
         coinsFrameBefore = coins;
         eggsFrameBefore = totalOpenEggs;
+        breakablesFrameBefore = totalBreakables;
     }
     private void Start()
     {
@@ -44,6 +47,10 @@ public class PlayerStats : MonoBehaviour
         EquippedPets = new List<Transform>();
         PetsInInventory = new List<PetInInventory>();
         ActiveQuests = new List<QuestTemplate>();
+        PlayerResources = new Dictionary<Resource, int>();
+
+        PlayerResources.Add(Resource.Dirt, 0);
+        PlayerResources.Add(Resource.Grass, 0);
 
         allQuestNPCs = GameObject.FindGameObjectsWithTag("QuestNPC").Select(npc => npc.GetComponent<QuestNPC>()).ToArray();
 
@@ -52,12 +59,16 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
-        CheckingClick();
-        ChangeCoinsDetection();
-        EggsDetection();
+        QuestDetection();
         BreakablesDetection();
     }
 
+    private void QuestDetection()
+    {
+        CheckingClick();
+        ChangeCoinsDetection();
+        EggsDetection();
+    }
     private void ChangeCoinsDetection()
     {
         if (coins != coinsFrameBefore)
