@@ -3,8 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Quests/OpenEggsQuest")]
 public class OpenEggsQuest : QuestTemplate
 {
-    public bool anyEgg;
+    [Header("QuestTypeAddons")]
+    public bool anyEggs = true;
     public EggTemplate[] allowedEggs;
-    public int eggCount;
     public override QuestType Type => QuestType.OpenEggs;
 }

@@ -4,12 +4,17 @@ using UnityEngine.UI;
 
 public class MainUI : MonoBehaviour
 {
+    [Header("Panels")]
     public Transform btns;
     public Transform coinsPanel;
-    public Transform resourceContainer;
+    public Transform questPanel;
     public Transform conversationPanel;
-
+    [Header("Containers")]
+    public Transform offerContainer;
+    public Transform resourceContainer;
+    [Header("Templates")]
     public Transform OfferTemplate;
+    public Transform ResourceUITemplate;
 
     private PlayerStats playerStats = PlayerStats.Instance;
 
@@ -21,6 +26,7 @@ public class MainUI : MonoBehaviour
     {     
         btns.gameObject.SetActive(false);
         coinsPanel.parent.gameObject.SetActive(false);
+        questPanel.gameObject.SetActive(false);
         openingPanel.gameObject.SetActive(true);
     }
     public void ClosePanel(Transform closingPanel)
@@ -28,6 +34,7 @@ public class MainUI : MonoBehaviour
         closingPanel.gameObject.SetActive(false);
         btns.gameObject.SetActive(true);
         coinsPanel.parent.gameObject.SetActive(true);
+        questPanel.gameObject.SetActive(true);
     }
     
     public void SortInventoryByDamage()
@@ -38,7 +45,21 @@ public class MainUI : MonoBehaviour
         foreach (PetInInventory p in playerStats.PetsInInventory)
         {
             p.SetLayoutOrder(n);
-                n++;
+            n++;
+        }
+    }
+    public void SetResourceInv()
+    {
+        ClearAllChilds(resourceContainer);
+
+        foreach (Resource res in playerStats.PlayerResources.Keys)
+        {
+            if (playerStats.PlayerResources[res] > 0)
+            {
+                Transform newResourceUI = Instantiate(ResourceUITemplate, resourceContainer);
+                newResourceUI.Find("ResourceName").GetComponent<Text>().text = res.ToString();
+                newResourceUI.Find("Amount").GetComponent<Text>().text = playerStats.PlayerResources[res].ToString();
+            }             
         }
     }
 
@@ -50,24 +71,21 @@ public class MainUI : MonoBehaviour
         coinsText.text = "Coins: "+playerStats.coins.ToString();
     }
 
-    public void SetOffers()
+    public void SetOffers(Dictionary<Resource, int> values)
     {
-        foreach (Transform child in resourceContainer)
-        {
-            Destroy(child.gameObject);
-        }
+        ClearAllChilds(offerContainer);
 
         foreach (Resource offerName in playerStats.PlayerResources.Keys)
         {
             if (playerStats.PlayerResources[offerName] > 0)
             {
-                Transform newOffer = Instantiate(OfferTemplate, resourceContainer);
+                Transform newOffer = Instantiate(OfferTemplate, offerContainer);
                 newOffer.Find("ResourceName").GetComponent<Text>().text = offerName.ToString();
                 newOffer.Find("SellingPanel").Find("MaxAmountText").GetComponent<Text>().text = "/" + playerStats.PlayerResources[offerName].ToString();
 
                 Button sellBtn = newOffer.Find("SellBtn").GetComponent<Button>();
                 Transform amountTransform = newOffer.Find("SellingPanel").Find("SellAmount").Find("Text");
-                sellBtn.onClick.AddListener(() => SellOffer(offerName, amountTransform));
+                sellBtn.onClick.AddListener(() => SellOffer(offerName, amountTransform, values));
             }           
         }
     }
@@ -79,14 +97,22 @@ public class MainUI : MonoBehaviour
         conversationPanel.GetComponent<Text>().text = textInConversation;
     }
 
-    private void SellOffer(Resource resourceName, Transform amountTransform)
+    private void SellOffer(Resource resourceName, Transform amountTransform, Dictionary<Resource, int> values)
     {
         int sellAmount = int.Parse(amountTransform.GetComponent<Text>().text);
         if (sellAmount <= playerStats.PlayerResources[resourceName])
         {
             playerStats.PlayerResources[resourceName] -= sellAmount;
-            playerStats.coins += sellAmount;  
-            SetOffers();
+            playerStats.coins += sellAmount * values[resourceName];  
+            SetOffers(values);
+        }
+    }
+
+    private void ClearAllChilds(Transform parentTransform)
+    {
+        foreach (Transform child in parentTransform)
+        {
+            Destroy(child.gameObject);
         }
     }
 }

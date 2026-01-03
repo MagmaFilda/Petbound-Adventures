@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de856383fe6fe3641a52444d409b8355, type: 3}
-  m_Name: DirtCaveTemplate
+  m_Name: DC2Template
   m_EditorClassIdentifier: 
   location: 0
-  tier: 0
+  tier: 1
   recources: 00000000
-  health: 20
-  rewards: 01000000
+  health: 50
+  rewards: 03000000

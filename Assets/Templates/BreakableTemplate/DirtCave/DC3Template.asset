@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de856383fe6fe3641a52444d409b8355, type: 3}
+  m_Name: DC3Template
+  m_EditorClassIdentifier: 
+  location: 0
+  tier: 2
+  recources: 00000000
+  health: 100
+  rewards: 0a000000

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ public class PlayerStats : MonoBehaviour
     public int maxEquippedPets = 3;
     public List<Transform> EquippedPets;
     public List<PetInInventory> PetsInInventory;
-    public List<QuestTemplate> ActiveQuests;
+    public List<ActiveQuest> ActiveQuests;
     public Dictionary<Resource, int> PlayerResources;
 
     public int totalOpenEggs = 0;
@@ -23,22 +24,19 @@ public class PlayerStats : MonoBehaviour
 
     private PlayerInput playerInput;
     private InputAction clickAction;
-    private QuestNPC[] allQuestNPCs;
 
     private float clicked;
     private bool canClick = true;
     private int coinsFrameBefore;
-    private int eggsFrameBefore;
-    private int breakablesFrameBefore;
 
+    private MainUI mainUI;
     private Transform targetBreakable;
 
     private void Awake()
     {
         Instance = this;
+        mainUI = GameObject.Find("MainCanvas").transform.GetComponent<MainUI>();
         coinsFrameBefore = coins;
-        eggsFrameBefore = totalOpenEggs;
-        breakablesFrameBefore = totalBreakables;
     }
     private void Start()
     {
@@ -46,63 +44,30 @@ public class PlayerStats : MonoBehaviour
         clickAction = playerInput.actions.FindAction("Click");
         EquippedPets = new List<Transform>();
         PetsInInventory = new List<PetInInventory>();
-        ActiveQuests = new List<QuestTemplate>();
+        ActiveQuests = new List<ActiveQuest>();
         PlayerResources = new Dictionary<Resource, int>();
 
-        PlayerResources.Add(Resource.Dirt, 0);
-        PlayerResources.Add(Resource.Grass, 0);
-
-        allQuestNPCs = GameObject.FindGameObjectsWithTag("QuestNPC").Select(npc => npc.GetComponent<QuestNPC>()).ToArray();
+        foreach (Resource res in Enum.GetValues(typeof(Resource)))
+        {
+            PlayerResources.Add(res, 0);
+        }
 
         GameObject.Find("MainCanvas").transform.GetComponent<MainUI>().UpdateCoins();
     }
 
     private void Update()
     {
-        QuestDetection();
-        BreakablesDetection();
-    }
-
-    private void QuestDetection()
-    {
         CheckingClick();
         ChangeCoinsDetection();
-        EggsDetection();
     }
+
     private void ChangeCoinsDetection()
     {
         if (coins != coinsFrameBefore)
         {
-            GameObject.Find("MainCanvas").transform.GetComponent<MainUI>().UpdateCoins();
-            if (coins > coinsFrameBefore)
-            {
-                SendDataToQuestNPC(coins, coinsFrameBefore,"Coins");
-            }
+            mainUI.UpdateCoins();
         }
         coinsFrameBefore = coins;
-    }
-    private void EggsDetection()
-    {
-        if (totalOpenEggs != eggsFrameBefore)
-        {
-            SendDataToQuestNPC(totalOpenEggs, eggsFrameBefore, "Eggs"); 
-        }
-        eggsFrameBefore = totalOpenEggs;
-    }
-    private void BreakablesDetection()
-    {
-        if (totalBreakables != breakablesFrameBefore)
-        {
-            SendDataToQuestNPC(totalBreakables, breakablesFrameBefore, "Breakables");
-        }
-        breakablesFrameBefore = totalBreakables;
-    }
-    private void SendDataToQuestNPC(int resources, int resourcesBefore, string resourceName)
-    {
-        foreach (QuestNPC npc in allQuestNPCs)
-        {
-            npc.AddToQuest(resourceName, resources - resourcesBefore);
-        }
     }
     private void CheckingClick()
     {

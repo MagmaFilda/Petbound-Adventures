@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: BobQuest2
   m_EditorClassIdentifier: 
   questName: BobQuest2
+  required: 3
+  reward: 10
   startOfQuest: Hi SECOND quest here! OPEN 3 EGGS.
   endOfQuest: WP, now last quest is coming.
-  reward: 10
-  anyEgg: 1
+  questUI: {fileID: 0}
+  progress: 0
+  isCompleted: 0
+  anyEggs: 1
   allowedEggs: []
-  eggCount: 3

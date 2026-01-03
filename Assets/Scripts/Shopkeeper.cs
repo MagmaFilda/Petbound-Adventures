@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public class Shopkeeper : MonoBehaviour
 {
@@ -7,6 +8,13 @@ public class Shopkeeper : MonoBehaviour
     public Transform mainUI;
     public Transform shopkeeperUI;
 
+    private Dictionary<Resource, int> tradeValues = new Dictionary<Resource, int>();
+
+    private void Awake()
+    {
+        tradeValues.Add(Resource.Dirt, 1);
+        tradeValues.Add(Resource.Grass, 2);
+    }
     private void Update()
     {
         MouseHover();
@@ -15,7 +23,7 @@ public class Shopkeeper : MonoBehaviour
         {
             MainUI uiScript = mainUI.GetComponent<MainUI>();
             uiScript.OpenPanel(shopkeeperUI);
-            uiScript.SetOffers();
+            uiScript.SetOffers(tradeValues);
         }
     }
     private void MouseHover()

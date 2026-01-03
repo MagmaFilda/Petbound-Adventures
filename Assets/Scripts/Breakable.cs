@@ -1,10 +1,19 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Splines;
 
 public class Breakable : MonoBehaviour
 {
+    [Header("Template")]
     public BreakableTemplate template;
+    [Header("Other Tiers")]
+    public Transform tier1Transform;
+    public Transform tier2Transform;
+    public Transform tier3Transform;
+    public Transform tier4Transform;
+    public Transform tier5Transform;
     public Location spawnLocationName { get; private set; }
     public Resource[] resources { get; private set; }
     public int health { get; private set; }
@@ -50,7 +59,7 @@ public class Breakable : MonoBehaviour
                 playerStats.PlayerResources[resources[reward]] += rewards[reward];
             }
 
-            GameObject newBreakable = Instantiate(gameObject);          
+            GameObject newBreakable = Instantiate(GetNextBreakable().gameObject);          
             newBreakable.name = "Breakable";
             positionSlot.tag = "Untagged";
 
@@ -63,4 +72,29 @@ public class Breakable : MonoBehaviour
     {
         health -= damage;
     }
+
+    private Transform GetNextBreakable()
+    {
+        int rNum = Random.Range(1, 101);
+        if (rNum == 100)
+        {
+            return tier5Transform;
+        }
+        else if(rNum >= 95)
+        {
+            return tier4Transform;
+        }
+        else if(rNum >= 81)
+        {
+            return tier3Transform;
+        }
+        else if(rNum >= 51)
+        {
+            return tier2Transform;
+        }
+        else
+        {
+            return tier1Transform;
+        }
+    } 
 }

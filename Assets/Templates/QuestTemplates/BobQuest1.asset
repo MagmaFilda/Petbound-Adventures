@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: BobQuest1
   m_EditorClassIdentifier: 
   questName: BobQuest1
-  startOfQuest: Hi this is your FIRST QUEST, and I NEED TO COLLECT 20 coins so GL.
-  endOfQuest: You did it well done!. There is you reward 100 coins!!!
+  required: 5
   reward: 100
-  requiredCoins: 1
+  startOfQuest: Hi this is your FIRST QUEST, and I NEED TO COLLECT 5 coins so GL.
+  endOfQuest: You did it well done!. There is you reward 100 coins!!!
+  questUI: {fileID: 0}
+  progress: 0
+  isCompleted: 0

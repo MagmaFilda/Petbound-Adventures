@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: BobQuest3
   m_EditorClassIdentifier: 
   questName: BobQuest3
+  required: 10
+  reward: 1000
   startOfQuest: Last Quest, destory 10 breakables, thx!
   endOfQuest: GGS now I give you 1000 coins, its too much to buy anything or do with
     them.
-  reward: 1000
-  requiredBreakables: 10
+  questUI: {fileID: 0}
+  progress: 0
+  isCompleted: 0
+  anyTiers: 1
+  allowedTiers: 

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7869353298861079279}
   - component: {fileID: 7445709433530224938}
   m_Layer: 0
-  m_Name: Breakable
+  m_Name: BreakableTier1
   m_TagString: Breakable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,3 +122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   template: {fileID: 11400000, guid: 6b6558d0c6a7f0b429b974c9eac661ae, type: 2}
+  tier1Transform: {fileID: 3250927814949723551}
+  tier2Transform: {fileID: 5017575977344976748, guid: 4c7ea5c167f812843a4a5988005007e7, type: 3}
+  tier3Transform: {fileID: 6196461234149002943, guid: a18537dee2349ea4c8e44c9b52d65513, type: 3}
+  tier4Transform: {fileID: 6924527261904755815, guid: fbe45454f3a5e2f4fb8a8300698b7090, type: 3}
+  tier5Transform: {fileID: 7965969375370777983, guid: 158ac79f98580c0449043cfb5b0a3f88, type: 3}
