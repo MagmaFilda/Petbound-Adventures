@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4fbf5e38d4891145bdbf1cf2e78990e, type: 3}
+  m_Name: DirtCaveShop
+  m_EditorClassIdentifier: 
+  purchasableItems:
+  - {fileID: 11400000, guid: f6a2255130c392841900ca3ea901bc46, type: 2}
+  - {fileID: 11400000, guid: 0c5844f8ebb92f248b365872ee5c4e4b, type: 2}
+  - {fileID: 11400000, guid: 4cef80600e8aa0443a0ee301c14d5e75, type: 2}
+  - {fileID: 11400000, guid: 96cac9d04ee87f748b2cb0c738df9227, type: 2}
+  prices: 64000000320000004b00000019000000

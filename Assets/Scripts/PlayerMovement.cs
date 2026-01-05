@@ -3,8 +3,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed = 5f;
-    public float jump = 2f;
     public float gravity = -8f;
     public Transform cameraTransform;
 
@@ -20,6 +18,8 @@ public class PlayerMovement : MonoBehaviour
     private float doRotateCamera;
     private float cameraPitch = 0f;
     private Vector3 playerVelocity;
+
+    private PlayerStats playerStats = PlayerStats.Instance;
 
     private void Start()
     {
@@ -55,12 +55,12 @@ public class PlayerMovement : MonoBehaviour
 
         Vector2 movementInput = movementAction.ReadValue<Vector2>();
         Vector3 move = transform.right * movementInput.x + transform.forward * movementInput.y;
-        controller.Move(move * speed * Time.deltaTime);
+        controller.Move(move * playerStats.playerSpeed * Time.deltaTime);
 
         doJump = jumpAction.ReadValue<float>();
         if (doJump > 0 && isGrounded)
         {
-            playerVelocity.y = Mathf.Sqrt(jump * -2f * gravity);
+            playerVelocity.y = Mathf.Sqrt(playerStats.playerJumpPower * -2f * gravity);
             controller.Move(playerVelocity * Time.deltaTime);
         }
     }
@@ -74,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
             transform.Rotate(Vector3.up * cameraMove.x * 0.1f);
 
             cameraPitch -= cameraMove.y * 0.1f;
-            cameraPitch = Mathf.Clamp(cameraPitch, -10f, 10f);
+            cameraPitch = Mathf.Clamp(cameraPitch, -15f, 15f);
 
             cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0, 0); // to je nahoru a dolu kdybych chtìl
         }

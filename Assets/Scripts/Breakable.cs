@@ -56,7 +56,20 @@ public class Breakable : MonoBehaviour
         {
             for (int reward = 0; reward < rewards.Length; reward++)
             {
-                playerStats.PlayerResources[resources[reward]] += rewards[reward];
+                int playerResourceCount = 0;
+                foreach (var resName in playerStats.PlayerResources)
+                {
+                    playerResourceCount += playerStats.PlayerResources[resName.Key];
+                }
+                if (playerStats.resourceCapacity >= playerResourceCount + rewards[reward])
+                {
+                    playerStats.PlayerResources[resources[reward]] += rewards[reward];
+                }
+                else
+                {
+                    playerStats.PlayerResources[resources[reward]] += playerStats.resourceCapacity - playerResourceCount;
+                    Debug.LogWarning("Resource " + resources[reward] + " can´t be add to storage, because capacity is full");
+                }
             }
 
             GameObject newBreakable = Instantiate(GetNextBreakable().gameObject);          

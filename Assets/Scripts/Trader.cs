@@ -1,14 +1,20 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
-public class Shopkeeper : MonoBehaviour
+public class Trader : MonoBehaviour
 {
-    public ShopTemplate template;
-
-    public Transform mainUI;
     public Canvas openUI;
-    public Transform shopkeeperUI;
+    public Transform mainUI;
+    public Transform traderUI;
 
+    private Dictionary<Resource, int> tradeValues = new Dictionary<Resource, int>();
+
+    private void Awake()
+    {
+        tradeValues.Add(Resource.Dirt, 1);
+        tradeValues.Add(Resource.Grass, 2);
+    }
     private void Update()
     {
         MouseHover();
@@ -16,8 +22,8 @@ public class Shopkeeper : MonoBehaviour
         if (openUI.enabled && Keyboard.current.eKey.wasPressedThisFrame)
         {
             MainUI uiScript = mainUI.GetComponent<MainUI>();
-            uiScript.OpenPanel(shopkeeperUI);
-            uiScript.SetShop(template);
+            uiScript.OpenPanel(traderUI);
+            uiScript.SetOffers(tradeValues);
         }
     }
     private void MouseHover()

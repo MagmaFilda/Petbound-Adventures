@@ -12,11 +12,17 @@ public class PlayerStats : MonoBehaviour
     public static PlayerStats Instance;
 
     public int coins = 100;
+    public float playerSpeed = 5f;
+    public float playerJumpPower = 2f;
     public int maxPets = 20;
     public int maxEquippedPets = 3;
+    public int resourceCapacity = 100;
+
     public List<Transform> EquippedPets;
     public List<PetInInventory> PetsInInventory;
     public List<ActiveQuest> ActiveQuests;
+    public List<ItemTemplate> OwnedItems;
+    public List<ItemTemplate> EquippedItems;
     public Dictionary<Resource, int> PlayerResources;
 
     public int totalOpenEggs = 0;
@@ -45,6 +51,8 @@ public class PlayerStats : MonoBehaviour
         EquippedPets = new List<Transform>();
         PetsInInventory = new List<PetInInventory>();
         ActiveQuests = new List<ActiveQuest>();
+        OwnedItems = new List<ItemTemplate>();
+        EquippedItems = new List<ItemTemplate>();
         PlayerResources = new Dictionary<Resource, int>();
 
         foreach (Resource res in Enum.GetValues(typeof(Resource)))
