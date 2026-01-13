@@ -17,7 +17,9 @@ public class PlayerMovement : MonoBehaviour
     private float doJump;
     private float doRotateCamera;
     private float cameraPitch = 0f;
+    private float cameraYaw = 0f;
     private Vector3 playerVelocity;
+    private Vector2 cameraMove;
 
     private PlayerStats playerStats = PlayerStats.Instance;
 
@@ -54,8 +56,13 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(playerVelocity * Time.deltaTime);
 
         Vector2 movementInput = movementAction.ReadValue<Vector2>();
-        Vector3 move = transform.right * movementInput.x + transform.forward * movementInput.y;
-        controller.Move(move * playerStats.playerSpeed * Time.deltaTime);
+        if (movementInput != new Vector2(0, 0))
+        {
+            Vector3 move = transform.right * movementInput.x + transform.forward * movementInput.y;
+            controller.Move(move * playerStats.playerSpeed * Time.deltaTime);
+
+            
+        }     
 
         doJump = jumpAction.ReadValue<float>();
         if (doJump > 0 && isGrounded)
@@ -70,13 +77,16 @@ public class PlayerMovement : MonoBehaviour
         doRotateCamera = rotateCameraAction.ReadValue<float>();
         if (doRotateCamera > 0)
         {
-            Vector2 cameraMove = moveCameraAction.ReadValue<Vector2>();
-            transform.Rotate(Vector3.up * cameraMove.x * 0.1f);
+            cameraMove = moveCameraAction.ReadValue<Vector2>();
 
             cameraPitch -= cameraMove.y * 0.1f;
             cameraPitch = Mathf.Clamp(cameraPitch, -15f, 15f);
 
-            cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0, 0); // to je nahoru a dolu kdybych chtìl
+            transform.Rotate(Vector3.up * cameraMove.x * 0.1f);
+
+            cameraYaw += cameraMove.x * 0.3f;
+
+            cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0, 0);
         }
     }
 }

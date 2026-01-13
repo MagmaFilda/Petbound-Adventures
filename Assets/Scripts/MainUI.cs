@@ -43,6 +43,8 @@ public class MainUI : MonoBehaviour
         btns.gameObject.SetActive(true);
         coinsPanel.parent.gameObject.SetActive(true);
         questPanel.gameObject.SetActive(true);
+
+        SetDeleteMode(false); // vždy když se vypne pet inv -> tak, aby se automaticky vypnul deleteMode
     }
     public void UpdateCoins()
     {
@@ -60,6 +62,27 @@ public class MainUI : MonoBehaviour
         {
             p.SetLayoutOrder(n);
             n++;
+        }
+    }
+    public void SetDeleteMode(bool state)
+    {       
+        if (state == playerStats.deleteMode)
+        {
+            playerStats.deleteMode = false;
+        }
+        else
+        {
+            playerStats.deleteMode = state;
+        }
+
+        Text btnTxt = this.transform.Find("Inventory").Find("DeleteBtn").Find("Text").GetComponent<Text>();
+        if (playerStats.deleteMode)
+        {
+            btnTxt.text = "DELETING";
+        }
+        else
+        {
+            btnTxt.text = "Delete Pets";
         }
     }
     public void SetResourceInv()

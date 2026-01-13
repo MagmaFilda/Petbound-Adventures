@@ -28,6 +28,8 @@ public class PlayerStats : MonoBehaviour
     public int totalOpenEggs = 0;
     public int totalBreakables = 0;
 
+    public bool deleteMode = false;
+
     private PlayerInput playerInput;
     private InputAction clickAction;
 

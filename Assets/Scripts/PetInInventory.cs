@@ -46,6 +46,12 @@ public class PetInInventory : MonoBehaviour
 
     public void Equip()
     {
+        if (playerStats.deleteMode)
+        {
+            DeletePet();
+            return;
+        }
+
         if (playerStats.EquippedPets.Count < playerStats.maxEquippedPets)
         {
             Transform newPetModel = Instantiate(petTemplate.petPrefab);
@@ -56,9 +62,9 @@ public class PetInInventory : MonoBehaviour
             EquipUISlot newUIPetSlot = Instantiate(UIEquipPetSlotPrefab, UIEquipPanel).GetComponent<EquipUISlot>();
             newUIPetSlot.SetValues(petName, damage.ToString(), petTemplate, transform.parent, newPetModel);
 
+            playerStats.PetsInInventory.Remove(this);
             SortInventory();
 
-            playerStats.PetsInInventory.Remove(this);
             Destroy(gameObject);
         }
     }
@@ -68,10 +74,19 @@ public class PetInInventory : MonoBehaviour
         transform.SetSiblingIndex(orderNum);
     }
 
+    private void DeletePet()
+    {
+        playerStats.PetsInInventory.Remove(this);
+        SortInventory();
+        Destroy(gameObject);
+    }
+
     private void SortInventory()
     {
-        MainUI inv = transform.parent.parent.parent.parent.parent.GetComponent<MainUI>();
-        inv.SortInventoryByDamage();
+        Transform mainUI = transform.parent.parent.parent.parent.parent;
+        mainUI.GetComponent<MainUI>().SortInventoryByDamage();
+
+        mainUI.Find("Inventory").Find("MaxPets").GetComponent<Text>().text = (playerStats.PetsInInventory.Count+playerStats.EquippedPets.Count) + "/" + playerStats.maxPets;
     }
 
     private void SetSlotUI()
