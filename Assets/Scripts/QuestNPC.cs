@@ -9,6 +9,7 @@ public class QuestNPC : MonoBehaviour
     public QuestTemplate[] quests;
     public Canvas openUI;
     public Canvas mainCanvas;
+    public Transform hitbox;
 
     private PlayerStats playerStats = PlayerStats.Instance;
     private QuestManager questManager = QuestManager.Instance;
@@ -85,7 +86,7 @@ public class QuestNPC : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
-            if (hit.collider.gameObject == gameObject && canShowPanel)
+            if (hit.collider.gameObject == hitbox.gameObject && canShowPanel)
             {
                 openUI.enabled = true;
             }

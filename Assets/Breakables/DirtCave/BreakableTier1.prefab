@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7264120668610761057}
   - component: {fileID: 7869353298861079279}
   - component: {fileID: 7445709433530224938}
+  - component: {fileID: 4019717903439577904}
   m_Layer: 0
   m_Name: BreakableTier1
   m_TagString: Breakable
@@ -122,8 +123,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   template: {fileID: 11400000, guid: 6b6558d0c6a7f0b429b974c9eac661ae, type: 2}
-  tier1Transform: {fileID: 3250927814949723551}
-  tier2Transform: {fileID: 5017575977344976748, guid: 4c7ea5c167f812843a4a5988005007e7, type: 3}
-  tier3Transform: {fileID: 6196461234149002943, guid: a18537dee2349ea4c8e44c9b52d65513, type: 3}
-  tier4Transform: {fileID: 6924527261904755815, guid: fbe45454f3a5e2f4fb8a8300698b7090, type: 3}
-  tier5Transform: {fileID: 7965969375370777983, guid: 158ac79f98580c0449043cfb5b0a3f88, type: 3}
+--- !u!54 &4019717903439577904
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879547452437214116}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 122
+  m_CollisionDetection: 0

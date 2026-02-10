@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public float gravity = -8f;
     public Transform cameraTransform;
+    public Transform character;
 
     private PlayerInput playerInput;
     private InputAction movementAction;
@@ -12,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private InputAction moveCameraAction;
     private InputAction rotateCameraAction;
     private CharacterController controller;
+    private Animator animator;
 
     private bool isGrounded;
     private float doJump;
@@ -31,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
         moveCameraAction = playerInput.actions.FindAction("CameraMove");
         rotateCameraAction = playerInput.actions.FindAction("DoRotate");
         controller = GetComponent<CharacterController>();
+        animator = character.GetComponent<Animator>();
     }
 
     private void Update()
@@ -47,6 +50,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 isGrounded = true;
                 playerVelocity.y = 0f;
+
+                if (animator.GetBool("IsJumping"))
+                {
+                    animator.SetBool("IsJumping", false);
+                }
             }
             else {isGrounded = false;}
         }
@@ -60,15 +68,37 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector3 move = transform.right * movementInput.x + transform.forward * movementInput.y;
             controller.Move(move * playerStats.playerSpeed * Time.deltaTime);
+            if (!animator.GetBool("IsWalking"))
+            {
+                animator.SetBool("IsWalking", true);
+            }            
 
-            
-        }     
+            if (cameraYaw != 0f)
+            {
+                transform.Rotate(Vector3.up * cameraYaw);
+
+                cameraYaw = 0f;
+                cameraTransform.localRotation = Quaternion.Euler(cameraPitch, cameraYaw, 0);
+            }            
+        }
+        else
+        {
+            if (animator.GetBool("IsWalking"))
+            {
+                animator.SetBool("IsWalking", false);
+            }
+        }
 
         doJump = jumpAction.ReadValue<float>();
         if (doJump > 0 && isGrounded)
         {
             playerVelocity.y = Mathf.Sqrt(playerStats.playerJumpPower * -2f * gravity);
             controller.Move(playerVelocity * Time.deltaTime);
+
+            if (!animator.GetBool("IsJumping"))
+            {
+                animator.SetBool("IsJumping", true);
+            }
         }
     }
 
@@ -82,11 +112,9 @@ public class PlayerMovement : MonoBehaviour
             cameraPitch -= cameraMove.y * 0.1f;
             cameraPitch = Mathf.Clamp(cameraPitch, -15f, 15f);
 
-            transform.Rotate(Vector3.up * cameraMove.x * 0.1f);
-
             cameraYaw += cameraMove.x * 0.3f;
 
-            cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0, 0);
+            cameraTransform.localRotation = Quaternion.Euler(cameraPitch, cameraYaw, 0);
         }
     }
 }

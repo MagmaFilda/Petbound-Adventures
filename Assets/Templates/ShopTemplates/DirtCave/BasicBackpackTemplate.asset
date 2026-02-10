@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: BasicBackpackTemplate
   m_EditorClassIdentifier: 
   typeOfItem: 1
-  upgrades: 01000000
+  upgrades: 0100000000000000
   upgradeValues:
   - 25
+  - 5
+  price: 100
   rebuyable: 1
-  item: {fileID: 0}
+  item: {fileID: 4511479421511029971, guid: b8d3a6173ecd8df429f345d80d58bf0d, type: 3}

@@ -16,5 +16,6 @@ MonoBehaviour:
   upgrades: 00000000
   upgradeValues:
   - 1
+  price: 1
   rebuyable: 10
   item: {fileID: 0}

@@ -31,7 +31,12 @@ public class MainUI : MonoBehaviour
 
     //Main Panels
     public void OpenPanel(Transform openingPanel)
-    {     
+    {
+        if (openingPanel == transform.Find("Inventory"))
+        {
+            transform.Find("Inventory").Find("MaxPets").GetComponent<Text>().text = (playerStats.PetsInInventory.Count + playerStats.EquippedPets.Count) + "/" + playerStats.maxPets;
+        }
+
         btns.gameObject.SetActive(false);
         coinsPanel.parent.gameObject.SetActive(false);
         questPanel.gameObject.SetActive(false);
@@ -127,69 +132,6 @@ public class MainUI : MonoBehaviour
             playerStats.PlayerResources[resourceName] -= sellAmount;
             playerStats.coins += sellAmount * values[resourceName];
             SetOffers(values);
-        }
-    }
-
-    //Shopkeeper
-    public void SetShop(ShopTemplate template)
-    {
-        ClearAllChilds(itemContainer);
-
-        for (int i = 0; i < template.purchasableItems.Length; i++)
-        {
-            Transform mainPart = Instantiate(itemUITemplate, itemContainer);
-            ItemTemplate item = template.purchasableItems[i];
-            mainPart.Find("Title").GetComponent<Text>().text = item.typeOfItem.ToString();
-            for (int bonus = 0; bonus < item.upgrades.Length; bonus++)
-            {
-                Transform bonusStatUI = Instantiate(bonusTemplate, mainPart.Find("BonusPanel"));
-                bonusStatUI.GetComponent<Text>().text = "+ " + item.upgradeValues[bonus] + item.upgrades[bonus];
-            }
-
-            Button btn = mainPart.Find("BuyBtn").GetComponent<Button>();
-            Text btnText = btn.transform.Find("Text").GetComponent<Text>();
-            if (!playerStats.OwnedItems.Contains(item))
-            {
-                btnText.text = "Buy " + template.prices[i];
-                int price = template.prices[i];
-                btn.onClick.AddListener(() => BuyItem(item, price, btnText, template));
-            }
-            else
-            {
-                btnText.text = "Equipped";
-            }
-
-        }
-    }
-    public void BuyItem(ItemTemplate item, int price, Text btnText, ShopTemplate shop)
-    {
-        if (playerStats.coins >= price)
-        {
-            playerStats.coins -= price;
-            btnText.text = "Equipped";
-            playerStats.OwnedItems.Add(item);
-            playerStats.EquippedItems.Add(item);
-
-            for (int i = 0; i < item.upgrades.Length; i++)
-            {
-                switch (item.upgrades[i])
-                {
-                    case UpgradeType.ResourceCapacity:
-                        playerStats.resourceCapacity += item.upgradeValues[i];
-                        break;
-                    case UpgradeType.PetInventorySlotAmount:
-                        playerStats.maxPets += item.upgradeValues[i];
-                        break;
-                    case UpgradeType.MovementSpeed:
-                        playerStats.playerSpeed += item.upgradeValues[i];
-                        break;
-                    case UpgradeType.JumpBoost:
-                        playerStats.playerJumpPower += item.upgradeValues[i];
-                        break;
-                }
-            }
-
-            SetShop(shop);
         }
     }
 

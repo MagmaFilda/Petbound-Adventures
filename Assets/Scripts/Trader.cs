@@ -7,6 +7,7 @@ public class Trader : MonoBehaviour
     public Canvas openUI;
     public Transform mainUI;
     public Transform traderUI;
+    public Transform hitbox;
 
     private Dictionary<Resource, int> tradeValues = new Dictionary<Resource, int>();
 
@@ -31,7 +32,7 @@ public class Trader : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
-            if (hit.collider.gameObject == gameObject)
+            if (hit.collider.gameObject == hitbox.gameObject)
             {
                 openUI.enabled = true;
             }
