@@ -1,25 +1,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Mono.Cecil;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerStats : MonoBehaviour
 {
-    public static PlayerStats Instance;
+    public static PlayerStats Instance { get; private set; }
 
-    public int coins = 100;
+    public int coins = 0;
 
     public float playerSpeed = 5f;
     public float playerJumpPower = 2f;
     public int maxPets = 20;
     public int maxEquippedPets = 3;
     public int resourceCapacity = 100;
+    public int storageCapacity = 250;
 
     public Dictionary<Resource, int> PlayerResources;
+    public Dictionary<Resource, int> StorageResources;
 
     public List<Transform> EquippedPets;
     public List<PetInInventory> PetsInInventory;
@@ -32,6 +31,9 @@ public class PlayerStats : MonoBehaviour
     public int totalOpenEggs = 0;
     public int totalBreakables = 0;
 
+    public bool canMove = false;
+    public bool canRotateCamera = false;
+    public bool canShowInteract = true; 
     public bool deleteMode = false;
 
     private PlayerInput playerInput;
@@ -46,8 +48,16 @@ public class PlayerStats : MonoBehaviour
 
     private void Awake()
     {
+        QualitySettings.vSyncCount = 1;
+
+        if (Instance != null && Instance != this)
+        {
+            Debug.Log("Duplicate PlayerStats destroyed");
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
-        mainUI = GameObject.Find("MainCanvas").transform.GetComponent<MainUI>();
+        coins = 0;
         coinsFrameBefore = coins;
     }
     private void Start()
@@ -56,6 +66,7 @@ public class PlayerStats : MonoBehaviour
         clickAction = playerInput.actions.FindAction("Click");
 
         PlayerResources = new Dictionary<Resource, int>();
+        StorageResources = new Dictionary<Resource, int>();
 
         EquippedPets = new List<Transform>();
         PetsInInventory = new List<PetInInventory>();
@@ -68,9 +79,10 @@ public class PlayerStats : MonoBehaviour
         foreach (Resource res in Enum.GetValues(typeof(Resource)))
         {
             PlayerResources.Add(res, 0);
+            StorageResources.Add(res, 0);
         }
-
-        GameObject.Find("MainCanvas").transform.GetComponent<MainUI>().UpdateCoins();
+       
+        mainUI = FindFirstObjectByType<MainUI>();
     }
 
     private void Update()
@@ -101,12 +113,12 @@ public class PlayerStats : MonoBehaviour
                     targetBreakable = hit.transform;
                 }
             }
-        }
-        else
-        {
-            if (targetBreakable != null)
+            else
             {
-                targetBreakable = null;
+                if (targetBreakable != null)
+                {
+                    targetBreakable = null;
+                }
             }
         }
 

@@ -10,26 +10,50 @@ public class BreakableArea : MonoBehaviour
     public Transform tier4Transform;
     public Transform tier5Transform;
 
-    private BoxCollider boxCollider;
-    private float spawnHeight = 5f;
+    [Header("Particle")]
+    public Transform particle;
 
-    public void SpawnOtherBreakable(int spawnCount) // musi byt kvuli tomu ze jak se ten breakable znici tak se zastavi i ta coroutine
-    {
-        StartCoroutine(SpawnBreakable(spawnCount));
-    }
+    [HideInInspector]
+    public int breakablesInArea = 0;
+
+    private BoxCollider boxCollider;
+    private int tier5Reserve = 0;
+    private bool tier5Active = false;
+    private float spawnHeight = 5f;
 
     private void Start()
     {
         boxCollider = transform.GetComponent<BoxCollider>();
 
-        StartCoroutine(SpawnBreakable(20));
+        StartCoroutine(SpawnBreakable(10));
+    }
+
+    public void SpawnOtherBreakable(int spawnCount) // musi byt kvuli tomu ze jak se ten breakable znici tak se zastavi i ta coroutine
+    {
+        StartCoroutine(SpawnBreakable(spawnCount));
+
+        if (breakablesInArea < 6) { SpawnOtherBreakable(10); }
+    }
+    public void ParticlesAfterDestroy(Vector3 pos, Quaternion rot)
+    {
+        StartCoroutine(SpawnParticle(pos, rot));
     }
 
     private IEnumerator SpawnBreakable(int spawnCount)
     {
         for (int i = 0; i < spawnCount; i++)
         {
-            Transform tier = GetBreakableTier();
+            Transform tier = tier1Transform;
+            if (tier5Reserve > 0 && !tier5Active)
+            {
+                tier5Active = true;
+                tier = tier5Transform;
+            }
+            else
+            {
+                tier = GetBreakableTier();
+            }
+            
             Transform newBreakable = Instantiate(tier, new Vector3(0,0,0), Quaternion.identity);
             newBreakable.SetParent(transform);
             for (int att = 0; att < 10; att++)
@@ -56,15 +80,25 @@ public class BreakableArea : MonoBehaviour
                 if (CanSpawn(detectPositions))
                 {                                       
                     newBreakable.name = "Breakable";
+                    breakablesInArea += 1;
+                    if (tier == tier5Transform) { tier5Reserve -= 1; tier5Active = false; }
                     yield return new WaitForSeconds(0.5f);
                     break;
                 }
                 if (att == 9)
                 {
+                    if (tier == tier5Transform) { tier5Active = false; }
                     Destroy(newBreakable.gameObject);
                 }
-            }
+            }      
         }
+    }
+
+    private IEnumerator SpawnParticle(Vector3 pos, Quaternion rotation)
+    {
+        Transform newParticle = Instantiate(particle, pos, rotation);
+        yield return new WaitForSeconds(1);
+        Destroy(newParticle.gameObject);
     }
 
     private bool CanSpawn(Vector3[] posCorners)
@@ -88,6 +122,7 @@ public class BreakableArea : MonoBehaviour
         int rNum = Random.Range(1, 101);
         if (rNum == 100)
         {
+            tier5Reserve += 1;
             return tier5Transform;
         }
         else if (rNum >= 95)

@@ -1,55 +1,74 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class QuestNPC : MonoBehaviour
 {
     public QuestTemplate[] quests;
-    public Canvas openUI;
+    public Transform openUI;
     public Canvas mainCanvas;
     public Transform hitbox;
 
-    private PlayerStats playerStats = PlayerStats.Instance;
-    private QuestManager questManager = QuestManager.Instance;
+    private PlayerStats playerStats;
+    private QuestManager questManager;
+    private GameManager gameManager;
 
-    private bool canShowPanel = true;
     private int actualQuestNum = 0;
     private ActiveQuest activeQuest;
 
+    private void Start()
+    {
+        playerStats = PlayerStats.Instance;
+        questManager = QuestManager.Instance;
+        gameManager = GameManager.Instance;
+    }
+
     private void Update()
     {
-        MouseHover();
+        //MouseHover();
 
-        if (openUI.enabled && Keyboard.current.eKey.wasPressedThisFrame && canShowPanel)
+        if (openUI.gameObject.activeSelf && Keyboard.current.eKey.wasPressedThisFrame && playerStats.canShowInteract)
         {
             QuestInteract();
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            openUI.gameObject.SetActive(true);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            openUI.gameObject.SetActive(false);
         }
     }
 
     private void QuestInteract()
     {
         MainUI conversation = mainCanvas.GetComponent<MainUI>();
-        canShowPanel = false;
 
         if (actualQuestNum >= quests.Length)
         {
-            conversation.Conversation(true, "You´ve done ALL my QUESTS. WP WP MAN!!!");
-            StartCoroutine(ConversationTimer(4f, conversation));
+            string[] text = {"Dokonèil jsi všechny mé questy a tím si dokonèil tenhle prototyp! Gratuluju!!!"};
+            StartCoroutine(ConversationDialog(text, 4f, conversation));
             return;
         }
 
         if (CheckQuest(conversation)) { return; } 
 
 
-        StartQuest(quests[actualQuestNum], conversation);
-        StartCoroutine(ConversationTimer(6f, conversation));
+        StartQuest(conversation);
     }
-    private void StartQuest(QuestTemplate newQuest, MainUI conversation)
+    public void StartQuest(MainUI conversation)
     {
+        QuestTemplate newQuest = quests[actualQuestNum];
         activeQuest = questManager.StartQuest(newQuest);
-        conversation.Conversation(true, newQuest.startOfQuest);
+        StartCoroutine(ConversationDialog(newQuest.startOfQuest, 7f, conversation));
+        gameManager.TryNpcEvent(transform.name, actualQuestNum, "start");
     }
     private bool CheckQuest(MainUI conversation)
     {
@@ -62,9 +81,8 @@ public class QuestNPC : MonoBehaviour
                     EndQuest(quests[actualQuestNum], conversation);
                     return true;
                 }
-
-                conversation.Conversation(true, "You now have one quest in process come to me when you will have done it");
-                StartCoroutine(ConversationTimer(4f, conversation));
+                string[] text = { "Nyní máš rozpracovaný jiný mùj quest, až ho budeš mít hotový pøijï za mnou znovu" };
+                StartCoroutine(ConversationDialog(text, 4f, conversation));
                 return true;
             }
         }
@@ -74,38 +92,44 @@ public class QuestNPC : MonoBehaviour
     {
         questManager.EndQuest(activeQuest);
 
-        conversation.Conversation(true, quest.endOfQuest);
+        StartCoroutine(ConversationDialog(quest.endOfQuest, 7f, conversation));
         playerStats.coins += quest.reward;
-        StartCoroutine(ConversationTimer(5f, conversation));
 
+        gameManager.TryNpcEvent(transform.name, actualQuestNum, "end");
         actualQuestNum++;
     }
 
-    private void MouseHover()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
-        {
-            if (hit.collider.gameObject == hitbox.gameObject && canShowPanel)
-            {
-                openUI.enabled = true;
-            }
-            else
-            {
-                openUI.enabled = false;
-            }
-        }
-        else
-        {
-            openUI.enabled = false;
-        }
-    }
+    //private void MouseHover()
+    //{
+    //    Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+    //    if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+    //    {
+    //        if (hit.collider.gameObject == hitbox.gameObject && canShowPanel && closeEnough)
+    //        {
+    //            openUI.enabled = true;
+    //        }
+    //        else
+    //        {
+    //            openUI.enabled = false;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        openUI.enabled = false;
+    //    }
+    //} -- necham to ted jen ze se projde okolo
 
-    private IEnumerator ConversationTimer(float delay, MainUI conversation)
+    private IEnumerator ConversationDialog(string[] allText, float delay, MainUI conversation)
     {
-        yield return new WaitForSeconds(delay);
-
-        conversation.Conversation(false, "");
-        canShowPanel = true;
+        playerStats.canShowInteract = false;
+        playerStats.canMove = false;
+        foreach (string text in allText)
+        {
+            conversation.Conversation(true, text);
+            yield return new WaitForSeconds(delay);           
+        }
+        conversation.Conversation(false, string.Empty);
+        playerStats.canShowInteract = true;
+        playerStats.canMove = true;
     }
 }

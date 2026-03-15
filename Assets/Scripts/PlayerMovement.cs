@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private InputAction jumpAction;
     private InputAction moveCameraAction;
     private InputAction rotateCameraAction;
+    private InputAction changeFullscreenAction;
     private CharacterController controller;
     private Animator animator;
 
@@ -23,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 playerVelocity;
     private Vector2 cameraMove;
 
-    private PlayerStats playerStats = PlayerStats.Instance;
+    private PlayerStats playerStats;
 
     private void Start()
     {
@@ -32,14 +33,36 @@ public class PlayerMovement : MonoBehaviour
         jumpAction = playerInput.actions.FindAction("Jump");
         moveCameraAction = playerInput.actions.FindAction("CameraMove");
         rotateCameraAction = playerInput.actions.FindAction("DoRotate");
+        changeFullscreenAction = playerInput.actions.FindAction("Fullscreen");
         controller = GetComponent<CharacterController>();
         animator = character.GetComponent<Animator>();
+
+        playerStats = PlayerStats.Instance;
     }
 
     private void Update()
     {
-        MovePlayer();
-        CameraMovement();
+        if (playerStats.canMove)
+        {
+            MovePlayer();
+        }     
+        if (playerStats.canRotateCamera)
+        {
+            CameraMovement();
+        }
+
+        if (changeFullscreenAction.triggered)
+        {
+            if (Screen.fullScreenMode == FullScreenMode.FullScreenWindow)
+            {
+                Screen.fullScreenMode = FullScreenMode.Windowed;
+                Screen.SetResolution(1920,1080,false);
+            }
+            else
+            {
+                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+            }
+        }
     }
 
     private void MovePlayer()

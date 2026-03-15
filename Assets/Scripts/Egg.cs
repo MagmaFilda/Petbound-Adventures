@@ -1,11 +1,12 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
+using System.Collections;
 
 public class Egg : MonoBehaviour
 {
-    public Canvas openUI;
+    public Transform openUI;
+    public Transform cameraPoint;
+    public Transform playerLeavePoint;
     public Transform petUISlotTemplate;
     public Transform petInventory;
 
@@ -14,7 +15,11 @@ public class Egg : MonoBehaviour
     public float[] chance { get; private set; }
     public int price { get; private set; }
 
-    private PlayerStats playerStats = PlayerStats.Instance;
+    private PlayerStats playerStats;
+    private GameManager gameManager;
+    private MainUI mainUI;
+
+    private bool canOpen = true;
 
     private void Awake()
     {
@@ -25,6 +30,10 @@ public class Egg : MonoBehaviour
 
     private void Start()
     {
+        playerStats = PlayerStats.Instance;
+        gameManager = GameManager.Instance;
+        mainUI = FindFirstObjectByType<MainUI>();
+
         float testingChance = 0;
         foreach (float c in chance)
         {
@@ -37,11 +46,25 @@ public class Egg : MonoBehaviour
     }
     private void Update()
     {
-        MouseHover();
+        //MouseHover();
 
-        if (openUI.enabled && Keyboard.current.eKey.wasPressedThisFrame)
+        if (openUI.gameObject.activeSelf && Keyboard.current.eKey.wasPressedThisFrame && playerStats.canShowInteract)
         {
             OpenEgg();
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            openUI.gameObject.SetActive(true);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            openUI.gameObject.SetActive(false);
         }
     }
 
@@ -49,14 +72,28 @@ public class Egg : MonoBehaviour
     {
         if (playerStats.coins >= price && playerStats.PetsInInventory.Count + playerStats.EquippedPets.Count < playerStats.maxPets)
         {
-            playerStats.coins -= price;
-            playerStats.totalOpenEggs++;
+            if (canOpen)
+            {
+                StartCoroutine(EggCooldown());
+                if (!QuestManager.Instance.eggTemplatesDetection.ContainsKey(template))
+                {
+                    QuestManager.Instance.eggTemplatesDetection.Add(template, 1);
+                }
+                else
+                {
+                    QuestManager.Instance.eggTemplatesDetection[template] += 1;
+                }
 
-            PetTemplate newPet = GetPet();
+                playerStats.coins -= price;
+                playerStats.totalOpenEggs++;
 
-            Transform newPetUI = Instantiate(petUISlotTemplate, petInventory);
-            newPetUI.GetComponent<PetInInventory>().NewPet(newPet);
+                PetTemplate newPet = GetPet();
+
+                Transform newPetUI = Instantiate(petUISlotTemplate, petInventory);
+                newPetUI.GetComponent<PetInInventory>().NewPet(newPet);
+            }           
         }
+        else { mainUI.ShowWarning("Nedostatek penìz"); }
     }
 
     private PetTemplate GetPet()
@@ -77,23 +114,40 @@ public class Egg : MonoBehaviour
         return returningPet;
     }
 
-    private void MouseHover()
+    private IEnumerator EggCooldown()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
-        {
-            if (hit.collider.gameObject == gameObject)
-            {
-                openUI.enabled = true;
-            }
-            else
-            {
-                openUI.enabled = false;
-            }
-        }
-        else
-        {
-            openUI.enabled = false;
-        }
+        canOpen = false;
+        playerStats.canMove = false;
+        openUI.gameObject.SetActive(false);
+        playerStats.transform.position = playerLeavePoint.position;
+
+        StartCoroutine(gameManager.SetCamera(cameraPoint, false, 2, false, 0));
+        transform.GetComponent<Animator>().SetBool("opening", true);
+
+        yield return new WaitForSeconds(2);
+        playerStats.canMove = true;
+        transform.GetComponent<Animator>().SetBool("opening", false);
+               
+        canOpen = true;
     }
+
+    //private void MouseHover()
+    //{
+    //    Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+    //    if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+    //    {
+    //        if (hit.collider.gameObject == gameObject)
+    //        {
+    //            openUI.enabled = true;
+    //        }
+    //        else
+    //        {
+    //            openUI.enabled = false;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        openUI.enabled = false;
+    //    }
+    //}
 }

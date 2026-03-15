@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class QuestManager : MonoBehaviour
 {
@@ -15,35 +14,53 @@ public class QuestManager : MonoBehaviour
     [Header("Other")]
     public Transform QuestPanel;
 
-    private PlayerStats playerStats = PlayerStats.Instance;
+    private PlayerStats playerStats;
+
+    [HideInInspector]
+    public Dictionary<Tier, int> tiersDetection;
+    public Dictionary<EggTemplate, int> eggTemplatesDetection;
 
     private int coinsFrameBefore;
     private int eggsFrameBefore;
     private int breakablesFrameBefore;
     private Dictionary<Resource, int> resourcesFrameBefore;
+    private Dictionary <Resource, int> storageFrameBefore;
 
     private int coinsDifference = 0;
     private int eggsDifference = 0;
     private int breakablesDifference = 0;
     private Dictionary<Resource, int> resourcesDifference;
+    private Dictionary<Resource, int> storageDifference;
+
+    bool canClearEggTemplateDetection = true;
+    bool canClearTierDetection = true;
 
     private void Awake()
     {
         Instance = this;
 
-        coinsFrameBefore = playerStats.coins;
-        eggsFrameBefore = playerStats.totalOpenEggs;
-        breakablesFrameBefore = playerStats.totalBreakables;
         resourcesFrameBefore = new Dictionary<Resource, int>();
+        storageFrameBefore = new Dictionary<Resource, int>();
 
         resourcesDifference = new Dictionary<Resource, int>();
+        storageDifference = new Dictionary<Resource, int>();
+        tiersDetection = new Dictionary<Tier, int>();
+        eggTemplatesDetection = new Dictionary<EggTemplate, int>();
     }
     private void Start()
     {
+        playerStats = PlayerStats.Instance;
+        coinsFrameBefore = playerStats.coins;
+        eggsFrameBefore = playerStats.totalOpenEggs;
+        breakablesFrameBefore = playerStats.totalBreakables;
+
         foreach (Resource res in Enum.GetValues(typeof(Resource)))
         {
             resourcesFrameBefore.Add(res, 0);
             resourcesDifference.Add(res, 0);
+
+            storageFrameBefore.Add(res, 0);
+            storageDifference.Add(res, 0);
         }
     }
     private void Update()
@@ -53,6 +70,11 @@ public class QuestManager : MonoBehaviour
         {
             UpdateQuestData(quest);
         }
+
+        if (canClearEggTemplateDetection) { eggTemplatesDetection.Clear(); }
+        if (canClearTierDetection) { tiersDetection.Clear(); }
+        canClearEggTemplateDetection = true;
+        canClearTierDetection = true;     
 
         ResetDifferences();
     }
@@ -65,6 +87,7 @@ public class QuestManager : MonoBehaviour
 
         if (newQuest.Type == QuestType.MultipleQuest)
         {
+            activeQuest.questUI = questUI;
             MultipleQuest multipleQuest = newQuest as MultipleQuest;
             foreach(QuestTemplate questPart in multipleQuest.questsToComplete)
             {
@@ -84,7 +107,11 @@ public class QuestManager : MonoBehaviour
     {
         playerStats.ActiveQuests.Remove(quest);
 
-        Destroy(quest.questUI.parent.gameObject);
+        if (quest.template.Type == QuestType.MultipleQuest)
+        {
+            Destroy(quest.questUI.gameObject);
+        }
+        else { Destroy(quest.questUI.parent.gameObject); }        
     }
 
     private void CreateQuestUI(Transform parentUI, ActiveQuest quest)
@@ -93,18 +120,42 @@ public class QuestManager : MonoBehaviour
         quest.questUI = newQuestPart;
 
         RectTransform progressBar = newQuestPart.Find("ProgressBar").GetComponent<RectTransform>();
-        Text title = newQuestPart.Find("QuestInstruction").GetComponent<Text>();
-        Text progress = newQuestPart.Find("ProgressValue").GetComponent<Text>();
+        TextMeshProUGUI title = newQuestPart.Find("QuestInstruction").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI progress = newQuestPart.Find("ProgressValue").GetComponent<TextMeshProUGUI>();
 
         progressBar.sizeDelta = new Vector2(0, progressBar.sizeDelta.y);
-        if (quest.template.Type != QuestType.GetResources)
+        parentUI.Find("QuestName").GetComponent<TextMeshProUGUI>().text = quest.template.questName;
+        switch (quest.template.Type)
         {
-            title.text = quest.template.Type.ToString();
-        }
-        else
-        {
-            GetResourcesQuest resourceQuest = quest.template as GetResourcesQuest;
-            title.text = "Get " + resourceQuest.requiredResource;
+            case QuestType.GetResources:
+                GetResourcesQuest resourceQuest = quest.template as GetResourcesQuest;
+                title.text = "Nasbírej " + resourceQuest.requiredResource;
+                break;
+            case QuestType.CollectCoins:
+                title.text = "Získej coiny";
+                break;
+            case QuestType.OpenEggs:
+                OpenEggsQuest eggQuest = quest.template as OpenEggsQuest;
+                if (eggQuest.anyEggs)
+                {
+                    title.text = "Otevøi vajíèka";
+                }
+                else
+                {
+                    title.text = "Otevøi " + eggQuest.allowedEggs[0].eggName;
+                }
+                break;
+            case QuestType.DestroyBreakables:
+                DestroyBreakablesQuest breakablesQuest = quest.template as DestroyBreakablesQuest;
+                if (breakablesQuest.anyTiers)
+                {
+                    title.text = "Zniè breakables";
+                }
+                else
+                {
+                    title.text = "Zniè " + breakablesQuest.allowedTiers[0].ToString() + " breakables";
+                }
+                break;
         }
         
         progress.text = "0/" + quest.template.required;
@@ -126,14 +177,46 @@ public class QuestManager : MonoBehaviour
                 updatingQuest.progress += coinsDifference;
                 break;
             case QuestType.OpenEggs:
-                updatingQuest.progress += eggsDifference;
+                OpenEggsQuest eggQuest = questTemplate as OpenEggsQuest;
+                if (eggQuest.anyEggs)
+                {
+                    updatingQuest.progress += eggsDifference;
+                }
+                else
+                {
+                    canClearEggTemplateDetection = false;
+                    foreach (EggTemplate allowedEgg in eggQuest.allowedEggs)
+                    {
+                        if (eggTemplatesDetection.ContainsKey(allowedEgg))
+                        {
+                            updatingQuest.progress += eggTemplatesDetection[allowedEgg];
+                            eggTemplatesDetection.Remove(allowedEgg);
+                        }
+                    }
+                }
                 break;
             case QuestType.DestroyBreakables:
-                updatingQuest.progress += breakablesDifference;
+                DestroyBreakablesQuest breakablesQuest = questTemplate as DestroyBreakablesQuest;
+                if (breakablesQuest.anyTiers)
+                {
+                    updatingQuest.progress += breakablesDifference;
+                }
+                else
+                {
+                    canClearTierDetection = false;
+                    foreach (Tier allowedTier in breakablesQuest.allowedTiers)
+                    {
+                        if (tiersDetection.ContainsKey(allowedTier))
+                        {
+                            updatingQuest.progress += tiersDetection[allowedTier];
+                            tiersDetection.Remove(allowedTier);
+                        }
+                    }
+                }
                 break;
             case QuestType.GetResources:
                 GetResourcesQuest getResourceQuest = questTemplate as GetResourcesQuest;
-                updatingQuest.progress += resourcesDifference[getResourceQuest.requiredResource];
+                updatingQuest.progress += resourcesDifference[getResourceQuest.requiredResource] - storageDifference[getResourceQuest.requiredResource];
                 break;
             case QuestType.MultipleQuest:
                 bool canComplete = true;
@@ -154,23 +237,32 @@ public class QuestManager : MonoBehaviour
             updatingQuest.isCompleted = true;
         }
 
-        UpdateQuestUI(updatingQuest);
+        UpdateQuestUI(updatingQuest); 
     }
     private void UpdateQuestUI(ActiveQuest updatingQuest)
     {
-        Transform questUI = updatingQuest.questUI;
-        RectTransform progressBar = questUI.Find("ProgressBar").GetComponent<RectTransform>();
-        Text progress = questUI.Find("ProgressValue").GetComponent<Text>();
-        string progressText = updatingQuest.progress + "/" + updatingQuest.template.required;
-
-        if (progress.text != progressText)
+        if (updatingQuest.template.Type != QuestType.MultipleQuest)
         {
-            float maxWidth = questUI.Find("ProgressBg").GetComponent<RectTransform>().sizeDelta.x;
-            float barSize = maxWidth * ((float)updatingQuest.progress / (float)updatingQuest.template.required);
-            progressBar.sizeDelta = new Vector2(barSize, progressBar.sizeDelta.y);
+            Transform questUI = updatingQuest.questUI;
+            RectTransform progressBar = questUI.Find("ProgressBar").GetComponent<RectTransform>();
+            TextMeshProUGUI progress = questUI.Find("ProgressValue").GetComponent<TextMeshProUGUI>();
+            string progressText = updatingQuest.progress + "/" + updatingQuest.template.required;
 
-            progress.text = progressText;
-        }      
+            if (progress.text != progressText)
+            {
+                if (!updatingQuest.isCompleted)
+                {
+                    float maxWidth = questUI.Find("ProgressBg").GetComponent<RectTransform>().sizeDelta.x;
+                    float barSize = maxWidth * ((float)updatingQuest.progress / (float)updatingQuest.template.required);
+                    progressBar.sizeDelta = new Vector2(barSize, progressBar.sizeDelta.y);
+                }
+                else
+                {
+                    progressBar.sizeDelta = new Vector2(questUI.Find("ProgressBg").GetComponent<RectTransform>().sizeDelta.x, progressBar.sizeDelta.y);
+                }
+                progress.text = progressText;
+            }
+        }            
     }
     private void ChangeDetection()
     {
@@ -192,18 +284,24 @@ public class QuestManager : MonoBehaviour
             breakablesDifference = playerStats.totalBreakables - breakablesFrameBefore;
         }
 
-        Dictionary<Resource, int> playerResources = playerStats.PlayerResources;
-        foreach (var res in playerResources)
+        foreach (var res in playerStats.PlayerResources)
         {
             int resValue = res.Value;
             int resFrameBeforeValue = resourcesFrameBefore[res.Key];
 
-            if (resValue != resFrameBeforeValue)
+            if (resValue > resFrameBeforeValue)
             {
-                if (resValue > resFrameBeforeValue)
-                {
-                    resourcesDifference[res.Key] = resValue - resFrameBeforeValue;
-                }
+                resourcesDifference[res.Key] = resValue - resFrameBeforeValue;
+            }
+        }
+        foreach (var resStorage in playerStats.StorageResources)
+        {
+            int resValue = resStorage.Value;
+            int storageFrameBeforeValue = storageFrameBefore[resStorage.Key];
+
+            if (resValue < storageFrameBeforeValue)
+            {
+                storageDifference[resStorage.Key] = storageFrameBeforeValue - resValue;
             }
         }
 
@@ -212,7 +310,8 @@ public class QuestManager : MonoBehaviour
         breakablesFrameBefore = playerStats.totalBreakables;
         foreach (var res in resourcesFrameBefore.Keys.ToList())
         {
-            resourcesFrameBefore[res] = playerResources[res];
+            resourcesFrameBefore[res] = playerStats.PlayerResources[res];
+            storageFrameBefore[res] = playerStats.StorageResources[res];
         }
     }
     private void ResetDifferences()
@@ -223,6 +322,7 @@ public class QuestManager : MonoBehaviour
         foreach (var resDiff in resourcesDifference.Keys.ToList())
         {
             resourcesDifference[resDiff] = 0;
+            storageDifference[resDiff] = 0;
         }
     }
 }

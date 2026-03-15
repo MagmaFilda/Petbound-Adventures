@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7bf2ae94939b9d49ad9eb8f4434232d, type: 3}
+  m_Name: BobQuest2
+  m_EditorClassIdentifier: 
+  questName: "T\u011B\u017Eebn\xED s\xEDla"
+  required: 3
+  reward: 50
+  startOfQuest:
+  - "Ahoj :). Vid\xEDm, \u017Ee teda asi chce\u0161 v\u011Bd\u011Bt jak rychleji
+    z\xEDsk\xE1vat suroviny."
+  - "Tam vzadu jsou vaj\xED\u010Dka. Ka\u017Ed\xE9 m\xE1 svou hodnotu, to tam uvid\xED\u0161.
+    Za tu ho m\u016F\u017Ee\u0161 otev\u0159\xEDt a z\xEDskat nov\xE9ho peta!"
+  - "V ka\u017Edem vaj\xED\u010Dku jsou tady 3 peti. Peti maj\xED r\u016Fzn\xE9 hodnoty,
+    ale o tom n\u011Bkdy pozd\u011Bji."
+  - "I kdy\u017E ti padne stejn\xFD pet, tak ale m\u016F\u017Ee b\xFDt hor\u0161\xED,
+    ale taky lep\u0161\xED ne\u017E tv\u016Fj p\u0159edchoz\xED. Ka\u017Ed\xFD m\xE1
+    toti\u017E rozmez\xED s\xEDly."
+  - "Otev\u0159i 3 vaj\xED\u010Dka, na 2 u\u017E m\xE1\u0161 te\u010F a na to posledn\xED
+    ur\u010Dit\u011B rychle na\u0161et\u0159\xED\u0161. Hodn\u011B \u0161t\u011Bst\xED
+    :)."
+  endOfQuest:
+  - "Skv\u011Bl\xE1 pr\xE1ce. Te\u010F u\u017E jsi minim\xE1ln\u011B 3x siln\u011Bj\u0161\xED
+    ne\u017E si byl a to je super zpr\xE1va ne ?"
+  - "Pokud chce\u0161 o tomhle sv\u011Bt\u011B v\u011Bd\u011Bt v\xEDce nebo bys cht\u011Bl
+    jen dal\u0161\xED \xFAkol, tak za mnou ur\u010Dit\u011B p\u0159ij\u010F :)."
+  anyEggs: 1
+  allowedEggs: []

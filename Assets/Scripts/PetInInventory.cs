@@ -1,14 +1,17 @@
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PetInInventory : MonoBehaviour
 {
-    public Text petNameTxt;
-    public Text damageTxt;
+    public TextMeshProUGUI petNameTxt;
+    public TextMeshProUGUI damageTxt;
+    public Image petImgPanel;
+    public Image rarityImg;
     public Transform UIEquipPetSlotPrefab;
 
     private PlayerStats playerStats = PlayerStats.Instance;
+    private MainUI mainUI;
 
     private PetTemplate petTemplate;
     public string petName { get; private set; }
@@ -54,7 +57,8 @@ public class PetInInventory : MonoBehaviour
 
         if (playerStats.EquippedPets.Count < playerStats.maxEquippedPets)
         {
-            Transform newPetModel = Instantiate(petTemplate.petPrefab);
+            Transform player = GameObject.FindGameObjectWithTag("Player").transform;
+            Transform newPetModel = Instantiate(petTemplate.petPrefab, player.position, player.rotation);
             newPetModel.GetComponent<Pet>().SetDamage(damage);
             playerStats.EquippedPets.Add(newPetModel);
 
@@ -86,12 +90,18 @@ public class PetInInventory : MonoBehaviour
         Transform mainUI = transform.parent.parent.parent.parent.parent;
         mainUI.GetComponent<MainUI>().SortInventoryByDamage();
 
-        mainUI.Find("Inventory").Find("MaxPets").GetComponent<Text>().text = (playerStats.PetsInInventory.Count+playerStats.EquippedPets.Count) + "/" + playerStats.maxPets;
+        mainUI.Find("Inventory").Find("MaxPets").GetComponent<TextMeshProUGUI>().text = (playerStats.PetsInInventory.Count+playerStats.EquippedPets.Count) + "/" + playerStats.maxPets;
     }
 
     private void SetSlotUI()
     {
         petNameTxt.text = petName;
         damageTxt.text = damage.ToString();
+
+        mainUI = FindFirstObjectByType<MainUI>();
+        string path = "PetIcons/" + petName;
+        mainUI.SetImage(petImgPanel, path);
+
+        rarityImg.color = mainUI.SetRarityColor(rarity);
     }
 }

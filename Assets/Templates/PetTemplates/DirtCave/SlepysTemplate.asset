@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13656497c04dad84fb16b61cf5cba69b, type: 3}
+  m_Name: SlepysTemplate
+  m_EditorClassIdentifier: 
+  petName: Slepys
+  rarity: 1
+  speed: 8
+  minDamage: 19
+  maxDamage: 26
+  petPrefab: {fileID: 2576916282060329373, guid: 71222baab42dca84ca7970e3354cf30a, type: 3}

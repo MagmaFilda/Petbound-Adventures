@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de856383fe6fe3641a52444d409b8355, type: 3}
   m_Name: DC5Template
   m_EditorClassIdentifier: 
-  location: 0
   tier: 4
-  recources: 0000000001000000
-  health: 500
-  rewards: 5000000003000000
+  recources: 0100000000000000
+  health: 1000
+  rewards: 0300000050000000

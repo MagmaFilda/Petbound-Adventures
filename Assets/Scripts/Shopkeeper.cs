@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -8,69 +9,95 @@ public class Shopkeeper : MonoBehaviour
     public ShopTemplate template;
 
     public Transform mainUI;
-    public Canvas openUI;
+    public Transform openUI;
     public Transform shopkeeperUI;
     public Transform hitbox;
+    public TextMeshProUGUI bonusPartTemplate;
 
     public Transform cameraPoints;
 
-    private Camera shopCamera;
     private Transform interactPanel;
     private int itemNum = 0;
 
     private List<Transform> attachObjects;
 
-    private PlayerStats playerStats = PlayerStats.Instance;
-
-    public void SetNormalCamera()
-    {
-        shopCamera.enabled = false;
-    }
+    private PlayerStats playerStats;
+    private GameManager gameManager;
+    private MainUI uiScript;
 
     private void Start()
     {
-        shopCamera = cameraPoints.Find("ShopCamera").GetComponent<Camera>();
+        playerStats = PlayerStats.Instance;
+        gameManager = GameManager.Instance;
+        uiScript = mainUI.GetComponent<MainUI>();
+
         interactPanel = shopkeeperUI.Find("InteractPanel");
         attachObjects = new List<Transform>();
     }
     private void Update()
     {
-        MouseHover();
+        //MouseHover();
 
-        if (openUI.enabled && Keyboard.current.eKey.wasPressedThisFrame)
+        if (openUI.gameObject.activeSelf && Keyboard.current.eKey.wasPressedThisFrame && playerStats.canShowInteract)
         {
-            MainUI uiScript = mainUI.GetComponent<MainUI>();
+            
             uiScript.OpenPanel(shopkeeperUI);
+            openUI.gameObject.SetActive(false);
 
             itemNum = 0;
-            shopCamera.transform.position = cameraPoints.Find(itemNum.ToString()).position;
-            shopCamera.transform.rotation = cameraPoints.Find(itemNum.ToString()).rotation;
-            shopCamera.enabled = true;
+            StartCoroutine(gameManager.SetCamera(cameraPoints.Find(itemNum.ToString()), true, 1, false, 0));
 
             SetItemUI();
         }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            openUI.gameObject.SetActive(true);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            openUI.gameObject.SetActive(false);
+        }
+    }
+
+    public void SetNormalCamera() //u exit buttonu v shopkeeper UI
+    {
+        StartCoroutine(gameManager.SetCamera(cameraPoints, true, 0, false, 0));
     }
 
     private void SetItemUI()
     {
         ItemTemplate itemTemplate = template.purchasableItems[itemNum];
 
-        interactPanel.Find("ItemName").GetComponent<Text>().text = itemTemplate.typeOfItem.ToString();
-        interactPanel.Find("PriceText").GetComponent<Text>().text = itemTemplate.price.ToString();
+        interactPanel.Find("ItemName").GetComponent<TextMeshProUGUI>().text = itemTemplate.typeOfItem.ToString();
+        interactPanel.Find("PriceText").GetComponent<TextMeshProUGUI>().text = itemTemplate.price.ToString();
 
         Button btn = interactPanel.Find("BuyBtn").GetComponent<Button>();
-        Text btnTxt = btn.transform.Find("Text").GetComponent<Text>();
+        TextMeshProUGUI btnTxt = btn.transform.Find("Text").GetComponent<TextMeshProUGUI>();
         btn.onClick.RemoveAllListeners();
+
+        Transform bonusPanel = shopkeeperUI.Find("BonusStatsPanel");
+        uiScript.ClearAllChilds(bonusPanel);
+        for (int i = 0; i < itemTemplate.upgrades.Length; i++)
+        {
+            TextMeshProUGUI bonusStat = Instantiate(bonusPartTemplate, bonusPanel);
+            bonusStat.text = itemTemplate.upgrades[i] + " +" + itemTemplate.upgradeValues[i];
+        }
 
         if (itemTemplate.typeOfItem == ItemType.Upgrade)
         {
             if (playerStats.BoughtUpgrades.ContainsKey(itemTemplate) && playerStats.BoughtUpgrades[itemTemplate] == itemTemplate.rebuyable)
             {
-                btnTxt.text = "Maxed";
+                btnTxt.text = "Maximum";
             }
             else
             {
-                btnTxt.text = "BUY";
+                btnTxt.text = "KOUPIT";
                 btn.onClick.AddListener(() => BuyItem(itemTemplate));
             }
         }
@@ -78,17 +105,17 @@ public class Shopkeeper : MonoBehaviour
         {
             if (playerStats.EquippedItems.Contains(itemTemplate))
             {
-                btnTxt.text = "Equipped";
+                btnTxt.text = "Nasazeno";
                 btn.onClick.AddListener(() => InteractItem(itemTemplate, false));
             }
             else if (playerStats.OwnedItems.Contains(itemTemplate))
             {
-                btnTxt.text = "Owned";
+                btnTxt.text = "Vlastnìno";
                 btn.onClick.AddListener(() => InteractItem(itemTemplate, true));
             }
             else
             {
-                btnTxt.text = "BUY";
+                btnTxt.text = "KOUPIT";
                 btn.onClick.AddListener(() => BuyItem(itemTemplate));
             }
         }
@@ -122,6 +149,7 @@ public class Shopkeeper : MonoBehaviour
                 else
                 {
                     playerStats.BoughtUpgrades[item] += 1;
+                    UpdateStat(item.upgrades[0], item.upgradeValues[0]);
                 }
             }
             else
@@ -148,7 +176,7 @@ public class Shopkeeper : MonoBehaviour
                 attachObjects.Add(character.Find("TorsoJoint").Find("Head").Find("HelmetPoint"));
                 break;
             case ItemType.Backpack:
-                attachObjects.Add(character.Find("TorsoJoint").Find("Torso").Find("BackpackPoint"));
+                attachObjects.Add(character.Find("TorsoJoint").Find("BackpackPoint"));
                 break;
         }
 
@@ -207,9 +235,7 @@ public class Shopkeeper : MonoBehaviour
     private void ChangeItem(int change)
     {
         itemNum += change;
-
-        shopCamera.transform.position = cameraPoints.Find(itemNum.ToString()).position;
-        shopCamera.transform.rotation = cameraPoints.Find(itemNum.ToString()).rotation;
+        StartCoroutine(gameManager.SetCamera(cameraPoints.Find(itemNum.ToString()), true, 1, true, 1));
 
         SetItemUI();
     }
@@ -231,23 +257,23 @@ public class Shopkeeper : MonoBehaviour
                 break;
         }
     }
-    private void MouseHover()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
-        {
-            if (hit.collider.gameObject == hitbox.gameObject)
-            {
-                openUI.enabled = true;
-            }
-            else
-            {
-                openUI.enabled = false;
-            }
-        }
-        else
-        {
-            openUI.enabled = false;
-        }
-    }
+    //private void MouseHover()
+    //{
+    //    Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+    //    if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+    //    {
+    //        if (hit.collider.gameObject == hitbox.gameObject)
+    //        {
+    //            openUI.enabled = true;
+    //        }
+    //        else
+    //        {
+    //            openUI.enabled = false;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        openUI.enabled = false;
+    //    }
+    //}
 }

@@ -1,13 +1,25 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Trader : MonoBehaviour
 {
-    public Canvas openUI;
+    [Header("MainUI")]
     public Transform mainUI;
-    public Transform traderUI;
+
+    [Header("Character")]
+    public Transform openUI;   
     public Transform hitbox;
+
+    [Header("TraderUI")]
+    public Transform traderUI;
+    public Transform offerContainer;
+    public Transform OfferTemplate;
+
+    private MainUI uiScript;
+    private PlayerStats playerStats;
 
     private Dictionary<Resource, int> tradeValues = new Dictionary<Resource, int>();
 
@@ -15,35 +27,106 @@ public class Trader : MonoBehaviour
     {
         tradeValues.Add(Resource.Dirt, 1);
         tradeValues.Add(Resource.Grass, 2);
+
+        uiScript = mainUI.GetComponent<MainUI>();
+    }
+    private void Start()
+    {
+        playerStats = PlayerStats.Instance;
     }
     private void Update()
     {
-        MouseHover();
+        //MouseHover();
 
-        if (openUI.enabled && Keyboard.current.eKey.wasPressedThisFrame)
+        if (openUI.gameObject.activeSelf && Keyboard.current.eKey.wasPressedThisFrame && playerStats.canShowInteract)
         {
-            MainUI uiScript = mainUI.GetComponent<MainUI>();
             uiScript.OpenPanel(traderUI);
-            uiScript.SetOffers(tradeValues);
+            SetOffers(tradeValues);
         }
     }
-    private void MouseHover()
+    private void OnTriggerEnter(Collider other)
     {
-        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+        if (other.CompareTag("Player"))
         {
-            if (hit.collider.gameObject == hitbox.gameObject)
+            openUI.gameObject.SetActive(true);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            openUI.gameObject.SetActive(false);
+        }
+    }
+
+    private void SetOffers(Dictionary<Resource, int> values)
+    {
+        uiScript.ClearAllChilds(offerContainer);
+
+        foreach (Resource offerName in playerStats.PlayerResources.Keys)
+        {
+            if (playerStats.PlayerResources[offerName] > 0)
             {
-                openUI.enabled = true;
+                Transform newOffer = Instantiate(OfferTemplate, offerContainer);
+                newOffer.Find("ResourceName").GetComponent<TextMeshProUGUI>().text = offerName.ToString();
+                newOffer.Find("SellingPanel").Find("MaxAmountText").GetComponent<TextMeshProUGUI>().text = "/" + playerStats.PlayerResources[offerName].ToString();
+
+                Image img = newOffer.Find("Image").GetComponent<Image>();
+                string path = "ResourceIcons/" + offerName;
+                uiScript.SetImage(img, path);
+
+                Button sellBtn = newOffer.Find("SellBtn").GetComponent<Button>();
+                Button maxBtn = newOffer.Find("MaxBtn").GetComponent<Button>();
+                TMP_InputField inputAmount = newOffer.Find("SellingPanel").Find("SellAmount").GetComponent<TMP_InputField>();
+                inputAmount.transform.Find("Info").GetComponent<Text>().text = offerName.ToString();
+
+                sellBtn.onClick.AddListener(() => SellOffer(offerName, inputAmount, values));
+                maxBtn.onClick.AddListener(() => uiScript.MaxResources(inputAmount.transform));
+            }
+        }
+    }
+
+    private void SellOffer(Resource resourceName, TMP_InputField inputAmount, Dictionary<Resource, int> values)
+    {
+        int sellAmount;
+        if(int.TryParse(inputAmount.text, out sellAmount))
+        {
+            if (sellAmount <= playerStats.PlayerResources[resourceName] && sellAmount >= 0)
+            {
+                playerStats.PlayerResources[resourceName] -= sellAmount;
+                playerStats.coins += sellAmount * values[resourceName];
+                SetOffers(values);
             }
             else
             {
-                openUI.enabled = false;
+                inputAmount.text = string.Empty;
+                uiScript.ShowWarning("Špatné èíslo");
             }
         }
         else
         {
-            openUI.enabled = false;
+            inputAmount.text = string.Empty;
+            uiScript.ShowWarning("Špatný datový typ");
         }
     }
+
+    //private void MouseHover()
+    //{
+    //    Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+    //    if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+    //    {
+    //        if (hit.collider.gameObject == hitbox.gameObject)
+    //        {
+    //            openUI.enabled = true;
+    //        }
+    //        else
+    //        {
+    //            openUI.enabled = false;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        openUI.enabled = false;
+    //    }
+    //}
 }

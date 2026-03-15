@@ -5,28 +5,31 @@ public class Pet : MonoBehaviour
 {
     public PetTemplate template;
     public Rarity rarity { get; private set; }
+    public float speed { get; private set; }
     public int damage { get; private set; }
 
-    public float speed = 0.003f;
+    [HideInInspector]
     public string mode = "Follow";
+    [HideInInspector]
     public Transform petEquipSlot;
 
     private bool canDamage = true;
     private Transform breakableTarget;
 
-    private Transform Player;
-    private Transform PetPositions;
+    private Transform player;
+    private Transform petPositions;
     private Transform[] positions;
 
     private void Awake()
     {
         rarity = template.rarity;
+        speed = template.speed/2;
     }  
     private void Start()
     {
-        Player = GameObject.FindGameObjectWithTag("Player").transform;
-        PetPositions = Player.Find("EquippedPetSlots");
-        positions = PetPositions.GetComponentsInChildren<Transform>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        petPositions = player.Find("EquippedPetSlots");
+        positions = petPositions.GetComponentsInChildren<Transform>();
         
         FindFreeSlot();
     }
@@ -55,16 +58,18 @@ public class Pet : MonoBehaviour
 
     private void FollowPlayer()
     {
-        GetToPositon(transform, petEquipSlot.position);
+        GetToPositon(petEquipSlot.position, player.rotation);
     }
     private void AttackBreakable()
     {
         if (breakableTarget != null)
         {
             Breakable breakable = breakableTarget.GetComponent<Breakable>();
+            if (!breakableTarget.Find("HealthCanvas").gameObject.activeSelf) { breakable.ShowHealthBar(); }
+
             if (transform.position != breakableTarget.position)
             {
-                GetToPositon(transform, breakableTarget.position);
+                GetToPositon(breakableTarget.position, transform.rotation);
             }
             else
             {
@@ -87,7 +92,7 @@ public class Pet : MonoBehaviour
     {
         foreach (Transform slot in positions)
         {
-            if (slot == PetPositions) continue;
+            if (slot == petPositions) continue;
             if (!slot.CompareTag("Equipped"))
             {
                 petEquipSlot = slot;
@@ -96,9 +101,10 @@ public class Pet : MonoBehaviour
             }
         }
     }
-    private void GetToPositon(Transform pet, Vector3 followingPosition)
+    private void GetToPositon(Vector3 followingPosition, Quaternion followingRotation)
     {
-        pet.position = Vector3.MoveTowards(pet.position, followingPosition, speed);
+        transform.position = Vector3.MoveTowards(transform.position, followingPosition, speed * Time.deltaTime);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, followingRotation, 1);
     }
 
     private IEnumerator<WaitForSeconds> waitToDamage()

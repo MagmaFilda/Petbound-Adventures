@@ -16,6 +16,6 @@ MonoBehaviour:
   upgrades: 03000000
   upgradeValues:
   - 0.5
-  price: 25
+  price: 200
   rebuyable: 1
-  item: {fileID: 885137119186421959, guid: 7cd5accc8c7cc6d46b7231d3b673bd85, type: 3}
+  item: {fileID: 3361220932705219892, guid: 50fdea59479d4f94da1bce9e0a8fae36, type: 3}

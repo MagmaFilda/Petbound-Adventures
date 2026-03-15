@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6fd65e3f274b04184f4213a9700162, type: 3}
+  m_Name: BobQuest5
+  m_EditorClassIdentifier: 
+  questName: 
+  required: 0
+  reward: 500
+  startOfQuest:
+  - "V\xEDd\xEDm, \u017Ee t\u011B br\xE1n\xFD zaj\xEDmaj\xED, ka\u017Edopadn\u011B
+    znovu t\u011B zdrav\xEDm."
+  - "Tyhle br\xE1ny vedou do dal\u0161\xEDch lokac\xED. Ta d\xE1l ode mne do na\u0161\xED
+    vesnice a ta bli\u017E\u0161\xED na planiny."
+  - "Kl\xED\u010D k vesnici ti mohu d\xE1t. Ale u\u017E to nebude tak jednoduch\xE9
+    jako do te\u010F. Tohle byla jen rozeh\u0159\xEDva\u010Dka."
+  - "Pokud spln\xED\u0161 m\xE9 dal\u0161\xED 3 \xFAkoly, ten kl\xED\u010D ti d\xE1m
+    ;). P\u0159\xEDstup k na\u0161\xED vesnici u\u017E ned\xE1m ka\u017Ed\xE9mu,
+    tak\u017Ee se bude\u0161 muset v\xEDce sna\u017Eit."
+  - "Hlavn\u011B to tam je v\u0161e o mnohem te\u017E\u0161\xED, tak\u017Ee t\u011B
+    tam nem\u016F\u017Eu pustit v tomhle stavu."
+  - "Tak\u017Ee to mo\u017En\xE1 ber sp\xED\u0161e jako takovou p\u0159\xEDpravu
+    na tu dal\u0161\xED lokaci a dal\u0161\xED \xFAkoly obecn\u011B."
+  - "Chci aby jsi otev\u0159el 25 vaj\xED\u010Dek z toho 3 ty kamenn\xE9. Z\xEDskal
+    1000 hl\xEDny a dal\u0161\xEDch 25 tr\xE1vy."
+  - "To nen\xED v\u0161e k tomu je\u0161t\u011B 100 tier1 breakables a 10 tier4 breakables."
+  - "Pamatuj tohle je jen 1. z t\u011Bch 3. Hodn\u011B \u0161t\u011Bst\xED!"
+  endOfQuest:
+  - "Wow... Up\u0159\xEDmn\u011B ne ka\u017Ed\xFD u\u017E tohle zvl\xE1dne. Vypad\xE1
+    to, \u017Ee nejsi stejn\xFD jako ostatn\xED."
+  - "Ale, tak po\u0159\xE1d je to jen jedna t\u0159etina. A\u017E bude\u0161 p\u0159ipraven
+    na dal\u0161\xED \xFAkol p\u0159ij\u010F za mn..."
+  - "Malem bych zapomn\u011Bl je\u0161t\u011B tady tv\xE1 odm\u011Bna 500 coin\u016F
+    za snahu. Tak tedy n\u011Bkdy p\u0159\xED\u0161t\u011B."
+  questsToComplete:
+  - {fileID: 11400000, guid: feca5ed4564ce1c49bfecf9fec89488c, type: 2}
+  - {fileID: 11400000, guid: 0ceeed82596a7a24a9f2c7b0994b6c9b, type: 2}
+  - {fileID: 11400000, guid: 0911e2f0c39dcd34ea3a063e1fbedc35, type: 2}
+  - {fileID: 11400000, guid: 0f6ba16107cbbf344908fe4ca4076829, type: 2}
+  - {fileID: 11400000, guid: 9843960145c8e184ba263b1b21803933, type: 2}
+  - {fileID: 11400000, guid: 162d705a44007514c98a0a062df0e5b1, type: 2}

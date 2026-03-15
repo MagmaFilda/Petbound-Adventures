@@ -16,5 +16,6 @@ public class ActiveQuest
         progress = 0;
         isCompleted = false;
         if (template.Type != QuestType.MultipleQuest) { otherActiveQuest = null; }
+        else { otherActiveQuest = new List<ActiveQuest>(); }
     }
 }

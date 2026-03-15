@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6fd65e3f274b04184f4213a9700162, type: 3}
+  m_Name: BobQuest3
+  m_EditorClassIdentifier: 
+  questName: Tiers of breakables
+  required: 0
+  reward: 100
+  startOfQuest:
+  - "Ahoj! Asi jsi si u\u017E v\u0161imnul, \u017Ee tu je v\xEDce druh\u016F breakables.
+    Ka\u017Ed\xFD je jinak siln\xFD a d\xE1v\xE1 jin\xE9 mno\u017Esv\xED surovin."
+  - "Cht\u011Bl bych, aby si zni\u010Dil ur\u010Dit\xE9 tiery t\u011Bchto breakables
+    a nau\u010Dil se t\xEDm kolik z\xEDsk\xE1v\xE1\u0161 surovin."
+  - "K tomu, tak trochu symbolicky, aby jsi z\xEDskal i n\u011Bjakou tu hl\xEDnu
+    nav\xEDc."
+  - "P\u0159esn\u011Bji 250 hl\xEDny, 10 tier1, 20 tier2 a 5 tier3 breakables. Hodn\u011B
+    \u0161t\u011Bst\xED."
+  endOfQuest:
+  - "V\xFDborn\u011B. Asi jsi si v\u0161iml, \u017Ee m\xE1\u0161 limit kolik surovin
+    u sebe unese\u0161."
+  - "Proto jsi po\u0159\xE1d musel hl\xEDnu p\u0159\xEDpadn\u011B jinou surovinu
+    prod\xE1vat."
+  - "Na\u0161t\u011Bst\xED m\xE1m pro tebe \u0159e\u0161en\xED. Tohle je storage
+    do, kter\xE9 si m\u016F\u017Ee\u0161 p\u0159ebyte\u010Dn\xE9 suroviny ukl\xE1dat."
+  - "D\u016Fvod pro\u010D je jen na tob\u011B. Jen si dej pozor i storage m\xE1 svou
+    kapacitu :)."
+  - "K t\xE9 storage ti je\u0161t\u011B d\xE1m, alespo\u0148 dal\u0161\xED men\u0161\xED
+    odm\u011Bnu v hodnot\u011B 100 coin\u016F."
+  - "Pokud bys cht\u011Bl dal\u0161\xED \xFAkol, neboj se p\u0159ij\xEDt za mnou."
+  questsToComplete:
+  - {fileID: 11400000, guid: 6af89c96f48b0ec4dbdfe6ae00094b4c, type: 2}
+  - {fileID: 11400000, guid: 3c6ab545f637d4544b98081b3356afc4, type: 2}
+  - {fileID: 11400000, guid: b26eb1fa4bfe29146a9a1353387a6f0d, type: 2}
+  - {fileID: 11400000, guid: 8f92ad581a848de4fadb59862e62989c, type: 2}

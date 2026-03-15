@@ -1,60 +1,64 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine.UI;
-using Unity.VisualScripting;
-using Unity.Mathematics;
+using TMPro;
 
 public class MainUI : MonoBehaviour
 {
     [Header("MainPanels")]
     public Transform btns;
-    public Transform coinsPanel;
+    public Transform coinsText;
     public Transform questPanel;
-    public Transform conversationPanel;
+    public Transform conversationText;
+    public Transform warningPanel;
     [Header("ResourceInv")]
     public Transform resourceContainer;
     public Transform ResourceUITemplate;
-    [Header("Trader")]
-    public Transform offerContainer;
-    public Transform OfferTemplate;
-    [Header("Shopkeeper")]
-    public Transform itemContainer;
-    public Transform itemUITemplate;
-    public Transform bonusTemplate;
+    public Transform resourceInv;
+    [Header("TransferPanel")]
+    public Transform transferPanel;
 
-    private PlayerStats playerStats = PlayerStats.Instance;
+    private PlayerStats playerStats;
+    private GameManager gameManager;
 
     private void Start()
     {
-        UpdateCoins();
+        playerStats = PlayerStats.Instance;
+        gameManager = GameManager.Instance;
+        if (playerStats != null) { UpdateCoins(); }  
     }
 
     //Main Panels
     public void OpenPanel(Transform openingPanel)
     {
+        playerStats.canShowInteract = false;
+
         if (openingPanel == transform.Find("Inventory"))
         {
-            transform.Find("Inventory").Find("MaxPets").GetComponent<Text>().text = (playerStats.PetsInInventory.Count + playerStats.EquippedPets.Count) + "/" + playerStats.maxPets;
+            transform.Find("Inventory").Find("MaxPets").GetComponent<TextMeshProUGUI>().text = (playerStats.PetsInInventory.Count + playerStats.EquippedPets.Count) + "/" + playerStats.maxPets;
         }
 
         btns.gameObject.SetActive(false);
-        coinsPanel.parent.gameObject.SetActive(false);
+        coinsText.parent.gameObject.SetActive(false);
         questPanel.gameObject.SetActive(false);
         openingPanel.gameObject.SetActive(true);
     }
     public void ClosePanel(Transform closingPanel)
     {
+        playerStats.canShowInteract = true;
+
         closingPanel.gameObject.SetActive(false);
         btns.gameObject.SetActive(true);
-        coinsPanel.parent.gameObject.SetActive(true);
+        coinsText.parent.gameObject.SetActive(true);
         questPanel.gameObject.SetActive(true);
 
         SetDeleteMode(false); // vždy když se vypne pet inv -> tak, aby se automaticky vypnul deleteMode
     }
     public void UpdateCoins()
     {
-        Text coinsText = coinsPanel.GetComponent<Text>();
-        coinsText.text = "Coins: " + playerStats.coins.ToString();
+        TextMeshProUGUI coinTxt = coinsText.GetComponent<TextMeshProUGUI>();
+        coinTxt.text = "Coins: " + playerStats.coins.ToString();
     }
 
     // Inventories
@@ -80,18 +84,37 @@ public class MainUI : MonoBehaviour
             playerStats.deleteMode = state;
         }
 
-        Text btnTxt = this.transform.Find("Inventory").Find("DeleteBtn").Find("Text").GetComponent<Text>();
+        TextMeshProUGUI btnTxt = this.transform.Find("Inventory").Find("DeleteBtn").Find("Text").GetComponent<TextMeshProUGUI>();
         if (playerStats.deleteMode)
         {
-            btnTxt.text = "DELETING";
+            btnTxt.text = "MAZÁNÍ";
         }
         else
         {
-            btnTxt.text = "Delete Pets";
+            btnTxt.text = "Smazat pety";
         }
+    }
+    public Color SetRarityColor(Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Uncommon:
+                return Color.darkGreen;
+            case Rarity.Rare:
+                return Color.aquamarine;
+            case Rarity.Epic:
+                return Color.purple;
+            case Rarity.Legendary:
+                return Color.orange;
+            default:
+                return Color.gray;
+        } 
     }
     public void SetResourceInv()
     {
+        resourceInv.GetComponent<RectTransform>().localScale = new Vector2(1, 1);
+        resourceInv.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+        resourceInv.Find("ExitBtn").gameObject.SetActive(true);
         ClearAllChilds(resourceContainer);
 
         foreach (Resource res in playerStats.PlayerResources.Keys)
@@ -99,55 +122,132 @@ public class MainUI : MonoBehaviour
             if (playerStats.PlayerResources[res] > 0)
             {
                 Transform newResourceUI = Instantiate(ResourceUITemplate, resourceContainer);
-                newResourceUI.Find("ResourceName").GetComponent<Text>().text = res.ToString();
-                newResourceUI.Find("Amount").GetComponent<Text>().text = playerStats.PlayerResources[res].ToString();
+                newResourceUI.Find("ResourceName").GetComponent<TextMeshProUGUI>().text = res.ToString();
+                newResourceUI.Find("Amount").GetComponent<TextMeshProUGUI>().text = playerStats.PlayerResources[res].ToString();
+
+                string path = "ResourceIcons/" + res.ToString();
+                SetImage(newResourceUI.Find("Image").GetComponent<Image>(), path);
             }             
         }
     }
-
-    // Trader
-    public void SetOffers(Dictionary<Resource, int> values)
+    
+    public void MaxResources(Transform inputTransform)
     {
-        ClearAllChilds(offerContainer);
+        TextMeshProUGUI fromText = transferPanel.Find("From").GetComponent<TextMeshProUGUI>();
+        TMP_InputField inputField = inputTransform.GetComponent<TMP_InputField>();
+        Dictionary<Resource, int> fromDictionary = playerStats.PlayerResources;
 
-        foreach (Resource offerName in playerStats.PlayerResources.Keys)
+        if (fromText.text == "Storage" && inputTransform.name == "InputFrom") // !NEPREJMENOVAVAT INPUTFIELD U TRANSFERU!
         {
-            if (playerStats.PlayerResources[offerName] > 0)
-            {
-                Transform newOffer = Instantiate(OfferTemplate, offerContainer);
-                newOffer.Find("ResourceName").GetComponent<Text>().text = offerName.ToString();
-                newOffer.Find("SellingPanel").Find("MaxAmountText").GetComponent<Text>().text = "/" + playerStats.PlayerResources[offerName].ToString();
-
-                Button sellBtn = newOffer.Find("SellBtn").GetComponent<Button>();
-                Transform amountTransform = newOffer.Find("SellingPanel").Find("SellAmount").Find("Text");
-                sellBtn.onClick.AddListener(() => SellOffer(offerName, amountTransform, values));
-            }           
+            fromDictionary = playerStats.StorageResources;
         }
+ 
+        Resource maxRes = GetResourceFromString(inputField.transform.Find("Info").GetComponent<Text>().text, fromDictionary);
+        inputField.text = fromDictionary[maxRes].ToString();
+
+        fromDictionary = null;
     }
-    private void SellOffer(Resource resourceName, Transform amountTransform, Dictionary<Resource, int> values)
+    public void TransferResources()
     {
-        int sellAmount = int.Parse(amountTransform.GetComponent<Text>().text);
-        if (sellAmount <= playerStats.PlayerResources[resourceName])
+        TextMeshProUGUI fromText = transferPanel.Find("From").GetComponent<TextMeshProUGUI>();
+        TMP_InputField inputField = transferPanel.Find("InputFrom").GetComponent<TMP_InputField>();
+        Dictionary<Resource, int> fromDictionary;
+        Dictionary<Resource, int> toDictionary;
+
+        if (fromText.text == "Inventory")
         {
-            playerStats.PlayerResources[resourceName] -= sellAmount;
-            playerStats.coins += sellAmount * values[resourceName];
-            SetOffers(values);
+            fromDictionary = playerStats.PlayerResources;
+            toDictionary = playerStats.StorageResources;
         }
+        else
+        {
+            fromDictionary = playerStats.StorageResources;
+            toDictionary = playerStats.PlayerResources;
+        }
+
+        int playerResourceCount = 0;
+        int playerStorageCount = 0;
+        foreach (var resName in playerStats.PlayerResources)
+        {
+            playerResourceCount += playerStats.PlayerResources[resName.Key];
+            playerStorageCount += playerStats.StorageResources[resName.Key];
+        }
+
+        Resource transferingRes = GetResourceFromString(inputField.transform.Find("Info").GetComponent<Text>().text, fromDictionary);
+        int transferValue;
+        if (int.TryParse(inputField.text, out transferValue))
+        {
+            if (transferValue <= fromDictionary[transferingRes] && transferValue >= 0)
+            {
+                if ((fromText.text == "Storage" && playerResourceCount + transferValue <= playerStats.resourceCapacity) || (fromText.text == "Inventory" && playerStorageCount + transferValue <= playerStats.storageCapacity))
+                {
+                    fromDictionary[transferingRes] -= transferValue;
+                    toDictionary[transferingRes] += transferValue;
+                    ClosePanel(transferPanel);
+                    inputField.text = string.Empty;
+                }
+                else 
+                { 
+                    inputField.text = string.Empty;
+                    ShowWarning("Nedostatek místa v požadovaném inventáøi");
+                }
+
+            }
+            else 
+            { 
+                inputField.text = string.Empty;
+                ShowWarning("Špatné èíslo");
+            }
+        }
+        else
+        {
+            inputField.text = string.Empty;
+            ShowWarning("Špatný datový typ");
+        }
+        
+
+        fromDictionary = null;
+        toDictionary = null;
     }
 
     //Other
     public void Conversation(bool status, string textInConversation)
     {
-        conversationPanel.parent.gameObject.SetActive(status);
+        conversationText.parent.gameObject.SetActive(status);
 
-        conversationPanel.GetComponent<Text>().text = textInConversation;
+        conversationText.GetComponent<TextMeshProUGUI>().text = textInConversation;
     }
+    public void ShowWarning(string warnText)
+    {
+        StartCoroutine(StartWarning(warnText));
+    }
+    public void SetImage(Image img, string path)
+    {
+        Sprite icon = Resources.Load<Sprite>(path);
+        img.sprite = icon;
+    }
+    public Resource GetResourceFromString(string resName, Dictionary<Resource, int> searchDictionary)
+    {
+        foreach (Resource res in searchDictionary.Keys)
+        {
+            if (res.ToString() == resName) { return res; }
+        }
 
-    private void ClearAllChilds(Transform parentTransform)
+        return Resource.Dirt;
+    }
+    public void ClearAllChilds(Transform parentTransform)
     {
         foreach (Transform child in parentTransform)
         {
             Destroy(child.gameObject);
         }
+    }
+
+    private IEnumerator StartWarning(string warnText)
+    {
+        warningPanel.Find("WarningText").GetComponent<TextMeshProUGUI>().text = warnText;
+        warningPanel.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1);
+        warningPanel.gameObject.SetActive(false);
     }
 }
