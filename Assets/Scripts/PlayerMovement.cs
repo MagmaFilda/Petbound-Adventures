@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private InputAction jumpAction;
     private InputAction moveCameraAction;
     private InputAction rotateCameraAction;
+    private InputAction zoomCameraAction;
     private InputAction changeFullscreenAction;
     private CharacterController controller;
     private Animator animator;
@@ -25,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 cameraMove;
 
     private PlayerStats playerStats;
+    private CinemachineThirdPersonFollow zoomCamera;
 
     private void Start()
     {
@@ -33,11 +36,13 @@ public class PlayerMovement : MonoBehaviour
         jumpAction = playerInput.actions.FindAction("Jump");
         moveCameraAction = playerInput.actions.FindAction("CameraMove");
         rotateCameraAction = playerInput.actions.FindAction("DoRotate");
+        zoomCameraAction = playerInput.actions.FindAction("Zoom");
         changeFullscreenAction = playerInput.actions.FindAction("Fullscreen");
         controller = GetComponent<CharacterController>();
         animator = character.GetComponent<Animator>();
 
         playerStats = PlayerStats.Instance;
+        zoomCamera = cameraTransform.Find("Third Person Aim Camera").GetComponent<CinemachineThirdPersonFollow>();
     }
 
     private void Update()
@@ -133,11 +138,19 @@ public class PlayerMovement : MonoBehaviour
             cameraMove = moveCameraAction.ReadValue<Vector2>();
 
             cameraPitch -= cameraMove.y * 0.1f;
-            cameraPitch = Mathf.Clamp(cameraPitch, -15f, 15f);
+            cameraPitch = Mathf.Clamp(cameraPitch, -15f, 40f);
 
             cameraYaw += cameraMove.x * 0.3f;
 
             cameraTransform.localRotation = Quaternion.Euler(cameraPitch, cameraYaw, 0);
+        }
+
+        float zoomPower = zoomCameraAction.ReadValue<Vector2>().y;
+        if (zoomPower != 0)
+        {
+            zoomCamera.CameraDistance += (-zoomPower/2);
+            if (zoomCamera.CameraDistance < 2) { zoomCamera.CameraDistance = 2; }
+            else if (zoomCamera.CameraDistance > 8) { zoomCamera.CameraDistance = 8;}
         }
     }
 }

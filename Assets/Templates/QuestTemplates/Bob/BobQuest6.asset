@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6fd65e3f274b04184f4213a9700162, type: 3}
+  m_Name: BobQuest6
+  m_EditorClassIdentifier: 
+  questName: 
+  required: 0
+  reward: 500
+  startOfQuest:
+  - "Vid\xEDm, \u017Ee ses odhodlal k 2. \u010D\xE1sti pro z\xEDsk\xE1n\xED kl\xED\u010De
+    k dal\u0161\xED lokaci."
+  - "No dobr\xE1 tedy :). Bude to cht\xEDt n\u011Bjakou p\u0159\xEDpravu, proto\u017Ee
+    tam u\u017E to nebude tak lehk\xE9 jako tady."
+  - "Pro za\u010D\xE1tek. Asi jsi si u\u017E v\u0161imnul toho borce v \u010Derven\xE9m
+    triku. To je Frank a jeho obchod."
+  - "Nebudu ti lh\xE1t. Jedin\xFD u\u017Eite\u010Dn\xFD p\u0159edm\u011Bt je ten
+    batoh co tam prod\xE1v\xE1, proto\u017Ee ti kone\u010Dn\u011B umo\u017En\xED
+    m\xEDt v\xEDce surovin p\u0159\xEDmo u sebe."
+  - "Tak\u017Ee chci aby jsi si ho koupil. Potom bych cht\u011Bl abys na\u0161et\u0159il
+    2500 coin\u016F."
+  - "Tak\u017Ee chci aby jsi si ho koupil. Potom bych cht\u011Bl abys na\u0161et\u0159il
+    2500 coin\u016F."
+  - "No a k tomu abys vyt\u011B\u017Eil 100 tier2, 50 tier3 a 5 tier5 breakables.
+    Hodn\u011B \u0161t\u011Bst\xED ;)."
+  endOfQuest:
+  - "Wow... M\xE1\u0161 fakt odhlodl\xE1n\xED, \u017Ee to po\u0159\xE1d v\u0161echno
+    zvl\xE1d\xE1\u0161. No pokud to u\u017E bude\u0161 cht\xEDt doklepnout ur\u010Dit\u011B
+    dojdi."
+  questsToComplete:
+  - {fileID: 11400000, guid: 072f81403ec769a47b0776fa1b912ab4, type: 2}
+  - {fileID: 11400000, guid: c6b3b0d4948832344bbaafad851cb000, type: 2}
+  - {fileID: 11400000, guid: 4abb1bdbfbbf89440ab7605bd789b4d1, type: 2}
+  - {fileID: 11400000, guid: b3859c8414c87f542b877489593e301e, type: 2}
+  - {fileID: 11400000, guid: 625c6ff1fb4745047a5ff3dff5d52bf6, type: 2}

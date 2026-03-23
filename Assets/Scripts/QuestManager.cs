@@ -156,6 +156,10 @@ public class QuestManager : MonoBehaviour
                     title.text = "Zniè " + breakablesQuest.allowedTiers[0].ToString() + " breakables";
                 }
                 break;
+            case QuestType.GetItem:
+                GetItemQuest itemQuest = quest.template as GetItemQuest;
+                title.text = "Získej: " + itemQuest.item;
+                break;
         }
         
         progress.text = "0/" + quest.template.required;
@@ -227,6 +231,13 @@ public class QuestManager : MonoBehaviour
                 if (canComplete)
                 {
                     updatingQuest.isCompleted = true;
+                }
+                break;
+            case QuestType.GetItem:
+                GetItemQuest itemQuest = questTemplate as GetItemQuest;
+                if (playerStats.OwnedItems.Contains(itemQuest.item) && !updatingQuest.isCompleted)
+                {
+                    updatingQuest.progress += 1;
                 }
                 break;
         }

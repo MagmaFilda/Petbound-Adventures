@@ -15,8 +15,8 @@ MonoBehaviour:
   typeOfItem: 1
   upgrades: 0100000000000000
   upgradeValues:
-  - 50
+  - 100
   - 10
-  price: 500
+  price: 0
   rebuyable: 1
   item: {fileID: 1825220225107259227, guid: b8d3a6173ecd8df429f345d80d58bf0d, type: 3}

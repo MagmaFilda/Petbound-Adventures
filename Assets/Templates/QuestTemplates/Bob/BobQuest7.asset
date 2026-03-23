@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6fd65e3f274b04184f4213a9700162, type: 3}
+  m_Name: BobQuest7
+  m_EditorClassIdentifier: 
+  questName: 
+  required: 0
+  reward: 0
+  startOfQuest:
+  - "Nebudu to protahovat. Posledn\xED quest z tohoto trojquestu. Up\u0159\xEDmn\u011B
+    do t\xE9hle f\xE1ze se u\u017E moc cestovatel\u016F nedostalo."
+  - "\u010Casem tu hlado.... no. Asi ch\xE1pe\u0161 jak\xE1 je dal\u0161\xED v\xFDhoda
+    toho, \u017Ee je tu podlaha z hl\xEDny ehm..."
+  - "ALE TY! Ty jsi vyj\xEDmka. Tak snad nezklame\u0161 i ty. Chci abys byl p\u0159ipraven\xFD
+    a proto bys m\u011Bl otev\u0159\xEDt 3 Travnat\xE9 vaj\xED\u010Dka."
+  - "Zni\u010Dit n\u011Bjak\xE9 ty dal\u0161\xED breakables, p\u0159esn\u011Bji 250.
+    A proto\u017Ee u\u017E toho tady nic moc v\xEDc nen\xED. Z\xEDskej je\u0161t\u011B
+    2500 hl\xEDny a 100 tr\xE1vy. Hodn\u011B \u0161t\u011Bst\xED."
+  endOfQuest:
+  - "Asi jsi ten vyj\xEDme\u010Dn\xFD. Gratuluju ti a tady je ten vytou\u017Een\xFD
+    kl\xED\u010D. Nyn\xED m\u016F\u017Ee\u0161 do na\u0161\xED vesnice."
+  - "Kdyby jsi, ale p\u0159ece jenom cht\u011Bl, m\u016F\u017Ee\u0161 za mnou zase
+    n\u011Bkdy doj\xEDt :). Tak ahoj!"
+  questsToComplete:
+  - {fileID: 11400000, guid: 77a9ea9233f8d144e87189d22bbd7927, type: 2}
+  - {fileID: 11400000, guid: 616c8e681c6fbd144a6ee05173790bd1, type: 2}
+  - {fileID: 11400000, guid: 47ef03aa5f92cab4e8e3d2b4e9b96b0b, type: 2}
+  - {fileID: 11400000, guid: 15c0d215424225a48965be8eb10ff3f2, type: 2}

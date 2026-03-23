@@ -13,6 +13,8 @@ public class QuestNPC : MonoBehaviour
     private QuestManager questManager;
     private GameManager gameManager;
 
+    private MainUI mainUI;
+
     private int actualQuestNum = 0;
     private ActiveQuest activeQuest;
 
@@ -21,12 +23,12 @@ public class QuestNPC : MonoBehaviour
         playerStats = PlayerStats.Instance;
         questManager = QuestManager.Instance;
         gameManager = GameManager.Instance;
+
+        mainUI = mainCanvas.GetComponent<MainUI>();
     }
 
     private void Update()
     {
-        //MouseHover();
-
         if (openUI.gameObject.activeSelf && Keyboard.current.eKey.wasPressedThisFrame && playerStats.canShowInteract)
         {
             QuestInteract();
@@ -49,28 +51,28 @@ public class QuestNPC : MonoBehaviour
 
     private void QuestInteract()
     {
-        MainUI conversation = mainCanvas.GetComponent<MainUI>();
+        
 
         if (actualQuestNum >= quests.Length)
         {
             string[] text = {"Dokonèil jsi všechny mé questy a tím si dokonèil tenhle prototyp! Gratuluju!!!"};
-            StartCoroutine(ConversationDialog(text, 4f, conversation));
+            StartCoroutine(ConversationDialog(text, 4f));
             return;
         }
 
-        if (CheckQuest(conversation)) { return; } 
+        if (CheckQuest()) { return; } 
 
 
-        StartQuest(conversation);
+        StartQuest();
     }
-    public void StartQuest(MainUI conversation)
+    public void StartQuest()
     {
         QuestTemplate newQuest = quests[actualQuestNum];
         activeQuest = questManager.StartQuest(newQuest);
-        StartCoroutine(ConversationDialog(newQuest.startOfQuest, 7f, conversation));
+        StartCoroutine(ConversationDialog(newQuest.startOfQuest, 7f));
         gameManager.TryNpcEvent(transform.name, actualQuestNum, "start");
     }
-    private bool CheckQuest(MainUI conversation)
+    private bool CheckQuest()
     {
         for (int i = 0; i < playerStats.ActiveQuests.Count; i++)
         {
@@ -78,57 +80,37 @@ public class QuestNPC : MonoBehaviour
             {
                if (activeQuest.isCompleted)
                 {
-                    EndQuest(quests[actualQuestNum], conversation);
+                    EndQuest(quests[actualQuestNum]);
                     return true;
                 }
                 string[] text = { "Nyní máš rozpracovaný jiný mùj quest, až ho budeš mít hotový pøijï za mnou znovu" };
-                StartCoroutine(ConversationDialog(text, 4f, conversation));
+                StartCoroutine(ConversationDialog(text, 4f));
                 return true;
             }
         }
         return false;
     }
-    private void EndQuest(QuestTemplate quest, MainUI conversation)
+    private void EndQuest(QuestTemplate quest)
     {
         questManager.EndQuest(activeQuest);
 
-        StartCoroutine(ConversationDialog(quest.endOfQuest, 7f, conversation));
+        StartCoroutine(ConversationDialog(quest.endOfQuest, 7f));
         playerStats.coins += quest.reward;
 
         gameManager.TryNpcEvent(transform.name, actualQuestNum, "end");
         actualQuestNum++;
     }
 
-    //private void MouseHover()
-    //{
-    //    Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-    //    if (Physics.Raycast(ray, out RaycastHit hit, 100f))
-    //    {
-    //        if (hit.collider.gameObject == hitbox.gameObject && canShowPanel && closeEnough)
-    //        {
-    //            openUI.enabled = true;
-    //        }
-    //        else
-    //        {
-    //            openUI.enabled = false;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        openUI.enabled = false;
-    //    }
-    //} -- necham to ted jen ze se projde okolo
-
-    private IEnumerator ConversationDialog(string[] allText, float delay, MainUI conversation)
+    private IEnumerator ConversationDialog(string[] allText, float delay)
     {
         playerStats.canShowInteract = false;
         playerStats.canMove = false;
         foreach (string text in allText)
         {
-            conversation.Conversation(true, text);
+            mainUI.Conversation(true, text);
             yield return new WaitForSeconds(delay);           
         }
-        conversation.Conversation(false, string.Empty);
+        mainUI.Conversation(false, string.Empty);
         playerStats.canShowInteract = true;
         playerStats.canMove = true;
     }

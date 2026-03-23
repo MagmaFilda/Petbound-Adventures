@@ -15,6 +15,6 @@ MonoBehaviour:
   petName: Mravenec
   rarity: 0
   speed: 10
-  minDamage: 3
+  minDamage: 4
   maxDamage: 7
   petPrefab: {fileID: 6825735066300518562, guid: ed65d71b06c11174c890c4f1b14b73d2, type: 3}

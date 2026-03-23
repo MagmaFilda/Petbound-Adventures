@@ -25,19 +25,27 @@ public class Shopkeeper : MonoBehaviour
     private GameManager gameManager;
     private MainUI uiScript;
 
+    private Transform character;
+
+    private Button leftArrow;
+    private Button rightArrow;
+
     private void Start()
     {
         playerStats = PlayerStats.Instance;
         gameManager = GameManager.Instance;
         uiScript = mainUI.GetComponent<MainUI>();
 
+        character = playerStats.transform.Find("Character");
+
         interactPanel = shopkeeperUI.Find("InteractPanel");
         attachObjects = new List<Transform>();
+
+        leftArrow = interactPanel.Find("LeftArrow").GetComponent<Button>();
+        rightArrow = interactPanel.Find("RightArrow").GetComponent<Button>();
     }
     private void Update()
     {
-        //MouseHover();
-
         if (openUI.gameObject.activeSelf && Keyboard.current.eKey.wasPressedThisFrame && playerStats.canShowInteract)
         {
             
@@ -163,7 +171,6 @@ public class Shopkeeper : MonoBehaviour
     }
     private void InteractItem(ItemTemplate item, bool equip)
     {
-        Transform character = playerStats.transform.Find("Character");
         attachObjects.Clear();
         
         switch (item.typeOfItem)
@@ -221,9 +228,6 @@ public class Shopkeeper : MonoBehaviour
 
     private void SetArrows(bool left, bool right)
     {
-        Button leftArrow = interactPanel.Find("LeftArrow").GetComponent<Button>();
-        Button rightArrow = interactPanel.Find("RightArrow").GetComponent<Button>();
-
         leftArrow.interactable = left; 
         rightArrow.interactable = right;
 
@@ -257,23 +261,4 @@ public class Shopkeeper : MonoBehaviour
                 break;
         }
     }
-    //private void MouseHover()
-    //{
-    //    Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-    //    if (Physics.Raycast(ray, out RaycastHit hit, 100f))
-    //    {
-    //        if (hit.collider.gameObject == hitbox.gameObject)
-    //        {
-    //            openUI.enabled = true;
-    //        }
-    //        else
-    //        {
-    //            openUI.enabled = false;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        openUI.enabled = false;
-    //    }
-    //}
 }

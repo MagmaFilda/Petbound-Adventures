@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BobQuest5a
   m_EditorClassIdentifier: 
   questName: 
-  required: 25
+  required: 15
   reward: 0
   startOfQuest: []
   endOfQuest: []

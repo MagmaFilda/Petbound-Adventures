@@ -20,6 +20,8 @@ public class Pet : MonoBehaviour
     private Transform petPositions;
     private Transform[] positions;
 
+    private Breakable breakable;
+
     private void Awake()
     {
         rarity = template.rarity;
@@ -64,7 +66,7 @@ public class Pet : MonoBehaviour
     {
         if (breakableTarget != null)
         {
-            Breakable breakable = breakableTarget.GetComponent<Breakable>();
+            breakable = breakableTarget.GetComponent<Breakable>();
             if (!breakableTarget.Find("HealthCanvas").gameObject.activeSelf) { breakable.ShowHealthBar(); }
 
             if (transform.position != breakableTarget.position)

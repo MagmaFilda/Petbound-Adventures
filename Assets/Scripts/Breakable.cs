@@ -1,6 +1,8 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.PlayerSettings;
 
 public class Breakable : MonoBehaviour
 {
@@ -16,6 +18,12 @@ public class Breakable : MonoBehaviour
     private MainUI mainUI;
 
     private int maxHealth;
+    private float detectionDistance = 0.5f;
+
+    private BreakableArea area;
+    private Transform healthCanvas;
+
+    private Vector3 lastPos;
 
     private void Awake()
     {
@@ -24,11 +32,16 @@ public class Breakable : MonoBehaviour
         tier = template.tier;
         rewards = template.rewards;
         maxHealth = health;
+
+        area = transform.parent.GetComponent<BreakableArea>();
+        healthCanvas = transform.Find("HealthCanvas");
     }
     private void Start()
     {
         playerStats = PlayerStats.Instance;
         mainUI = FindFirstObjectByType<MainUI>();
+
+        StartCoroutine(FixCollision());
     }
     private void Update()
     {
@@ -61,7 +74,6 @@ public class Breakable : MonoBehaviour
                     mainUI.ShowWarning(warnText);
                 }
             }
-            BreakableArea area = transform.parent.GetComponent<BreakableArea>();
             int countOfNewBreakables = Random.Range(0, 3);
             area.SpawnOtherBreakable(countOfNewBreakables);
             area.ParticlesAfterDestroy(transform.position, transform.rotation);
@@ -74,7 +86,6 @@ public class Breakable : MonoBehaviour
 
     public void ShowHealthBar()
     {
-        Transform healthCanvas = transform.Find("HealthCanvas");
         healthCanvas.gameObject.SetActive(true);  
         healthCanvas.Find("Health").GetComponent<TextMeshProUGUI>().text = health + "/" + health;
         healthCanvas.Find("ProgressBar").GetComponent<Image>().fillAmount = 1;      
@@ -82,11 +93,30 @@ public class Breakable : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
-        if (transform.Find("HealthCanvas").gameObject.activeSelf)
+        if (healthCanvas.gameObject.activeSelf)
         {
-            Transform healthCanvas = transform.Find("HealthCanvas");
             healthCanvas.Find("Health").GetComponent<TextMeshProUGUI>().text = health + "/" + maxHealth;
             healthCanvas.Find("ProgressBar").GetComponent<Image>().fillAmount = (float)health/maxHealth;
         }
+    }
+
+    private IEnumerator FixCollision()
+    {
+        while ((transform.GetComponent<Rigidbody>().constraints & RigidbodyConstraints.FreezePositionY) == 0)
+        {
+            yield return new WaitForSeconds(0.1f);
+            if (lastPos == transform.position)
+            {
+                detectionDistance += 0.1f;
+            }
+            if (Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out RaycastHit hit, detectionDistance))
+            {
+                if (hit.transform.name == "Ground")
+                {
+                    transform.GetComponent<Rigidbody>().constraints |= RigidbodyConstraints.FreezePositionY;
+                }
+            }
+            lastPos = transform.position;
+        }        
     }
 }

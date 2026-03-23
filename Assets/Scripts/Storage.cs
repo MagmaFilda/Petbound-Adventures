@@ -29,9 +29,15 @@ public class Storage : MonoBehaviour
     private MainUI uiScript;
     private PlayerStats playerStats;
 
+    private TextMeshProUGUI fromText;
+    private TextMeshProUGUI toText;
+
     private void Awake()
     {
         uiScript = mainCanvas.GetComponent<MainUI>();
+
+        fromText = transferPanel.Find("From").GetComponent<TextMeshProUGUI>();
+        toText = transferPanel.Find("To").GetComponent<TextMeshProUGUI>();
     }
     private void Start()
     {
@@ -102,8 +108,6 @@ public class Storage : MonoBehaviour
         uiScript.ClosePanel(storageInv);
 
         Dictionary<Resource, int> findingDictionary;
-        TextMeshProUGUI fromText = transferPanel.Find("From").GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI toText = transferPanel.Find("To").GetComponent<TextMeshProUGUI>();
 
         transferPanel.Find("InputFrom").Find("Info").GetComponent<Text>().text = resName;
 

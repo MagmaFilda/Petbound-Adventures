@@ -15,6 +15,6 @@ MonoBehaviour:
   petName: Cerveny mravenec
   rarity: 0
   speed: 12
-  minDamage: 10
-  maxDamage: 14
+  minDamage: 9
+  maxDamage: 13
   petPrefab: {fileID: 5884041462534661010, guid: 0f98a160612ebe644a59832c827743a7, type: 3}

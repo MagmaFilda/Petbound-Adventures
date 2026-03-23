@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour
 
     private Transform petContainer;
 
+    private WaitForSeconds wait7s = new WaitForSeconds(7);
+    private WaitForSeconds wait14s = new WaitForSeconds(14);
+
     private float defaultFadeSpeed = 20; // nastaveno pro 60fps
     private float cameraDefaultLength = 1.2f;
     private float cameraDefaultDistance = 6f;
@@ -48,10 +51,10 @@ public class GameManager : MonoBehaviour
 
         petContainer = inventory.Find("PetsPanel").Find("ScrollRect").Find("PetContainer");
 
-        StartCoroutine(StartCutscene());
+        //StartCoroutine(StartCutscene());
 
-        //playerStats.canRotateCamera = true;
-        //playerStats.canMove = true;
+        playerStats.canRotateCamera = true;
+        playerStats.canMove = true; 
     }
 
     public void TryNpcEvent(string npcName, int questNum, string special)
@@ -59,7 +62,7 @@ public class GameManager : MonoBehaviour
         switch (npcName)
         {
             case "Bob":
-                switch (questNum)
+                switch (questNum+2)
                 {
                     case 1:
                         if (special == "start")
@@ -156,7 +159,7 @@ public class GameManager : MonoBehaviour
 
         Transform newPet = Instantiate(petUITemplate, petContainer);
         newPet.GetComponent<PetInInventory>().UnEquipPet(petTemplates[0], 1); // 0 = Zizala
-        bob.parent.GetComponent<QuestNPC>().StartQuest(mainUI);
+        bob.parent.GetComponent<QuestNPC>().StartQuest();
         yield return new WaitForSeconds(49.3f);
         mainUI.ClosePanel(inventory);
     }
@@ -226,7 +229,7 @@ public class GameManager : MonoBehaviour
     //Bob Cinematics
     private IEnumerator BobQuest1()
     {
-        yield return new WaitForSeconds(7);
+        yield return wait7s;
         StartCoroutine(RotateStop(10));
         StartCoroutine(SetCamera(playerCamera.transform, true, 0, false , 0));
         StartCoroutine(SetCamera(cinematicPoints.Find("BobQuest1"), false, 7, true, 4));
@@ -239,28 +242,31 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator BobQuest2()
     {
-        yield return new WaitForSeconds(7);
+        yield return wait7s;
         StartCoroutine(RotateStop(19));
         StartCoroutine(SetCamera(playerCamera.transform, true, 0, false, 0));
         StartCoroutine(SetCamera(cinematicPoints.Find("BobQuest2"), false, 14, true, 4));
+        mainUI.transform.Find("InvBtns").gameObject.SetActive(false);
+        mainUI.transform.Find("QuestUI").gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(14);
+        yield return wait14s;
         StartCoroutine(SetCamera(playerCamera.transform, false, 3, true, 4));
+        mainUI.ClosePanel(inventory);
     }
     private IEnumerator BobQuest3()
     {
-        yield return new WaitForSeconds(14);
+        yield return wait14s;
         StartCoroutine(RotateStop(18));
         StartCoroutine(SetCamera(playerCamera.transform, true, 0, false, 0));
         StartCoroutine(SetCamera(cinematicPoints.Find("BobQuest3"), false, 14, true, 3));
         GameObject.Find("Storage").transform.Find("Storage").position = new Vector3(5.59f, 1.62f, -19.33f);
 
-        yield return new WaitForSeconds(14);
+        yield return wait14s;
         StartCoroutine(SetCamera(playerCamera.transform, false, 3, true, 3));
     }
     private IEnumerator BobQuest5()
     {
-        yield return new WaitForSeconds(7);
+        yield return wait7s;
         StartCoroutine(RotateStop(14));
         StartCoroutine(SetCamera(playerCamera.transform, true, 0, false, 0));
         StartCoroutine(SetCamera(cinematicPoints.Find("BobQuest5a"), false, 4, true, 3));

@@ -20,12 +20,10 @@ public class MainUI : MonoBehaviour
     public Transform transferPanel;
 
     private PlayerStats playerStats;
-    private GameManager gameManager;
 
     private void Start()
     {
         playerStats = PlayerStats.Instance;
-        gameManager = GameManager.Instance;
         if (playerStats != null) { UpdateCoins(); }  
     }
 
@@ -101,13 +99,13 @@ public class MainUI : MonoBehaviour
             case Rarity.Uncommon:
                 return Color.darkGreen;
             case Rarity.Rare:
-                return Color.aquamarine;
+                return Color.darkBlue;
             case Rarity.Epic:
                 return Color.purple;
             case Rarity.Legendary:
                 return Color.orange;
             default:
-                return Color.gray;
+                return Color.darkGray;
         } 
     }
     public void SetResourceInv()
@@ -130,11 +128,14 @@ public class MainUI : MonoBehaviour
             }             
         }
     }
-    
+
+    private TextMeshProUGUI fromText;
+    private TMP_InputField inputField;
+
     public void MaxResources(Transform inputTransform)
     {
-        TextMeshProUGUI fromText = transferPanel.Find("From").GetComponent<TextMeshProUGUI>();
-        TMP_InputField inputField = inputTransform.GetComponent<TMP_InputField>();
+        fromText = transferPanel.Find("From").GetComponent<TextMeshProUGUI>();
+        inputField = inputTransform.GetComponent<TMP_InputField>();
         Dictionary<Resource, int> fromDictionary = playerStats.PlayerResources;
 
         if (fromText.text == "Storage" && inputTransform.name == "InputFrom") // !NEPREJMENOVAVAT INPUTFIELD U TRANSFERU!
@@ -149,8 +150,8 @@ public class MainUI : MonoBehaviour
     }
     public void TransferResources()
     {
-        TextMeshProUGUI fromText = transferPanel.Find("From").GetComponent<TextMeshProUGUI>();
-        TMP_InputField inputField = transferPanel.Find("InputFrom").GetComponent<TMP_InputField>();
+        fromText = transferPanel.Find("From").GetComponent<TextMeshProUGUI>();
+        inputField = transferPanel.Find("InputFrom").GetComponent<TMP_InputField>();
         Dictionary<Resource, int> fromDictionary;
         Dictionary<Resource, int> toDictionary;
 
@@ -221,9 +222,11 @@ public class MainUI : MonoBehaviour
     {
         StartCoroutine(StartWarning(warnText));
     }
+
+    private Sprite icon;
     public void SetImage(Image img, string path)
     {
-        Sprite icon = Resources.Load<Sprite>(path);
+        icon = Resources.Load<Sprite>(path);
         img.sprite = icon;
     }
     public Resource GetResourceFromString(string resName, Dictionary<Resource, int> searchDictionary)

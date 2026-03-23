@@ -13,10 +13,19 @@ public class PetInInventory : MonoBehaviour
     private PlayerStats playerStats = PlayerStats.Instance;
     private MainUI mainUI;
 
+    private Transform player;
+    private Transform UIEquipPanel;
+
     private PetTemplate petTemplate;
     public string petName { get; private set; }
     public Rarity rarity { get; private set; }
     public int damage { get; private set; }
+
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        UIEquipPanel = GameObject.FindGameObjectWithTag("EquipPanel").transform;
+    }
 
     public void NewPet(PetTemplate template)
     {
@@ -56,13 +65,11 @@ public class PetInInventory : MonoBehaviour
         }
 
         if (playerStats.EquippedPets.Count < playerStats.maxEquippedPets)
-        {
-            Transform player = GameObject.FindGameObjectWithTag("Player").transform;
+        {           
             Transform newPetModel = Instantiate(petTemplate.petPrefab, player.position, player.rotation);
             newPetModel.GetComponent<Pet>().SetDamage(damage);
             playerStats.EquippedPets.Add(newPetModel);
-
-            Transform UIEquipPanel = GameObject.FindGameObjectWithTag("EquipPanel").transform;
+           
             EquipUISlot newUIPetSlot = Instantiate(UIEquipPetSlotPrefab, UIEquipPanel).GetComponent<EquipUISlot>();
             newUIPetSlot.SetValues(petName, damage.ToString(), petTemplate, transform.parent, newPetModel);
 
@@ -87,10 +94,9 @@ public class PetInInventory : MonoBehaviour
 
     private void SortInventory()
     {
-        Transform mainUI = transform.parent.parent.parent.parent.parent;
-        mainUI.GetComponent<MainUI>().SortInventoryByDamage();
+        mainUI.SortInventoryByDamage();
 
-        mainUI.Find("Inventory").Find("MaxPets").GetComponent<TextMeshProUGUI>().text = (playerStats.PetsInInventory.Count+playerStats.EquippedPets.Count) + "/" + playerStats.maxPets;
+        mainUI.transform.Find("Inventory").Find("MaxPets").GetComponent<TextMeshProUGUI>().text = (playerStats.PetsInInventory.Count+playerStats.EquippedPets.Count) + "/" + playerStats.maxPets;
     }
 
     private void SetSlotUI()
@@ -98,7 +104,6 @@ public class PetInInventory : MonoBehaviour
         petNameTxt.text = petName;
         damageTxt.text = damage.ToString();
 
-        mainUI = FindFirstObjectByType<MainUI>();
         string path = "PetIcons/" + petName;
         mainUI.SetImage(petImgPanel, path);
 

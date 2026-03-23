@@ -15,6 +15,6 @@ MonoBehaviour:
   petName: Mysice
   rarity: 1
   speed: 18
-  minDamage: 14
-  maxDamage: 18
+  minDamage: 13
+  maxDamage: 17
   petPrefab: {fileID: 3290925884482329993, guid: 48e931a2d29d69040ac8ccfff68567aa, type: 3}

@@ -36,8 +36,6 @@ public class Trader : MonoBehaviour
     }
     private void Update()
     {
-        //MouseHover();
-
         if (openUI.gameObject.activeSelf && Keyboard.current.eKey.wasPressedThisFrame && playerStats.canShowInteract)
         {
             uiScript.OpenPanel(traderUI);
@@ -109,24 +107,4 @@ public class Trader : MonoBehaviour
             uiScript.ShowWarning("Špatný datový typ");
         }
     }
-
-    //private void MouseHover()
-    //{
-    //    Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-    //    if (Physics.Raycast(ray, out RaycastHit hit, 100f))
-    //    {
-    //        if (hit.collider.gameObject == hitbox.gameObject)
-    //        {
-    //            openUI.enabled = true;
-    //        }
-    //        else
-    //        {
-    //            openUI.enabled = false;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        openUI.enabled = false;
-    //    }
-    //}
 }

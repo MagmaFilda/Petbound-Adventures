@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd64188c4922f04bb4bb88fd666827c, type: 3}
   m_Name: StoneyEggTemplate
   m_EditorClassIdentifier: 
-  eggName: Stoney Egg
+  eggName: "Kam\xEDnkov\xFD vejce"
   petTemplates:
   - {fileID: 11400000, guid: 2ee97609aba5145489ed7ee3eee3ecfb, type: 2}
   - {fileID: 11400000, guid: fefdeea9edd77f849bd6c6042f7db4dc, type: 2}

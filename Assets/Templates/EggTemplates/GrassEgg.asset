@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cd64188c4922f04bb4bb88fd666827c, type: 3}
+  m_Name: GrassEgg
+  m_EditorClassIdentifier: 
+  eggName: "Travnat\xE9 vejce"
+  petTemplates:
+  - {fileID: 11400000, guid: 734e4d17bf77e6f46b89f7518b927105, type: 2}
+  - {fileID: 11400000, guid: c8ed8c4a560ad2c439a1db1d37fcdf4c, type: 2}
+  - {fileID: 11400000, guid: 231e1b1454e73c041b15624d1eecd98d, type: 2}
+  chance:
+  - 50
+  - 40
+  - 10
+  price: 2000

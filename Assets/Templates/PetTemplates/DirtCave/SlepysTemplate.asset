@@ -15,6 +15,6 @@ MonoBehaviour:
   petName: Slepys
   rarity: 1
   speed: 8
-  minDamage: 19
-  maxDamage: 26
+  minDamage: 18
+  maxDamage: 24
   petPrefab: {fileID: 2576916282060329373, guid: 71222baab42dca84ca7970e3354cf30a, type: 3}
