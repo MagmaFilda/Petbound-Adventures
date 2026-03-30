@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eb33981c83b1e64483f93e953bb5cbb, type: 3}
   m_Name: BobQuest3b
   m_EditorClassIdentifier: 
+  id: quest_bob_3b
   questName: 3b
   required: 10
   reward: 0
-  startOfQuest: 
-  endOfQuest: 
+  startOfQuest: []
+  endOfQuest: []
   anyTiers: 0
   allowedTiers: 00000000

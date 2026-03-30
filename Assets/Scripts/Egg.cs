@@ -26,6 +26,7 @@ public class Egg : MonoBehaviour
 
     private bool canOpen = true;
     private WaitForSeconds wait2s = new WaitForSeconds(2);
+    private WaitForSeconds wait3s = new WaitForSeconds(3);
 
     private void Awake()
     {
@@ -128,7 +129,7 @@ public class Egg : MonoBehaviour
         openUI.gameObject.SetActive(false);
         playerStats.transform.position = playerLeavePoint.position;
 
-        StartCoroutine(gameManager.SetCamera(cameraPoint, false, 2, false, 0));
+        gameManager.SetCamera(cameraPoint, 2);
         transform.GetComponent<Animator>().SetBool("opening", true);
 
         yield return wait2s;
@@ -141,7 +142,7 @@ public class Egg : MonoBehaviour
         playerStats.canMove = true;
         transform.GetComponent<Animator>().SetBool("opening", false);
 
-        yield return wait2s;                     
+        yield return wait3s;
         canOpen = true;
     }
 }

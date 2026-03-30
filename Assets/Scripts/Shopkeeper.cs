@@ -53,7 +53,7 @@ public class Shopkeeper : MonoBehaviour
             openUI.gameObject.SetActive(false);
 
             itemNum = 0;
-            StartCoroutine(gameManager.SetCamera(cameraPoints.Find(itemNum.ToString()), true, 1, false, 0));
+            gameManager.SetCamera(cameraPoints.Find(itemNum.ToString()), true);
 
             SetItemUI();
         }
@@ -75,14 +75,20 @@ public class Shopkeeper : MonoBehaviour
 
     public void SetNormalCamera() //u exit buttonu v shopkeeper UI
     {
-        StartCoroutine(gameManager.SetCamera(cameraPoints, true, 0, false, 0));
+        gameManager.SetCamera(cameraPoints, false);
+    }
+
+    public void SetItemAfterLoad(ItemTemplate item)
+    {
+        InteractItem(item, false);
+        InteractItem(item, true);
     }
 
     private void SetItemUI()
     {
         ItemTemplate itemTemplate = template.purchasableItems[itemNum];
 
-        interactPanel.Find("ItemName").GetComponent<TextMeshProUGUI>().text = itemTemplate.typeOfItem.ToString();
+        interactPanel.Find("ItemName").GetComponent<TextMeshProUGUI>().text = itemTemplate.itemName;
         interactPanel.Find("PriceText").GetComponent<TextMeshProUGUI>().text = itemTemplate.price.ToString();
 
         Button btn = interactPanel.Find("BuyBtn").GetComponent<Button>();
@@ -220,7 +226,10 @@ public class Shopkeeper : MonoBehaviour
             }
             foreach (Transform attachObject in attachObjects)
             {
-                Destroy(attachObject.GetChild(0).gameObject);
+                if (attachObject.childCount > 0)
+                {
+                    Destroy(attachObject.GetChild(0).gameObject);
+                }              
             }         
         }
         SetItemUI();
@@ -239,7 +248,7 @@ public class Shopkeeper : MonoBehaviour
     private void ChangeItem(int change)
     {
         itemNum += change;
-        StartCoroutine(gameManager.SetCamera(cameraPoints.Find(itemNum.ToString()), true, 1, true, 1));
+        gameManager.SetCamera(cameraPoints.Find(itemNum.ToString()), true, 1);
 
         SetItemUI();
     }

@@ -1,8 +1,9 @@
-using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
-using UnityEngine.UI;
+using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainUI : MonoBehaviour
 {
@@ -59,17 +60,25 @@ public class MainUI : MonoBehaviour
         coinTxt.text = "Coins: " + playerStats.coins.ToString();
     }
 
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("MenuScene");
+    }
+
     // Inventories
     public void SortInventoryByDamage()
     {
-        playerStats.PetsInInventory.Sort((a, b) => b.damage.CompareTo(a.damage));
-
-        int n = 0;
-        foreach (PetInInventory p in playerStats.PetsInInventory)
+        if (playerStats)
         {
-            p.SetLayoutOrder(n);
-            n++;
-        }
+            playerStats.PetsInInventory.Sort((a, b) => b.damage.CompareTo(a.damage));
+
+            int n = 0;
+            foreach (PetInInventory p in playerStats.PetsInInventory)
+            {
+                p.SetLayoutOrder(n);
+                n++;
+            }
+        }        
     }
     public void SetDeleteMode(bool state)
     {       

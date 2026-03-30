@@ -18,7 +18,7 @@ public class Breakable : MonoBehaviour
     private MainUI mainUI;
 
     private int maxHealth;
-    private float detectionDistance = 0.5f;
+    private float detectionDistance = 0.1f;
 
     private BreakableArea area;
     private Transform healthCanvas;
@@ -33,13 +33,14 @@ public class Breakable : MonoBehaviour
         rewards = template.rewards;
         maxHealth = health;
 
-        area = transform.parent.GetComponent<BreakableArea>();
         healthCanvas = transform.Find("HealthCanvas");
     }
     private void Start()
     {
         playerStats = PlayerStats.Instance;
         mainUI = FindFirstObjectByType<MainUI>();
+
+        area = transform.parent.GetComponent<BreakableArea>();
 
         StartCoroutine(FixCollision());
     }
@@ -114,6 +115,10 @@ public class Breakable : MonoBehaviour
                 if (hit.transform.name == "Ground")
                 {
                     transform.GetComponent<Rigidbody>().constraints |= RigidbodyConstraints.FreezePositionY;
+                }
+                else if (hit.transform.name == "Player")
+                {
+                    detectionDistance = 0.1f;
                 }
             }
             lastPos = transform.position;

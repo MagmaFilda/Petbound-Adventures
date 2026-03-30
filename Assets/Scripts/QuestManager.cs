@@ -92,6 +92,7 @@ public class QuestManager : MonoBehaviour
             foreach(QuestTemplate questPart in multipleQuest.questsToComplete)
             {
                 ActiveQuest partOfActiveQuest = new ActiveQuest(questPart);
+                playerStats.ActiveQuests.Add(partOfActiveQuest);
                 activeQuest.otherActiveQuest.Add(partOfActiveQuest);
                 CreateQuestUI(questUI, partOfActiveQuest);
             }
@@ -109,6 +110,10 @@ public class QuestManager : MonoBehaviour
 
         if (quest.template.Type == QuestType.MultipleQuest)
         {
+            foreach (var partQuest in quest.otherActiveQuest)
+            {
+                playerStats.ActiveQuests.Remove(partQuest);
+            }
             Destroy(quest.questUI.gameObject);
         }
         else { Destroy(quest.questUI.parent.gameObject); }        
@@ -158,7 +163,7 @@ public class QuestManager : MonoBehaviour
                 break;
             case QuestType.GetItem:
                 GetItemQuest itemQuest = quest.template as GetItemQuest;
-                title.text = "Získej: " + itemQuest.item;
+                title.text = "Získej: " + itemQuest.item.item.name;
                 break;
         }
         

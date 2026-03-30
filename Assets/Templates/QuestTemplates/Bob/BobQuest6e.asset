@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eb33981c83b1e64483f93e953bb5cbb, type: 3}
   m_Name: BobQuest6e
   m_EditorClassIdentifier: 
+  id: quest_bob_6e
   questName: "Dal\u0161\xED krok k dal\u0161\xED lokaci"
   required: 5
   reward: 0

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e6fd65e3f274b04184f4213a9700162, type: 3}
   m_Name: BobQuest3
   m_EditorClassIdentifier: 
+  id: quest_bob_3
   questName: Tiers of breakables
   required: 0
   reward: 100

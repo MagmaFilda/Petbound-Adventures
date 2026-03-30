@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925a0fe2e95f7cd4fb5420451033c339, type: 3}
   m_Name: BobTutorial
   m_EditorClassIdentifier: 
+  id: quest_bob_tutorial
   questName: "V\xEDtej!"
   required: 5
-  reward: 20
+  reward: 25
   startOfQuest:
   - "Zdrav\xEDm cestovateli!"
   - "Rad t\u011B pozn\xE1v\xE1m. Nejsi prvn\xED co sem spadl. P\u0159\xEDb\u011Bhy,
@@ -32,7 +33,7 @@ MonoBehaviour:
   - "Zkus si to. A\u017E bude\u0161 m\xEDt u sebe 5 hl\xEDny co\u017E je zdej\u0161\xED
     surovina, tak za mnou p\u0159ij\u010F :)."
   endOfQuest:
-  - "Velmi dob\u0159e! Tady m\xE1\u0161 za odm\u011Bnu 20 coin\u016F. Pokud by si
+  - "Velmi dob\u0159e! Tady m\xE1\u0161 za odm\u011Bnu 25 coin\u016F. Pokud by si
     je cht\u011Bl, ale z\xEDskat i jinak, tak za mnou dojdi a r\xE1d ti to vysv\u011Btl\xEDm
     :)."
   requiredResource: 0

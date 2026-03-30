@@ -1,7 +1,9 @@
 using System.Collections;
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -12,13 +14,18 @@ public class GameManager : MonoBehaviour
     public CinemachineThirdPersonFollow playerCamera;
 
     [Header("CutsceneThings")]
+    public GameObject tutorialPanel;
     public Transform cinematicPoints;
     public Camera worldCamera;
 
     [Header("Pets")]
+    public Animator petShowAnimator;
     public Transform inventory;
     public Transform petUITemplate;
     public PetTemplate[] petTemplates;
+
+    [Header("QuestThings")]
+    public ItemTemplate[] keys;
 
     private PlayerStats playerStats;
 
@@ -28,6 +35,8 @@ public class GameManager : MonoBehaviour
 
     private Transform petContainer;
 
+    private WaitForEndOfFrame waitEndFrame = new WaitForEndOfFrame();
+    private WaitForSeconds wait05s = new WaitForSeconds(0.5f);
     private WaitForSeconds wait7s = new WaitForSeconds(7);
     private WaitForSeconds wait14s = new WaitForSeconds(14);
 
@@ -54,15 +63,18 @@ public class GameManager : MonoBehaviour
         //StartCoroutine(StartCutscene());
 
         playerStats.canRotateCamera = true;
-        playerStats.canMove = true; 
+        playerStats.canMove = true;
+        mainUI.ClosePanel(inventory);
     }
 
     public void TryNpcEvent(string npcName, int questNum, string special)
     {
+        playerAnimator.SetBool("IsWalking", false);
+        playerAnimator.SetBool("IsJumping", false);
         switch (npcName)
         {
             case "Bob":
-                switch (questNum+2)
+                switch (questNum)
                 {
                     case 1:
                         if (special == "start")
@@ -87,44 +99,48 @@ public class GameManager : MonoBehaviour
                         {
                             StartCoroutine(BobQuest5());
                         }
-                        else if (special == "end")
+                        //else if (special == "end")
+                        //{
+                        //    mainUI.OpenPanel(mainUI.transform.Find("EndPanel"));
+                        //}
+                        break;
+                    case 6:
+                        if (special == "start")
                         {
-                            mainUI.OpenPanel(mainUI.transform.Find("EndPanel"));
+                            StartCoroutine(BobQuest6());
+                        }
+                        break;
+                    case 7:
+                        if (special == "end")
+                        {
+                            playerStats.OwnedItems.Add(keys[0]); // 0 = Village Key
+                            GameObject.Find("VillageGate").GetComponent<BoxCollider>().enabled = false;
                         }
                         break;
                 }
                 break;
         }
     }
-    public IEnumerator SetCamera(Transform cameraPoint, bool staticCamera, float delay, bool fade, float fadeTime)
+
+    public void SetCamera(Transform cameraPoint, float delay)
     {
-        if (fade)
-        {
-            StartCoroutine(CameraFade(cameraPoint, fadeTime));
-        }
-        else
-        {
-            worldCamera.transform.position = cameraPoint.position;
-            worldCamera.transform.rotation = cameraPoint.rotation;
-        }
-        
-        if (!staticCamera)
-        {
-            worldCamera.enabled = true;
-            yield return new WaitForSeconds(delay);
-            worldCamera.enabled = false;
-        }
-        else
-        {
-            if (delay > 0.1f)
-            {
-                worldCamera.enabled = true;
-            }
-            else
-            {
-                worldCamera.enabled = false;
-            }
-        }
+        CameraMove(cameraPoint);
+        StartCoroutine(CameraChange(delay));
+    }
+    public void SetCamera(Transform cameraPoint, bool cameraEnabled)
+    {
+        CameraMove(cameraPoint);
+        worldCamera.enabled = cameraEnabled;
+    }
+    public void SetCamera(Transform cameraPoint, float delay, float fadeTime)
+    {
+        StartCoroutine(CameraChange(delay));
+        StartCoroutine(CameraFade(cameraPoint, fadeTime));       
+    }
+    public void SetCamera(Transform cameraPoint, bool cameraEnabled, float fadeTime)
+    {
+        worldCamera.enabled = cameraEnabled;
+        StartCoroutine(CameraFade(cameraPoint, fadeTime));
     }
 
     private IEnumerator StartCutscene()
@@ -156,12 +172,25 @@ public class GameManager : MonoBehaviour
         StartCoroutine(PlayAnimation(bob, bobAnimator, "BobStart", 4, bob.position, bob.rotation, false));
         yield return new WaitForSeconds(4);
         StartCoroutine(PlayAnimation(bob, bobAnimator, "Wave", 49, bobDefaultPos, bobDefaultRot, false));
+        bob.parent.GetComponent<QuestNPC>().StartQuest();
+        yield return new WaitForSeconds(4);
+        tutorialPanel.SetActive(true);
+        yield return new WaitForSeconds(25);
 
         Transform newPet = Instantiate(petUITemplate, petContainer);
-        newPet.GetComponent<PetInInventory>().UnEquipPet(petTemplates[0], 1); // 0 = Zizala
-        bob.parent.GetComponent<QuestNPC>().StartQuest();
-        yield return new WaitForSeconds(49.3f);
+        newPet.GetComponent<PetInInventory>().UnEquipPet(petTemplates[0], 1); // 0 = Zizala   
+        petShowAnimator.transform.Find("NewPetPanel").Find("PetName").GetComponent<TextMeshProUGUI>().text = "Zizala";
+        petShowAnimator.Play("PetShow");
+        yield return new WaitForSeconds(6);
+        StartCoroutine(RotateStop(8));
+        SetCamera(playerCamera.transform, false);
+        SetCamera(cinematicPoints.Find("StartBreakableShow"), 5, 1.5f);
+        yield return new WaitForSeconds(5);
+        SetCamera(playerCamera.transform, 2, 1.5f);
+
+        yield return new WaitForSeconds(10);
         mainUI.ClosePanel(inventory);
+        StartCoroutine(PetInvIndicator());
     }
 
     private IEnumerator PlayAnimation(Transform character, Animator animator, string animName, float waitingTime, Vector3 charPosAfter, Quaternion charRotAfter, bool cameraCorection)
@@ -183,7 +212,7 @@ public class GameManager : MonoBehaviour
             {
                 playerCamera.CameraDistance = cameraDefaultDistance * i / loopRepeat;
                 playerCamera.VerticalArmLength = cameraDefaultLength * i / loopRepeat;
-                yield return new WaitForEndOfFrame();
+                yield return waitEndFrame;
             }
             playerCamera.CameraDistance = cameraDefaultDistance;
             playerCamera.VerticalArmLength = cameraDefaultLength;
@@ -191,11 +220,23 @@ public class GameManager : MonoBehaviour
 
         animator.Play("Idle");
     }
+
+    private void CameraMove(Transform cameraPoint)
+    {
+        worldCamera.transform.position = cameraPoint.position;
+        worldCamera.transform.rotation = cameraPoint.rotation;
+    }
+    private IEnumerator CameraChange(float delay)
+    {
+        worldCamera.enabled = true;
+        yield return new WaitForSeconds(delay);
+        worldCamera.enabled = false;
+    }
     private IEnumerator CameraFade(Transform endPoint, float time)
     {
         while (fading)
         {
-            yield return new WaitForEndOfFrame();
+            yield return waitEndFrame;
         }
         fading = true;
         Vector3 endPos = endPoint.position;
@@ -208,7 +249,7 @@ public class GameManager : MonoBehaviour
         {
             worldCamera.transform.position = Vector3.MoveTowards(worldCamera.transform.position, endPos, pathLength/(loopRepeat * time));
             worldCamera.transform.rotation = Quaternion.RotateTowards(worldCamera.transform.rotation, endRot, rotationLength/(loopRepeat * time));
-            yield return new WaitForEndOfFrame();
+            yield return waitEndFrame;
         }
         fading = false;
     }
@@ -226,55 +267,80 @@ public class GameManager : MonoBehaviour
         playerStats.canRotateCamera = true;
     }
 
+    private IEnumerator PetInvIndicator()
+    {
+        Image invBtn = mainUI.transform.Find("InvBtns").Find("InventoryButton").GetComponent<Image>();
+        while (!inventory.gameObject.activeSelf)
+        {
+            if (invBtn.color == Color.white) { invBtn.color = Color.yellow; }
+            else {  invBtn.color = Color.white;}
+            yield return wait05s;
+        }        
+    }
+
     //Bob Cinematics
     private IEnumerator BobQuest1()
     {
         yield return wait7s;
         StartCoroutine(RotateStop(10));
-        StartCoroutine(SetCamera(playerCamera.transform, true, 0, false , 0));
-        StartCoroutine(SetCamera(cinematicPoints.Find("BobQuest1"), false, 7, true, 4));
+        SetCamera(playerCamera.transform, false);
+        SetCamera(cinematicPoints.Find("BobQuest1"), 7, 4);
 
         yield return new WaitForSeconds(1.5f);
         Transform john = GameObject.Find("John").transform.Find("Character");
         StartCoroutine(PlayAnimation(john, john.GetComponent<Animator>(), "Wave", 2, john.position, john.rotation, false));
         yield return new WaitForSeconds(5.5f);
-        StartCoroutine(SetCamera(playerCamera.transform, false, 3, true, 4));
+        SetCamera(playerCamera.transform, 3, 4);
     }
     private IEnumerator BobQuest2()
     {
         yield return wait7s;
         StartCoroutine(RotateStop(19));
-        StartCoroutine(SetCamera(playerCamera.transform, true, 0, false, 0));
-        StartCoroutine(SetCamera(cinematicPoints.Find("BobQuest2"), false, 14, true, 4));
+        SetCamera(playerCamera.transform, false);
+        SetCamera(cinematicPoints.Find("BobQuest2"), 14, 4);
         mainUI.transform.Find("InvBtns").gameObject.SetActive(false);
         mainUI.transform.Find("QuestUI").gameObject.SetActive(false);
 
         yield return wait14s;
-        StartCoroutine(SetCamera(playerCamera.transform, false, 3, true, 4));
+        SetCamera(playerCamera.transform, 3, 4);
         mainUI.ClosePanel(inventory);
     }
     private IEnumerator BobQuest3()
     {
         yield return wait14s;
         StartCoroutine(RotateStop(18));
-        StartCoroutine(SetCamera(playerCamera.transform, true, 0, false, 0));
-        StartCoroutine(SetCamera(cinematicPoints.Find("BobQuest3"), false, 14, true, 3));
+        SetCamera(playerCamera.transform, false);
+        SetCamera(cinematicPoints.Find("BobQuest3"), 14, 3);
         GameObject.Find("Storage").transform.Find("Storage").position = new Vector3(5.59f, 1.62f, -19.33f);
 
         yield return wait14s;
-        StartCoroutine(SetCamera(playerCamera.transform, false, 3, true, 3));
+        SetCamera(playerCamera.transform, 3, 3);
     }
     private IEnumerator BobQuest5()
     {
         yield return wait7s;
         StartCoroutine(RotateStop(14));
-        StartCoroutine(SetCamera(playerCamera.transform, true, 0, false, 0));
-        StartCoroutine(SetCamera(cinematicPoints.Find("BobQuest5a"), false, 4, true, 3));
+        SetCamera(playerCamera.transform, false);
+        SetCamera(cinematicPoints.Find("BobQuest5a"), 4, 3);
         
         yield return new WaitForSeconds(4);
-        StartCoroutine(SetCamera(cinematicPoints.Find("BobQuest5b"), false, 5, true, 3));
+        SetCamera(cinematicPoints.Find("BobQuest5b"), 5, 3);
 
         yield return new WaitForSeconds(5);
-        StartCoroutine(SetCamera(playerCamera.transform, false, 3, true, 2));
+        SetCamera(playerCamera.transform, 3, 2);
+    }
+    private IEnumerator BobQuest6()
+    {
+        yield return wait14s;
+        StartCoroutine(RotateStop(14));
+        SetCamera(playerCamera.transform, false);
+        SetCamera(cinematicPoints.Find("BobQuest6"), 14, 3);
+
+        yield return new WaitForSeconds(2);
+        Transform frank = GameObject.Find("Frank").transform.Find("Character");
+        StartCoroutine(PlayAnimation(frank, frank.GetComponent<Animator>(), "Wave", 2, frank.position, frank.rotation, false));
+
+        yield return new WaitForSeconds(12);
+        SetCamera(playerCamera.transform, 3, 2);
     }
 }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925a0fe2e95f7cd4fb5420451033c339, type: 3}
   m_Name: BobQuest3a
   m_EditorClassIdentifier: 
+  id: quest_bob_3a
   questName: 3a
   required: 250
   reward: 0

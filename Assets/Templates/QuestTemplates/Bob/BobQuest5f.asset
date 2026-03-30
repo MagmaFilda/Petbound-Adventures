@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eb33981c83b1e64483f93e953bb5cbb, type: 3}
   m_Name: BobQuest5f
   m_EditorClassIdentifier: 
+  id: quest_bob_5f
   questName: "Kl\xED\u010D do nov\xE9 lokace"
   required: 10
   reward: 0

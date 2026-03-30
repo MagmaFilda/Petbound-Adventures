@@ -15,7 +15,10 @@ public class QuestNPC : MonoBehaviour
 
     private MainUI mainUI;
 
-    private int actualQuestNum = 0;
+    [HideInInspector]
+    public int actualQuestNum = 0;
+    [HideInInspector]
+    public bool activatedQuest = false;
     private ActiveQuest activeQuest;
 
     private void Start()
@@ -67,10 +70,15 @@ public class QuestNPC : MonoBehaviour
     }
     public void StartQuest()
     {
+        activatedQuest = true;
         QuestTemplate newQuest = quests[actualQuestNum];
         activeQuest = questManager.StartQuest(newQuest);
         StartCoroutine(ConversationDialog(newQuest.startOfQuest, 7f));
         gameManager.TryNpcEvent(transform.name, actualQuestNum, "start");
+    }
+    public void LoadQuest()
+    {
+        activeQuest = QuestManager.Instance.StartQuest(quests[actualQuestNum]);
     }
     private bool CheckQuest()
     {
@@ -92,6 +100,7 @@ public class QuestNPC : MonoBehaviour
     }
     private void EndQuest(QuestTemplate quest)
     {
+        activatedQuest = false;
         questManager.EndQuest(activeQuest);
 
         StartCoroutine(ConversationDialog(quest.endOfQuest, 7f));

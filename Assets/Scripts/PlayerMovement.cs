@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     public Transform cameraTransform;
     public Transform character;
 
+    public Transform tutorialPanel;
+
     private PlayerInput playerInput;
     private InputAction movementAction;
     private InputAction jumpAction;
@@ -15,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private InputAction rotateCameraAction;
     private InputAction zoomCameraAction;
     private InputAction changeFullscreenAction;
+    private InputAction menuAction;
     private CharacterController controller;
     private Animator animator;
 
@@ -27,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 cameraMove;
 
     private PlayerStats playerStats;
+    private MainUI mainUI;
     private CinemachineThirdPersonFollow zoomCamera;
 
     private void Start()
@@ -38,10 +42,12 @@ public class PlayerMovement : MonoBehaviour
         rotateCameraAction = playerInput.actions.FindAction("DoRotate");
         zoomCameraAction = playerInput.actions.FindAction("Zoom");
         changeFullscreenAction = playerInput.actions.FindAction("Fullscreen");
+        menuAction = playerInput.actions.FindAction("Menu");
         controller = GetComponent<CharacterController>();
         animator = character.GetComponent<Animator>();
 
         playerStats = PlayerStats.Instance;
+        mainUI = FindFirstObjectByType<MainUI>();
         zoomCamera = cameraTransform.Find("Third Person Aim Camera").GetComponent<CinemachineThirdPersonFollow>();
     }
 
@@ -67,6 +73,10 @@ public class PlayerMovement : MonoBehaviour
             {
                 Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
             }
+        }
+        if (menuAction.triggered && playerStats.canMove)
+        {
+            mainUI.OpenPanel(mainUI.transform.Find("MenuPanel"));
         }
     }
 
@@ -143,14 +153,26 @@ public class PlayerMovement : MonoBehaviour
             cameraYaw += cameraMove.x * 0.3f;
 
             cameraTransform.localRotation = Quaternion.Euler(cameraPitch, cameraYaw, 0);
-        }
 
-        float zoomPower = zoomCameraAction.ReadValue<Vector2>().y;
-        if (zoomPower != 0)
-        {
-            zoomCamera.CameraDistance += (-zoomPower/2);
-            if (zoomCamera.CameraDistance < 2) { zoomCamera.CameraDistance = 2; }
-            else if (zoomCamera.CameraDistance > 8) { zoomCamera.CameraDistance = 8;}
+            if (tutorialPanel.Find("RotateImg").gameObject.activeSelf)
+            {
+                tutorialPanel.Find("RotateImg").gameObject.SetActive(false);
+                tutorialPanel.Find("ZoomImg").gameObject.SetActive(true);
+            }
+
+            float zoomPower = zoomCameraAction.ReadValue<Vector2>().y;
+            if (zoomPower != 0)
+            {
+                zoomCamera.CameraDistance += (-zoomPower / 2);
+                if (zoomCamera.CameraDistance < 2) { zoomCamera.CameraDistance = 2; }
+                else if (zoomCamera.CameraDistance > 8) { zoomCamera.CameraDistance = 8; }
+
+                if (tutorialPanel.gameObject.activeSelf && tutorialPanel.Find("ZoomImg").gameObject.activeSelf)
+                {
+                    tutorialPanel.Find("ZoomImg").gameObject.SetActive(false);
+                    tutorialPanel.gameObject.SetActive(false);
+                }
+            }
         }
     }
 }

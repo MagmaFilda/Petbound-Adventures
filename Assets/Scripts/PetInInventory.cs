@@ -13,22 +13,22 @@ public class PetInInventory : MonoBehaviour
     private PlayerStats playerStats = PlayerStats.Instance;
     private MainUI mainUI;
 
-    private Transform player;
     private Transform UIEquipPanel;
 
-    private PetTemplate petTemplate;
+    public PetTemplate petTemplate { get; private set; }
     public string petName { get; private set; }
     public Rarity rarity { get; private set; }
     public int damage { get; private set; }
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
         UIEquipPanel = GameObject.FindGameObjectWithTag("EquipPanel").transform;
     }
 
     public void NewPet(PetTemplate template)
     {
+        mainUI = FindFirstObjectByType<MainUI>();
+
         petTemplate = template;
 
         petName = template.petName;
@@ -43,6 +43,8 @@ public class PetInInventory : MonoBehaviour
     }
     public void UnEquipPet(PetTemplate template, int dmg)
     {
+        mainUI = FindFirstObjectByType<MainUI>();
+
         petTemplate = template;
 
         petName = template.petName;
@@ -65,8 +67,13 @@ public class PetInInventory : MonoBehaviour
         }
 
         if (playerStats.EquippedPets.Count < playerStats.maxEquippedPets)
-        {           
-            Transform newPetModel = Instantiate(petTemplate.petPrefab, player.position, player.rotation);
+        {
+            if (!UIEquipPanel)
+            {
+                UIEquipPanel = GameObject.Find("MainCanvas").transform.Find("Inventory").Find("Equip");
+            }
+
+            Transform newPetModel = Instantiate(petTemplate.petPrefab, playerStats.transform.position, playerStats.transform.rotation);
             newPetModel.GetComponent<Pet>().SetDamage(damage);
             playerStats.EquippedPets.Add(newPetModel);
            
