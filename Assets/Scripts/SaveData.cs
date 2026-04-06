@@ -36,4 +36,6 @@ public class SaveData
 
     public int totalOpenEggs = 0;
     public int totalBreakables = 0;
+
+    public bool newGame = true;
 }

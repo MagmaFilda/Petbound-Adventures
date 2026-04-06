@@ -10,6 +10,14 @@ public class BreakableArea : MonoBehaviour
     public Transform tier4Transform;
     public Transform tier5Transform;
 
+    [Header("Chances")]
+    public int rangeOfRandom;
+    public int tier1chance;
+    public int tier2chance;
+    public int tier3chance;
+    public int tier4chance;
+    //tier5 nemusi stejne to vyjde
+
     [Header("Particle")]
     public Transform particle;
 
@@ -119,21 +127,21 @@ public class BreakableArea : MonoBehaviour
 
     private Transform GetBreakableTier()
     {
-        int rNum = Random.Range(1, 101);
-        if (rNum == 100)
+        int rNum = Random.Range(1, rangeOfRandom+1);
+        if (rNum > tier1chance + tier2chance + tier3chance+ tier4chance)
         {
             tier5Reserve += 1;
             return tier5Transform;
         }
-        else if (rNum >= 95)
+        else if (rNum >= tier1chance + tier2chance + tier3chance)
         {
             return tier4Transform;
         }
-        else if (rNum >= 81)
+        else if (rNum > tier1chance + tier2chance)
         {
             return tier3Transform;
         }
-        else if (rNum >= 51)
+        else if (rNum > tier1chance)
         {
             return tier2Transform;
         }

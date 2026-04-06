@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: quest_bob_1
   questName: "Prvn\xED vlastn\xED pen\xEDze"
-  required: 25
+  required: 15
   reward: 50
   startOfQuest:
   - "Znovu t\u011B zdrav\xEDm! U\u017E v\xED\u0161 jak se zde z\xEDsk\xE1vaj\xED
@@ -22,7 +22,7 @@ MonoBehaviour:
     pen\xEDze."
   - "V\xEDd\xED\u0161 tam toho t\xFDpka v \u010Dern\xE9m triku ? To je John. Zdej\u0161\xED
     obchodn\xEDk, kter\xFD ti sm\u011Bn\xED tv\xE9 suroviny za pen\xEDze."
-  - "Z\xEDskej dal\u0161\xEDch 25 coin\u016F, 25 u\u017E m\xE1\u0161 u sebe. Tu hl\xEDnu
+  - "Z\xEDskej dal\u0161\xEDch 15 coin\u016F, 10 u\u017E m\xE1\u0161 u sebe. Tu hl\xEDnu
     co m\xE1\u0161 prodej u Johna a zbytek bude\u0161 muset zase dot\u011B\u017Eit."
   - "Po dokon\u010Den\xED tohoto \xFAkolu ti uk\xE1\u017Eu velmi d\u016Fle\u017Eit\xE9
     m\xEDsto pro zrychlen\xED tv\xE9ho sna\u017Een\xED :)"

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BobQuest3d
   m_EditorClassIdentifier: 
   id: quest_bob_3d
-  questName: Tiery breakables
+  questName: "\xDArovn\u011B t\u011B\u017Eebn\xEDch objekt\u016F"
   required: 5
   reward: 0
   startOfQuest: []

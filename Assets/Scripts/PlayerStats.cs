@@ -58,6 +58,7 @@ public class PlayerStats : MonoBehaviour
     [HideInInspector]
     public bool deleteMode = false;
 
+    private GameManager gameManager;
     private PlayerInput playerInput;
     private InputAction clickAction;
 
@@ -90,6 +91,8 @@ public class PlayerStats : MonoBehaviour
     }
     private void Start()
     {
+        gameManager = GameManager.Instance;
+
         playerInput = GetComponent<PlayerInput>();
         clickAction = playerInput.actions.FindAction("Click");
 
@@ -113,7 +116,7 @@ public class PlayerStats : MonoBehaviour
         mainUI = FindFirstObjectByType<MainUI>();
 
         petTemplates = Resources.LoadAll<PetTemplate>("Templates/PetTemplates/DirtCave");
-        itemTemplates = Resources.LoadAll<ItemTemplate>("Templates/ItemTemplates/DirtCave");
+        itemTemplates = Resources.LoadAll<ItemTemplate>("Templates/ItemTemplates");
 
         LoadData();
     }
@@ -122,11 +125,30 @@ public class PlayerStats : MonoBehaviour
     {
         CheckingClick();
         ChangeCoinsDetection();
+
+        if (Keyboard.current.f11Key.wasPressedThisFrame)
+        {
+            if (Screen.fullScreenMode == FullScreenMode.FullScreenWindow)
+            {
+                Screen.fullScreenMode = FullScreenMode.Windowed;
+                Screen.SetResolution(1920, 1080, false);
+            }
+            else
+            {
+                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+            }
+        }
+        if (Keyboard.current.escapeKey.wasPressedThisFrame && canMove)
+        {
+            mainUI.OpenPanel(mainUI.transform.Find("MenuPanel"));
+        }
+
     }
 
     public void SaveData()
     {
         SaveData savingData = new SaveData();
+        savingData.newGame = false;
 
         savingData.coins = coins;
         savingData.playerSpeed = playerSpeed;
@@ -210,6 +232,15 @@ public class PlayerStats : MonoBehaviour
             byte[] bytes = System.Convert.FromBase64String(encoded);
             string json = System.Text.Encoding.UTF8.GetString(bytes);
             SaveData loadedData = JsonUtility.FromJson<SaveData>(json);
+
+            if (loadedData.newGame)
+            {
+                StartCoroutine(gameManager.StartCutscene());
+            }
+            else
+            {
+                StartCoroutine(gameManager.LoadNormally());
+            }
 
             coins = loadedData.coins;
             playerSpeed = loadedData.playerSpeed;
@@ -313,6 +344,10 @@ public class PlayerStats : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            StartCoroutine(gameManager.StartCutscene());
+        }
     }
     private void ChangeCoinsDetection()
     {
@@ -379,6 +414,10 @@ public class PlayerStats : MonoBehaviour
             {
                 npc.activatedQuest = true;
                 npc.LoadQuest();
+            }
+            if (loadedData.npcName[i] == "Bob" && loadedData.npcQuestNum[i] >= 4)
+            {
+                GameObject.Find("Storage").transform.Find("Storage").position = new Vector3(5.59f, 1.62f, -19.33f);
             }
         }
         for (int i = 0; i < loadedData.quests.Count; i++)

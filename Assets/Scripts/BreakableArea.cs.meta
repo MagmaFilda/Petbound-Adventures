@@ -1,2 +1,17 @@
 fileFormatVersion: 2
 guid: 0897b9410e9607b44be5118930bd01a5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - tier1Transform: {instanceID: 0}
+  - tier2Transform: {instanceID: 0}
+  - tier3Transform: {instanceID: 0}
+  - tier4Transform: {instanceID: 0}
+  - tier5Transform: {instanceID: 0}
+  - particle: {fileID: 484659656874388046, guid: 2fbcea4db1db15646ab395d5078df6df, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

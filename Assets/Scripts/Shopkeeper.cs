@@ -8,10 +8,8 @@ public class Shopkeeper : MonoBehaviour
 {
     public ShopTemplate template;
 
-    public Transform mainUI;
     public Transform openUI;
     public Transform shopkeeperUI;
-    public Transform hitbox;
     public TextMeshProUGUI bonusPartTemplate;
 
     public Transform cameraPoints;
@@ -23,7 +21,7 @@ public class Shopkeeper : MonoBehaviour
 
     private PlayerStats playerStats;
     private GameManager gameManager;
-    private MainUI uiScript;
+    private MainUI mainUI;
 
     private Transform character;
 
@@ -34,7 +32,7 @@ public class Shopkeeper : MonoBehaviour
     {
         playerStats = PlayerStats.Instance;
         gameManager = GameManager.Instance;
-        uiScript = mainUI.GetComponent<MainUI>();
+        mainUI = FindFirstObjectByType<MainUI>();
 
         character = playerStats.transform.Find("Character");
 
@@ -49,7 +47,7 @@ public class Shopkeeper : MonoBehaviour
         if (openUI.gameObject.activeSelf && Keyboard.current.eKey.wasPressedThisFrame && playerStats.canShowInteract)
         {
             
-            uiScript.OpenPanel(shopkeeperUI);
+            mainUI.OpenPanel(shopkeeperUI);
             openUI.gameObject.SetActive(false);
 
             itemNum = 0;
@@ -63,6 +61,7 @@ public class Shopkeeper : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             openUI.gameObject.SetActive(true);
+            transform.Find("NpcIcon").gameObject.SetActive(false);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -70,6 +69,7 @@ public class Shopkeeper : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             openUI.gameObject.SetActive(false);
+            transform.Find("NpcIcon").gameObject.SetActive(true);
         }
     }
 
@@ -96,7 +96,7 @@ public class Shopkeeper : MonoBehaviour
         btn.onClick.RemoveAllListeners();
 
         Transform bonusPanel = shopkeeperUI.Find("BonusStatsPanel");
-        uiScript.ClearAllChilds(bonusPanel);
+        mainUI.ClearAllChilds(bonusPanel);
         for (int i = 0; i < itemTemplate.upgrades.Length; i++)
         {
             TextMeshProUGUI bonusStat = Instantiate(bonusPartTemplate, bonusPanel);
@@ -126,6 +126,10 @@ public class Shopkeeper : MonoBehaviour
             {
                 btnTxt.text = "Vlastnìno";
                 btn.onClick.AddListener(() => InteractItem(itemTemplate, true));
+            }
+            else if (itemTemplate.rebuyable == 0)
+            {
+                btnTxt.text = "Nelze koupit";
             }
             else
             {

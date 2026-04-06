@@ -7,9 +7,6 @@ using UnityEngine.UI;
 
 public class Storage : MonoBehaviour
 {
-    [Header("MainUI")]
-    public Canvas mainCanvas;
-
     [Header("Object")]
     public Transform openUI;
 
@@ -26,7 +23,7 @@ public class Storage : MonoBehaviour
     public Transform ResourceUITemplate;
     public Transform resourceInv;
 
-    private MainUI uiScript;
+    private MainUI mainUI;
     private PlayerStats playerStats;
 
     private TextMeshProUGUI fromText;
@@ -34,7 +31,7 @@ public class Storage : MonoBehaviour
 
     private void Awake()
     {
-        uiScript = mainCanvas.GetComponent<MainUI>();
+        mainUI = FindFirstObjectByType<MainUI>();
 
         fromText = transferPanel.Find("From").GetComponent<TextMeshProUGUI>();
         toText = transferPanel.Find("To").GetComponent<TextMeshProUGUI>();
@@ -48,7 +45,7 @@ public class Storage : MonoBehaviour
         if (openUI.gameObject.activeSelf && Keyboard.current.eKey.wasPressedThisFrame && playerStats.canShowInteract)
         {
             SetStorageInv();
-            uiScript.OpenPanel(storagePanel);
+            mainUI.OpenPanel(storagePanel);
         }
     }
 
@@ -69,13 +66,14 @@ public class Storage : MonoBehaviour
 
     private void SetStorageInv()
     {
-        uiScript.OpenPanel(resourceInv);
-        uiScript.SetResourceInv();
+        mainUI.OpenPanel(resourceInv);
+        mainUI.SetResourceInv();
         resourceInv.Find("ExitBtn").gameObject.SetActive(false);
         resourceInv.GetComponent<RectTransform>().localScale = new Vector2(0.6f, 0.6f);
         resourceInv.GetComponent<RectTransform>().anchoredPosition = new Vector3(-201, -6.2f, 0);
-        uiScript.ClearAllChilds(storageContainer);
+        mainUI.ClearAllChilds(storageContainer);
 
+        int resCount = 0;
         foreach (Resource res in playerStats.StorageResources.Keys.ToArray())
         {
             if (playerStats.StorageResources[res] > 0)
@@ -83,29 +81,31 @@ public class Storage : MonoBehaviour
                 Transform newResourceUI = Instantiate(ResourceUITemplate, storageContainer);
                 newResourceUI.Find("ResourceName").GetComponent<TextMeshProUGUI>().text = res.ToString();
                 newResourceUI.Find("Amount").GetComponent<TextMeshProUGUI>().text = playerStats.StorageResources[res].ToString();
+                resCount += playerStats.StorageResources[res];
 
                 string path = "ResourceIcons/" + res.ToString();
-                uiScript.SetImage(newResourceUI.Find("Image").GetComponent<Image>(), path);
+                mainUI.SetImage(newResourceUI.Find("Image").GetComponent<Image>(), path);
 
                 Button resBtn = newResourceUI.GetComponent<Button>();
                 resBtn.enabled = true;
                 resBtn.onClick.AddListener(() => SetTransfromPanel(false, newResourceUI.Find("ResourceName").GetComponent<TextMeshProUGUI>().text));
-                resBtn.onClick.AddListener(() => uiScript.OpenPanel(transferPanel));
+                resBtn.onClick.AddListener(() => mainUI.OpenPanel(transferPanel));
             }
         }
+        storageInv.Find("Limit").GetComponent<TextMeshProUGUI>().text = resCount + "/" + playerStats.storageCapacity;
 
         foreach (Transform resUI in resourceContainer)
         {
             Button resBtn = resUI.GetComponent<Button>();
             resBtn.enabled = true;
             resBtn.onClick.AddListener(() => SetTransfromPanel(true, resUI.Find("ResourceName").GetComponent<TextMeshProUGUI>().text));
-            resBtn.onClick.AddListener(() => uiScript.OpenPanel(transferPanel));
+            resBtn.onClick.AddListener(() => mainUI.OpenPanel(transferPanel));
         }
     }
     private void SetTransfromPanel(bool toStorage, string resName)
     {
-        uiScript.ClosePanel(resourceInv);
-        uiScript.ClosePanel(storageInv);
+        mainUI.ClosePanel(resourceInv);
+        mainUI.ClosePanel(storageInv);
 
         Dictionary<Resource, int> findingDictionary;
 
@@ -123,10 +123,10 @@ public class Storage : MonoBehaviour
             fromText.text = "Storage";
             toText.text = "Inventory";
         }
-        Resource transferingRes = uiScript.GetResourceFromString(resName, findingDictionary);
+        Resource transferingRes = mainUI.GetResourceFromString(resName, findingDictionary);
 
         string path = "ResourceIcons/" + transferingRes;
-        uiScript.SetImage(transferPanel.Find("ResImg").GetComponent<Image>(), path);
+        mainUI.SetImage(transferPanel.Find("ResImg").GetComponent<Image>(), path);
 
         transferPanel.Find("ActualCount").Find("Text").GetComponent<TextMeshProUGUI>().text = findingDictionary[transferingRes].ToString();
         findingDictionary = null;

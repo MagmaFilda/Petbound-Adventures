@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     [Header("CutsceneThings")]
     public GameObject tutorialPanel;
+    public Image fadePanel;
     public Transform cinematicPoints;
     public Camera worldCamera;
 
@@ -59,12 +60,6 @@ public class GameManager : MonoBehaviour
         playerAnimator = playerCharacter.GetComponent<Animator>();
 
         petContainer = inventory.Find("PetsPanel").Find("ScrollRect").Find("PetContainer");
-
-        //StartCoroutine(StartCutscene());
-
-        playerStats.canRotateCamera = true;
-        playerStats.canMove = true;
-        mainUI.ClosePanel(inventory);
     }
 
     public void TryNpcEvent(string npcName, int questNum, string special)
@@ -99,10 +94,6 @@ public class GameManager : MonoBehaviour
                         {
                             StartCoroutine(BobQuest5());
                         }
-                        //else if (special == "end")
-                        //{
-                        //    mainUI.OpenPanel(mainUI.transform.Find("EndPanel"));
-                        //}
                         break;
                     case 6:
                         if (special == "start")
@@ -115,6 +106,27 @@ public class GameManager : MonoBehaviour
                         {
                             playerStats.OwnedItems.Add(keys[0]); // 0 = Village Key
                             GameObject.Find("VillageGate").GetComponent<BoxCollider>().enabled = false;
+                        }
+                        break;
+                }
+                break;
+            case "Jane":
+                switch (questNum)
+                {
+                    case 1:
+                        if (special == "start")
+                        {
+                            StartCoroutine(JaneQuest2());
+                        }
+                        break;
+                    case 2:
+                        if (special == "start")
+                        {
+                            StartCoroutine(JaneQuest3());
+                        }
+                        else if (special == "end")
+                        {
+                            mainUI.OpenPanel(mainUI.transform.Find("EndPanel"));
                         }
                         break;
                 }
@@ -143,22 +155,60 @@ public class GameManager : MonoBehaviour
         StartCoroutine(CameraFade(cameraPoint, fadeTime));
     }
 
-    private IEnumerator StartCutscene()
+    public IEnumerator LoadNormally()
+    {
+        while (fadePanel.color.a > 0)
+        {
+            fadePanel.color = new Color(0, 0, 0, fadePanel.color.a - Time.deltaTime);
+            yield return null;
+        }
+        fadePanel.gameObject.SetActive(false);
+
+        playerStats.canRotateCamera = true;
+        playerStats.canMove = true;
+        StartCoroutine(ShowUI(1));
+    }
+    public IEnumerator StartCutscene()
     {
         float cameraStartLength = 0.75f;
         float cameraStartDistance = 0;
+        Transform fallPoint = cinematicPoints.Find("FallPoint");
+        Transform fadePoint = cinematicPoints.Find("FadePoint");
         Transform startPoint = cinematicPoints.Find("StartCutscenePoint");
         Transform startMovementPoint = cinematicPoints.Find("StartMovementPoint");
         Transform startBobPoint = cinematicPoints.Find("BobStartAnimPoint");
         Transform bob = GameObject.Find("Bob").transform.Find("Character");
+        bob.parent.Find("NpcIcon").gameObject.SetActive(false);
         Vector3 bobDefaultPos = bob.position;
         Quaternion bobDefaultRot = bob.rotation;
         Animator bobAnimator = bob.GetComponent<Animator>();
 
-        player.position = startPoint.position;
-        player.rotation = startPoint.rotation;
         playerCamera.CameraDistance = cameraStartDistance;
         playerCamera.VerticalArmLength = cameraStartLength;
+        player.position = fallPoint.position;
+        player.rotation = fallPoint.rotation;
+
+        while (fadePanel.color.a > 0)
+        {
+            fadePanel.color = new Color(0, 0, 0, fadePanel.color.a - Time.deltaTime);
+            yield return null;
+        }
+        
+        while (Vector3.Magnitude(player.position-fadePoint.position) > 0.1f)
+        {
+            player.position = Vector3.MoveTowards(player.position, fadePoint.position, 5 * Time.deltaTime);
+            yield return null;
+        }
+        while (fadePanel.color.a < 1)
+        {
+            fadePanel.color = new Color(0, 0, 0, fadePanel.color.a + Time.deltaTime);
+            player.position = Vector3.MoveTowards(player.position, startPoint.position, 3 * Time.deltaTime);
+            yield return null;
+        }
+        
+        player.position = startPoint.position;
+        player.rotation = startPoint.rotation;
+
         playerFace.SetActive(false);
 
         bob.position = startBobPoint.position;
@@ -166,12 +216,13 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(PlayAnimation(player, playerAnimator, "StartAnimation", 7.5f, startMovementPoint.position, startMovementPoint.rotation, true));
         StartCoroutine(RotateStop(10));
-        StartCoroutine(MoveStop(57));
+        StartCoroutine(MoveStop(64));
+        fadePanel.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(3.3f);
         StartCoroutine(PlayAnimation(bob, bobAnimator, "BobStart", 4, bob.position, bob.rotation, false));
         yield return new WaitForSeconds(4);
-        StartCoroutine(PlayAnimation(bob, bobAnimator, "Wave", 49, bobDefaultPos, bobDefaultRot, false));
+        StartCoroutine(PlayAnimation(bob, bobAnimator, "Wave", 56, bobDefaultPos, bobDefaultRot, false));
         bob.parent.GetComponent<QuestNPC>().StartQuest();
         yield return new WaitForSeconds(4);
         tutorialPanel.SetActive(true);
@@ -184,13 +235,14 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(6);
         StartCoroutine(RotateStop(8));
         SetCamera(playerCamera.transform, false);
-        SetCamera(cinematicPoints.Find("StartBreakableShow"), 5, 1.5f);
-        yield return new WaitForSeconds(5);
+        SetCamera(cinematicPoints.Find("StartBreakableShow"), 7, 1.5f);
+        yield return new WaitForSeconds(7);
         SetCamera(playerCamera.transform, 2, 1.5f);
 
-        yield return new WaitForSeconds(10);
-        mainUI.ClosePanel(inventory);
-        StartCoroutine(PetInvIndicator());
+        yield return new WaitForSeconds(15);
+        bob.parent.Find("NpcIcon").gameObject.SetActive(true);
+        StartCoroutine(ShowUI(0));
+        StartCoroutine(TutorialNavigation());
     }
 
     private IEnumerator PlayAnimation(Transform character, Animator animator, string animName, float waitingTime, Vector3 charPosAfter, Quaternion charRotAfter, bool cameraCorection)
@@ -267,15 +319,88 @@ public class GameManager : MonoBehaviour
         playerStats.canRotateCamera = true;
     }
 
-    private IEnumerator PetInvIndicator()
+    private IEnumerator ShowUI(float delay)
     {
+        yield return new WaitForSeconds(delay);
+        mainUI.ClosePanel(inventory);
+    }
+    private IEnumerator TutorialNavigation()
+    {
+        Transform indicatorPetArrow = Instantiate(petUITemplate, petContainer);
+        indicatorPetArrow.Find("PetName").gameObject.SetActive(false);
+        indicatorPetArrow.Find("DamageText").gameObject.SetActive(false);
+        indicatorPetArrow.Find("Rarity").gameObject.SetActive(false);
+        indicatorPetArrow.GetComponent<Button>().enabled = false;
+        mainUI.SetImage(indicatorPetArrow.Find("Image").GetComponent<Image>(), "Images/ClickArrow");
+
         Image invBtn = mainUI.transform.Find("InvBtns").Find("InventoryButton").GetComponent<Image>();
         while (!inventory.gameObject.activeSelf)
         {
             if (invBtn.color == Color.white) { invBtn.color = Color.yellow; }
             else {  invBtn.color = Color.white;}
             yield return wait05s;
-        }        
+        }  
+        invBtn.color = Color.white;
+        while (playerStats.EquippedPets.Count == 0)
+        {
+            yield return wait05s;           
+        }
+        Destroy(indicatorPetArrow.gameObject);
+
+        Transform dirtCaveArea = GameObject.Find("DirtCaveBA").transform;
+        Transform lowestTierBreakable = dirtCaveArea.GetChild(0);
+        for (int i = 0; i < dirtCaveArea.childCount; i++)
+        {
+            Tier lowestTier = lowestTierBreakable.GetComponent<Breakable>().tier;
+
+            Transform breakable = dirtCaveArea.GetChild(i);
+            Tier breakableTier = breakable.GetComponent<Breakable>().template.tier;
+            if (breakableTier == Tier.Tier1)
+            {
+                if (lowestTier != Tier.Tier1)
+                {
+                    lowestTierBreakable = breakable;
+                }
+            }
+            else if (breakableTier == Tier.Tier2)
+            {
+
+                if (lowestTier != Tier.Tier1 && lowestTier != Tier.Tier2)
+                {
+                    lowestTierBreakable = breakable;
+                }
+            }
+            else if (breakableTier == Tier.Tier3)
+            {
+                if (lowestTier != Tier.Tier1 && lowestTier != Tier.Tier2 && lowestTier != Tier.Tier3)
+                {
+                    lowestTierBreakable = breakable;
+                }
+            }            
+        }
+        Transform healthCanvas = lowestTierBreakable.Find("HealthCanvas");
+        for (int i = 0; i < healthCanvas.childCount; i++)
+        {
+            healthCanvas.GetChild(i).gameObject.SetActive(false);
+        }
+
+        GameObject arrowObject = Instantiate(new GameObject(), healthCanvas);
+        RectTransform arrowTransform = arrowObject.AddComponent<RectTransform>();
+        arrowTransform.SetLocalPositionAndRotation(new Vector3(0,0.95f,0), Quaternion.Euler(0,0,90));
+        arrowTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1);
+        arrowTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 1);
+        mainUI.SetImage(arrowObject.AddComponent<Image>(), "Images/Arrow");
+
+        healthCanvas.gameObject.SetActive(true);
+        int startHealth = lowestTierBreakable.GetComponent<Breakable>().health;
+        while (startHealth == lowestTierBreakable.GetComponent<Breakable>().health)
+        {
+            yield return wait05s;
+        }
+        for (int i = 0; i < healthCanvas.childCount; i++)
+        {
+            healthCanvas.GetChild(i).gameObject.SetActive(true);
+        }
     }
 
     //Bob Cinematics
@@ -303,7 +428,7 @@ public class GameManager : MonoBehaviour
 
         yield return wait14s;
         SetCamera(playerCamera.transform, 3, 4);
-        mainUI.ClosePanel(inventory);
+        StartCoroutine(ShowUI(0));
     }
     private IEnumerator BobQuest3()
     {
@@ -342,5 +467,27 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(12);
         SetCamera(playerCamera.transform, 3, 2);
+    }
+
+    // Jane Cinematics
+    private IEnumerator JaneQuest2()
+    {
+        yield return wait7s;
+        StartCoroutine(RotateStop(24));
+        SetCamera(playerCamera.transform, false);
+        SetCamera(cinematicPoints.Find("JaneQuest2"), 21, 1);
+
+        yield return new WaitForSeconds(21);
+        SetCamera(playerCamera.transform, 2, 1);
+    }
+    private IEnumerator JaneQuest3()
+    {
+        yield return wait14s;
+        StartCoroutine(RotateStop(10));
+        SetCamera(playerCamera.transform, false);
+        SetCamera(cinematicPoints.Find("JaneQuest3"), 7, 1);
+
+        yield return wait7s;
+        SetCamera(playerCamera.transform, 2, 1);
     }
 }

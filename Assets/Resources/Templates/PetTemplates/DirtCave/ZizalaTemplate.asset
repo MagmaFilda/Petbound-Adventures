@@ -17,5 +17,5 @@ MonoBehaviour:
   rarity: 0
   speed: 5
   minDamage: 1
-  maxDamage: 4
+  maxDamage: 3
   petPrefab: {fileID: 1081070718777224497, guid: 65efedd908f9cde43ac169bfe3edfdb8, type: 3}

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 925a0fe2e95f7cd4fb5420451033c339, type: 3}
+  m_Name: JaneQuest2
+  m_EditorClassIdentifier: 
+  id: quest_jane_2
+  questName: Keramika
+  required: 1
+  reward: 3000
+  startOfQuest:
+  - "Znovu t\u011B zdrav\xEDm. Tak jo, provedu t\u011B zdej\u0161\xED crafting syst\xE9mem."
+  - "Tohle je crafting st\u016Fl, u n\u011Bho m\u016F\u017Ee\u0161 tvo\u0159it nov\xE9
+    suroviny a p\u0159edm\u011Bty."
+  - "Kdy\u017E m\xE1\u0161 dostatek pot\u0159ebn\xFDch surovin na tvorbu sta\u010D\xED
+    kliknout na ten v\xFDsledn\xFD p\u0159edm\u011Bt/surovinu."
+  - "T\xEDm to z\xEDsk\xE1\u0161. Budu po tob\u011B cht\xEDt z\xEDskat surovinu ceramic.
+    Je to zdej\u0161\xED nejhodnotn\u011Bj\u0161\xED surovina."
+  - "John ti za ni d\xE1 fakt hodn\u011B pen\u011Bz. Ale taky m\u016F\u017Ee\u0161
+    prodat i bricky, kter\xE9 zde dok\xE1\u017Ee\u0161 taky vytvo\u0159it."
+  - "Ty m\u016F\u017Ee\u0161 u Johna taky prodat. Asi ti to bude chv\xEDli trvat,
+    ale j\xE1 ti v\u011B\u0159\xEDm."
+  endOfQuest:
+  - "Gratulace k tv\xE9mu \xFAsp\u011Bchu. Tady m\xE1\u0161 3000 coin\u016F jako
+    bonus."
+  - "Te\u010F kdy\u017E zn\xE1s z\xE1kladn\xED tvorbu surovin, porad\xEDm ti je\u0161t\u011B
+    s p\u0159edm\u011Bty, ale to mus\xED\u0161 za mnou zase doj\xEDt."
+  requiredResource: 4

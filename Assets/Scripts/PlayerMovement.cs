@@ -16,8 +16,6 @@ public class PlayerMovement : MonoBehaviour
     private InputAction moveCameraAction;
     private InputAction rotateCameraAction;
     private InputAction zoomCameraAction;
-    private InputAction changeFullscreenAction;
-    private InputAction menuAction;
     private CharacterController controller;
     private Animator animator;
 
@@ -30,7 +28,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 cameraMove;
 
     private PlayerStats playerStats;
-    private MainUI mainUI;
     private CinemachineThirdPersonFollow zoomCamera;
 
     private void Start()
@@ -41,13 +38,10 @@ public class PlayerMovement : MonoBehaviour
         moveCameraAction = playerInput.actions.FindAction("CameraMove");
         rotateCameraAction = playerInput.actions.FindAction("DoRotate");
         zoomCameraAction = playerInput.actions.FindAction("Zoom");
-        changeFullscreenAction = playerInput.actions.FindAction("Fullscreen");
-        menuAction = playerInput.actions.FindAction("Menu");
         controller = GetComponent<CharacterController>();
         animator = character.GetComponent<Animator>();
 
         playerStats = PlayerStats.Instance;
-        mainUI = FindFirstObjectByType<MainUI>();
         zoomCamera = cameraTransform.Find("Third Person Aim Camera").GetComponent<CinemachineThirdPersonFollow>();
     }
 
@@ -60,23 +54,6 @@ public class PlayerMovement : MonoBehaviour
         if (playerStats.canRotateCamera)
         {
             CameraMovement();
-        }
-
-        if (changeFullscreenAction.triggered)
-        {
-            if (Screen.fullScreenMode == FullScreenMode.FullScreenWindow)
-            {
-                Screen.fullScreenMode = FullScreenMode.Windowed;
-                Screen.SetResolution(1920,1080,false);
-            }
-            else
-            {
-                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
-            }
-        }
-        if (menuAction.triggered && playerStats.canMove)
-        {
-            mainUI.OpenPanel(mainUI.transform.Find("MenuPanel"));
         }
     }
 

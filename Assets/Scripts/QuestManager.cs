@@ -154,16 +154,16 @@ public class QuestManager : MonoBehaviour
                 DestroyBreakablesQuest breakablesQuest = quest.template as DestroyBreakablesQuest;
                 if (breakablesQuest.anyTiers)
                 {
-                    title.text = "Zniè breakables";
+                    title.text = "Zniè tìžební objekty";
                 }
                 else
                 {
-                    title.text = "Zniè " + breakablesQuest.allowedTiers[0].ToString() + " breakables";
+                    title.text = "Zniè tìžební objekty úrovnì " + breakablesQuest.allowedTiers[0].ToString()[4];
                 }
                 break;
             case QuestType.GetItem:
                 GetItemQuest itemQuest = quest.template as GetItemQuest;
-                title.text = "Získej: " + itemQuest.item.item.name;
+                title.text = "Získej: " + itemQuest.item.itemName;
                 break;
         }
         

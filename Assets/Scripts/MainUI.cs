@@ -57,7 +57,7 @@ public class MainUI : MonoBehaviour
     public void UpdateCoins()
     {
         TextMeshProUGUI coinTxt = coinsText.GetComponent<TextMeshProUGUI>();
-        coinTxt.text = "Coins: " + playerStats.coins.ToString();
+        coinTxt.text = "Coiny: " + playerStats.coins.ToString();
     }
 
     public void BackToMenu()
@@ -124,6 +124,7 @@ public class MainUI : MonoBehaviour
         resourceInv.Find("ExitBtn").gameObject.SetActive(true);
         ClearAllChilds(resourceContainer);
 
+        int resCount = 0;
         foreach (Resource res in playerStats.PlayerResources.Keys)
         {
             if (playerStats.PlayerResources[res] > 0)
@@ -131,11 +132,13 @@ public class MainUI : MonoBehaviour
                 Transform newResourceUI = Instantiate(ResourceUITemplate, resourceContainer);
                 newResourceUI.Find("ResourceName").GetComponent<TextMeshProUGUI>().text = res.ToString();
                 newResourceUI.Find("Amount").GetComponent<TextMeshProUGUI>().text = playerStats.PlayerResources[res].ToString();
+                resCount += playerStats.PlayerResources[res];
 
                 string path = "ResourceIcons/" + res.ToString();
                 SetImage(newResourceUI.Find("Image").GetComponent<Image>(), path);
             }             
         }
+        resourceInv.Find("Limit").GetComponent<TextMeshProUGUI>().text = resCount + "/" + playerStats.resourceCapacity;
     }
 
     private TextMeshProUGUI fromText;

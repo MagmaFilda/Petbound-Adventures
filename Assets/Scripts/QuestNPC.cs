@@ -6,8 +6,6 @@ public class QuestNPC : MonoBehaviour
 {
     public QuestTemplate[] quests;
     public Transform openUI;
-    public Canvas mainCanvas;
-    public Transform hitbox;
 
     private PlayerStats playerStats;
     private QuestManager questManager;
@@ -27,7 +25,7 @@ public class QuestNPC : MonoBehaviour
         questManager = QuestManager.Instance;
         gameManager = GameManager.Instance;
 
-        mainUI = mainCanvas.GetComponent<MainUI>();
+        mainUI = FindFirstObjectByType<MainUI>();
     }
 
     private void Update()
@@ -42,6 +40,7 @@ public class QuestNPC : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             openUI.gameObject.SetActive(true);
+            transform.Find("NpcIcon").gameObject.SetActive(false);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -49,6 +48,7 @@ public class QuestNPC : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             openUI.gameObject.SetActive(false);
+            transform.Find("NpcIcon").gameObject.SetActive(true);
         }
     }
 

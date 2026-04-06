@@ -21,12 +21,13 @@ MonoBehaviour:
     jinou surovinu ne\u017E hl\xEDnu ?"
   - "Pokud ne, tak mysl\xEDm tr\xE1vu, ale ne tu na co asi mysl\xED\u0161, ale klasickou
     tr\xE1vu co roste v\u0161ude venku."
-  - "Tu m\u016F\u017Ee\u0161 z\xEDskat z tier4 a tier5 breakables. Je celkem vz\xE1cn\xE1,
-    ale ne nemo\u017En\xE1 na z\xEDsk\xE1n\xED."
+  - "Tu m\u016F\u017Ee\u0161 z\xEDskat z 4. \xFArovn\u011B a 5. \xFArovn\u011B t\u011B\u017Eebn\xEDch
+    objekt\u016F. Je celkem vz\xE1cn\xE1, ale ne nemo\u017En\xE1 na z\xEDsk\xE1n\xED."
   - "Doporu\u010Duju ti ji neprod\xE1vat. Je jen 2x hodnotn\u011Bj\u0161\xED ne\u017E
     hl\xEDna. Bude\u0161 ji pot\u0159ebovat v budoucnu hlavn\u011B na crafting."
-  - "Aby jsi tuhle suroviny l\xE9pe poznal z\xEDskej ji 10x a zni\u010D 3 tier4 breakables
-    a 1 tier5 breakable. D\xEDky :)"
+  - "Aby jsi tuhle suroviny l\xE9pe poznal z\xEDskej ji 10x."
+  - "A zni\u010D 3 t\u011B\u017Eebn\xED objekty 4. \xFArovn\u011B a 1 t\u011B\u017Eebn\xED
+    objekt 5. \xFArovn\u011B. D\xEDky :)"
   endOfQuest:
   - "Gratuluju, \u017Ee jsi to zvl\xE1dnul! Tady je tv\xE1 odm\u011Bna 250 coin\u016F."
   - "P\u0159\xED\u0161t\u011B ti n\u011Bco v\xEDce \u0159eknu o t\u011Bch br\xE1n\xE1ch

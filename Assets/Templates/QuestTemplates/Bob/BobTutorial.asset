@@ -15,7 +15,7 @@ MonoBehaviour:
   id: quest_bob_tutorial
   questName: "V\xEDtej!"
   required: 5
-  reward: 25
+  reward: 10
   startOfQuest:
   - "Zdrav\xEDm cestovateli!"
   - "Rad t\u011B pozn\xE1v\xE1m. Nejsi prvn\xED co sem spadl. P\u0159\xEDb\u011Bhy,
@@ -27,9 +27,11 @@ MonoBehaviour:
     jsou to v tomhle sv\u011Bt\u011B jedine\u010Dn\xE9 mytick\xE9 bytosti."
   - "Tady ti jednoho d\xE1m, jako d\xE1v\xE1m v\u0161em. \u017D\xED\u017Eala, ano
     to je v t\xE9hle krajin\u011B nejoby\u010Dejn\u011Bj\u0161\xED Pet."
-  - "Ten t\u011B bude n\xE1sledovat, kamkoliv p\u016Fjde\u0161, ale hlavn\u011B kdy\u017E
-    se dostan\u011B\u0161 do t\u011B\u017E\xEDc\xED lokace pom\u016F\u017Ee ti z\xEDsk\xE1vat
-    suroviny za kter\xE9 pak dostane\u0161 pen\xEDze."
+  - "Ten t\u011B bude n\xE1sledovat, kamkoliv p\u016Fjde\u0161. A kdy\u017E s n\xEDm
+    v t\u011B\u017Eebn\xED lokaci klikne\u0161 na n\u011Bjak\xFD t\u011B\u017Eebn\xED
+    objekt."
+  - "Dojde k n\u011Bmu a postupn\u011B ho zni\u010D\xED a ty z toho dostane\u0161
+    suroviny, kter\xE9 pak m\u016F\u017Ee\u0161 prodat za coiny."
   - "Zkus si to. A\u017E bude\u0161 m\xEDt u sebe 5 hl\xEDny co\u017E je zdej\u0161\xED
     surovina, tak za mnou p\u0159ij\u010F :)."
   endOfQuest:

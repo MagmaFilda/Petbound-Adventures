@@ -6,19 +6,15 @@ using UnityEngine.UI;
 
 public class Trader : MonoBehaviour
 {
-    [Header("MainUI")]
-    public Transform mainUI;
-
     [Header("Character")]
     public Transform openUI;   
-    public Transform hitbox;
 
     [Header("TraderUI")]
     public Transform traderUI;
     public Transform offerContainer;
     public Transform OfferTemplate;
 
-    private MainUI uiScript;
+    private MainUI mainUI;
     private PlayerStats playerStats;
 
     private Dictionary<Resource, int> tradeValues = new Dictionary<Resource, int>();
@@ -27,18 +23,19 @@ public class Trader : MonoBehaviour
     {
         tradeValues.Add(Resource.Dirt, 1);
         tradeValues.Add(Resource.Grass, 2);
-
-        uiScript = mainUI.GetComponent<MainUI>();
+        tradeValues.Add(Resource.Brick, 50);
+        tradeValues.Add(Resource.Ceramic, 750);      
     }
     private void Start()
     {
         playerStats = PlayerStats.Instance;
+        mainUI = FindFirstObjectByType<MainUI>();
     }
     private void Update()
     {
         if (openUI.gameObject.activeSelf && Keyboard.current.eKey.wasPressedThisFrame && playerStats.canShowInteract)
         {
-            uiScript.OpenPanel(traderUI);
+            mainUI.OpenPanel(traderUI);
             SetOffers(tradeValues);
         }
     }
@@ -47,6 +44,7 @@ public class Trader : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             openUI.gameObject.SetActive(true);
+            transform.Find("NpcIcon").gameObject.SetActive(false);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -54,14 +52,15 @@ public class Trader : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             openUI.gameObject.SetActive(false);
+            transform.Find("NpcIcon").gameObject.SetActive(true);
         }
     }
 
     private void SetOffers(Dictionary<Resource, int> values)
     {
-        uiScript.ClearAllChilds(offerContainer);
+        mainUI.ClearAllChilds(offerContainer);
 
-        foreach (Resource offerName in playerStats.PlayerResources.Keys)
+        foreach (Resource offerName in tradeValues.Keys)
         {
             if (playerStats.PlayerResources[offerName] > 0)
             {
@@ -71,7 +70,7 @@ public class Trader : MonoBehaviour
 
                 Image img = newOffer.Find("Image").GetComponent<Image>();
                 string path = "ResourceIcons/" + offerName;
-                uiScript.SetImage(img, path);
+                mainUI.SetImage(img, path);
 
                 Button sellBtn = newOffer.Find("SellBtn").GetComponent<Button>();
                 Button maxBtn = newOffer.Find("MaxBtn").GetComponent<Button>();
@@ -79,7 +78,7 @@ public class Trader : MonoBehaviour
                 inputAmount.transform.Find("Info").GetComponent<Text>().text = offerName.ToString();
 
                 sellBtn.onClick.AddListener(() => SellOffer(offerName, inputAmount, values));
-                maxBtn.onClick.AddListener(() => uiScript.MaxResources(inputAmount.transform));
+                maxBtn.onClick.AddListener(() => mainUI.MaxResources(inputAmount.transform));
             }
         }
     }
@@ -98,13 +97,13 @@ public class Trader : MonoBehaviour
             else
             {
                 inputAmount.text = string.Empty;
-                uiScript.ShowWarning("Špatné èíslo");
+                mainUI.ShowWarning("Špatné èíslo");
             }
         }
         else
         {
             inputAmount.text = string.Empty;
-            uiScript.ShowWarning("Špatný datový typ");
+            mainUI.ShowWarning("Špatný datový typ");
         }
     }
 }

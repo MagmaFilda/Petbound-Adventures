@@ -33,7 +33,7 @@ public class PetInInventory : MonoBehaviour
 
         petName = template.petName;
         rarity = template.rarity;
-        damage = Random.Range(template.minDamage, template.maxDamage);
+        damage = Random.Range(template.minDamage, template.maxDamage+1);
 
         playerStats.PetsInInventory.Add(this);
 
@@ -94,9 +94,12 @@ public class PetInInventory : MonoBehaviour
 
     private void DeletePet()
     {
-        playerStats.PetsInInventory.Remove(this);
-        SortInventory();
-        Destroy(gameObject);
+        if (playerStats.PetsInInventory.Count + playerStats.EquippedPets.Count > 1)
+        {
+            playerStats.PetsInInventory.Remove(this);
+            SortInventory();
+            Destroy(gameObject);
+        }      
     }
 
     private void SortInventory()

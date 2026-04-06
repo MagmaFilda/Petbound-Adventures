@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 925a0fe2e95f7cd4fb5420451033c339, type: 3}
+  m_Name: BobQuest8
+  m_EditorClassIdentifier: 
+  id: quest_bob_8
+  questName: "P\u0159\xEDprava"
+  required: 10
+  reward: 1000
+  startOfQuest:
+  - "Ahoj, ty ses vr\xE1til ? Tak to jsem r\xE1d. Pot\u0159eboval bych je\u0161t\u011B
+    trochu pomoct."
+  - "Ale nev\xEDm jestli jsi na to dostate\u010Dn\u011B zku\u0161en\xFD. V\xEDm,
+    jsi tak dobr\xFD, \u017Ee m\xE1\u0161 i p\u0159\xEDstup k na\u0161\xED vesnici."
+  - "Ale stejn\u011B t\u011B je\u0161t\u011B pot\u0159ebuju otestovat. Z\xEDskej
+    10 brick\u016F. Mo\u017En\xE1 na to bude\u0161 muset vyu\u017E\xEDt u\u017E nov\xE9
+    mechaniky."
+  - "K tomu, ti ale \u0159ekne v\xEDce Jane v na\u0161\xED vesnici. Tak p\u0159eju
+    hodn\u011B \u0161t\u011Bst\xED."
+  endOfQuest:
+  - "Up\u0159\xEDmn\u011B u\u017E mn\u011B ani nep\u0159ekvapuje\u0161. Perfektn\xED!
+    Tady m\xE1\u0161 za odm\u011Bnu 1000 coin\u016F. A\u017E bude\u0161 m\xEDt zase
+    \u010Das ur\u010Dit\u011B p\u0159\xEDj\u010F."
+  requiredResource: 3
