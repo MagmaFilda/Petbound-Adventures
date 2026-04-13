@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: quest_bob_7
   questName: 
-  required: 0
+  required: 4
   reward: 0
   startOfQuest:
   - "Nebudu to protahovat. Posledn\xED quest z tohoto trojquestu. Up\u0159\xEDmn\u011B

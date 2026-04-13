@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
+using UnityEngine.InputSystem.iOS;
 
 public class QuestManager : MonoBehaviour
 {
@@ -96,6 +98,10 @@ public class QuestManager : MonoBehaviour
                 activeQuest.otherActiveQuest.Add(partOfActiveQuest);
                 CreateQuestUI(questUI, partOfActiveQuest);
             }
+        }
+        else if (newQuest.Type == QuestType.DeliveryQuest)
+        {
+            SetDeliveryNpc(newQuest, true);
         }
         else
         {
@@ -237,6 +243,10 @@ public class QuestManager : MonoBehaviour
                 {
                     updatingQuest.isCompleted = true;
                 }
+                else
+                {
+                    updatingQuest.isCompleted = false;
+                }
                 break;
             case QuestType.GetItem:
                 GetItemQuest itemQuest = questTemplate as GetItemQuest;
@@ -251,6 +261,11 @@ public class QuestManager : MonoBehaviour
         {
             updatingQuest.progress = questTemplate.required;
             updatingQuest.isCompleted = true;
+
+            if (questTemplate.Type == QuestType.DeliveryQuest)
+            {
+                SetDeliveryNpc(questTemplate, false);
+            }
         }
 
         UpdateQuestUI(updatingQuest); 
@@ -339,6 +354,26 @@ public class QuestManager : MonoBehaviour
         {
             resourcesDifference[resDiff] = 0;
             storageDifference[resDiff] = 0;
+        }
+    }
+
+    private void SetDeliveryNpc(QuestTemplate quest, bool functionality)
+    {
+        foreach (var npc in playerStats.interactiveNpcs)
+        {
+            bool canBreak = false;
+            foreach (var delivery in npc.quests)
+            {
+                if (delivery.id == quest.id)
+                {
+                    npc.transform.GetComponent<SphereCollider>().enabled = functionality;
+                    npc.transform.Find("NpcIcon").gameObject.SetActive(functionality);
+
+                    canBreak = true;
+                    break;
+                }
+            }
+            if (canBreak) { break; }
         }
     }
 }

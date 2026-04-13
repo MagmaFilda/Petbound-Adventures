@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: quest_bob_6
   questName: 
-  required: 0
+  required: 5
   reward: 500
   startOfQuest:
   - "Vid\xEDm, \u017Ee ses odhodlal k 2. \u010D\xE1sti pro z\xEDsk\xE1n\xED kl\xED\u010De

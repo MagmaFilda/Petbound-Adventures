@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: quest_bob_3
   questName: 
-  required: 0
+  required: 4
   reward: 100
   startOfQuest:
   - "Ahoj! Asi jsi si u\u017E v\u0161imnul, \u017Ee tu je v\xEDce druh\u016F t\u011B\u017Eebn\xEDch

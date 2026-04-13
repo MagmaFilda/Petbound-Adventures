@@ -61,7 +61,10 @@ public class Shopkeeper : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             openUI.gameObject.SetActive(true);
-            transform.Find("NpcIcon").gameObject.SetActive(false);
+            if (transform.Find("NpcIcon"))
+            {
+                transform.Find("NpcIcon").gameObject.SetActive(false);
+            }          
         }
     }
     private void OnTriggerExit(Collider other)
@@ -69,7 +72,10 @@ public class Shopkeeper : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             openUI.gameObject.SetActive(false);
-            transform.Find("NpcIcon").gameObject.SetActive(true);
+            if (transform.Find("NpcIcon"))
+            {
+                transform.Find("NpcIcon").gameObject.SetActive(true);
+            }                
         }
     }
 

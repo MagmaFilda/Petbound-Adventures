@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum QuestType { CollectCoins, OpenEggs, DestroyBreakables, GetResources, MultipleQuest, GetItem }
+public enum QuestType { CollectCoins, OpenEggs, DestroyBreakables, GetResources, MultipleQuest, GetItem, DeliveryQuest }
 
 public abstract class QuestTemplate : ScriptableObject
 {

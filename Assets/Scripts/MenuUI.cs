@@ -1,6 +1,7 @@
 using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -27,6 +28,21 @@ public class MenuUI : MonoBehaviour
                 continueBtn.gameObject.SetActive(true);
                 character.rotation = Quaternion.Euler(0, 180, 0);
             }           
+        }
+    }
+    private void Update()
+    {
+        if (Keyboard.current.f11Key.wasPressedThisFrame)
+        {
+            if (Screen.fullScreenMode == FullScreenMode.FullScreenWindow)
+            {
+                Screen.fullScreenMode = FullScreenMode.Windowed;
+                Screen.SetResolution(1920, 1080, false);
+            }
+            else
+            {
+                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+            }
         }
     }
 

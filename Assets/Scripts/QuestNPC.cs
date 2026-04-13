@@ -58,7 +58,7 @@ public class QuestNPC : MonoBehaviour
 
         if (actualQuestNum >= quests.Length)
         {
-            string[] text = {"Dokonèil jsi všechny mé questy a tím si dokonèil tenhle prototyp! Gratuluju!!!"};
+            string[] text = {"Dokonèil jsi všechny mé questy, musíš poèkat na další update ;)"};
             StartCoroutine(ConversationDialog(text, 4f));
             return;
         }
@@ -70,11 +70,11 @@ public class QuestNPC : MonoBehaviour
     }
     public void StartQuest()
     {
-        activatedQuest = true;
         QuestTemplate newQuest = quests[actualQuestNum];
         activeQuest = questManager.StartQuest(newQuest);
         StartCoroutine(ConversationDialog(newQuest.startOfQuest, 7f));
         gameManager.TryNpcEvent(transform.name, actualQuestNum, "start");
+        activatedQuest = true;
     }
     public void LoadQuest()
     {

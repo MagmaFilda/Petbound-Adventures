@@ -157,6 +157,8 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator LoadNormally()
     {
+        playerStats.canMove = true;
+
         while (fadePanel.color.a > 0)
         {
             fadePanel.color = new Color(0, 0, 0, fadePanel.color.a - Time.deltaTime);
@@ -164,8 +166,7 @@ public class GameManager : MonoBehaviour
         }
         fadePanel.gameObject.SetActive(false);
 
-        playerStats.canRotateCamera = true;
-        playerStats.canMove = true;
+        playerStats.canRotateCamera = true;       
         StartCoroutine(ShowUI(1));
     }
     public IEnumerator StartCutscene()

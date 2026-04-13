@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using System.IO.IsolatedStorage;
 
 public class Trader : MonoBehaviour
 {
@@ -14,17 +16,25 @@ public class Trader : MonoBehaviour
     public Transform offerContainer;
     public Transform OfferTemplate;
 
+    [Header("Offers")]
+    public Resource[] availableResources;
+    public int[] minReward;
+    public int[] maxReward;
+
     private MainUI mainUI;
     private PlayerStats playerStats;
+
+    private WaitForSeconds wait120s = new WaitForSeconds(120);
 
     private Dictionary<Resource, int> tradeValues = new Dictionary<Resource, int>();
 
     private void Awake()
     {
-        tradeValues.Add(Resource.Dirt, 1);
-        tradeValues.Add(Resource.Grass, 2);
-        tradeValues.Add(Resource.Brick, 50);
-        tradeValues.Add(Resource.Ceramic, 750);      
+        StartCoroutine(GenerateValues());
+        for (int i = 0; i< availableResources.Length; i++)
+        {
+            tradeValues[availableResources[i]] = minReward[i];
+        }
     }
     private void Start()
     {
@@ -36,7 +46,7 @@ public class Trader : MonoBehaviour
         if (openUI.gameObject.activeSelf && Keyboard.current.eKey.wasPressedThisFrame && playerStats.canShowInteract)
         {
             mainUI.OpenPanel(traderUI);
-            SetOffers(tradeValues);
+            SetOffers();
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -56,7 +66,7 @@ public class Trader : MonoBehaviour
         }
     }
 
-    private void SetOffers(Dictionary<Resource, int> values)
+    private void SetOffers()
     {
         mainUI.ClearAllChilds(offerContainer);
 
@@ -68,6 +78,17 @@ public class Trader : MonoBehaviour
                 newOffer.Find("ResourceName").GetComponent<TextMeshProUGUI>().text = offerName.ToString();
                 newOffer.Find("SellingPanel").Find("MaxAmountText").GetComponent<TextMeshProUGUI>().text = "/" + playerStats.PlayerResources[offerName].ToString();
 
+                string valueText = " coinù";
+                if (tradeValues[offerName] == 1)
+                {
+                    valueText = " coin";
+                }
+                else if (tradeValues[offerName] >= 2 && tradeValues[offerName] <= 4)
+                {
+                    valueText = " coiny";
+                }
+                newOffer.Find("TradeValue").GetComponent<TextMeshProUGUI>().text = "za " + tradeValues[offerName] + valueText;
+
                 Image img = newOffer.Find("Image").GetComponent<Image>();
                 string path = "ResourceIcons/" + offerName;
                 mainUI.SetImage(img, path);
@@ -77,13 +98,13 @@ public class Trader : MonoBehaviour
                 TMP_InputField inputAmount = newOffer.Find("SellingPanel").Find("SellAmount").GetComponent<TMP_InputField>();
                 inputAmount.transform.Find("Info").GetComponent<Text>().text = offerName.ToString();
 
-                sellBtn.onClick.AddListener(() => SellOffer(offerName, inputAmount, values));
+                sellBtn.onClick.AddListener(() => SellOffer(offerName, inputAmount));
                 maxBtn.onClick.AddListener(() => mainUI.MaxResources(inputAmount.transform));
             }
         }
     }
 
-    private void SellOffer(Resource resourceName, TMP_InputField inputAmount, Dictionary<Resource, int> values)
+    private void SellOffer(Resource resourceName, TMP_InputField inputAmount)
     {
         int sellAmount;
         if(int.TryParse(inputAmount.text, out sellAmount))
@@ -91,8 +112,8 @@ public class Trader : MonoBehaviour
             if (sellAmount <= playerStats.PlayerResources[resourceName] && sellAmount >= 0)
             {
                 playerStats.PlayerResources[resourceName] -= sellAmount;
-                playerStats.coins += sellAmount * values[resourceName];
-                SetOffers(values);
+                playerStats.coins += sellAmount * tradeValues[resourceName];
+                SetOffers();
             }
             else
             {
@@ -104,6 +125,23 @@ public class Trader : MonoBehaviour
         {
             inputAmount.text = string.Empty;
             mainUI.ShowWarning("Špatný datový typ");
+        }
+    }
+
+    private IEnumerator GenerateValues()
+    {
+        while (true)
+        {
+            for (int i = 0; i < availableResources.Length; i++)
+            {
+                int newValue = Random.Range(minReward[i], maxReward[i] + 1);
+                tradeValues[availableResources[i]] = newValue;
+            }
+            if (traderUI.gameObject.activeSelf)
+            {
+                SetOffers();
+            }          
+            yield return wait120s;
         }
     }
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: quest_bob_4
   questName: 
-  required: 0
+  required: 3
   reward: 250
   startOfQuest:
   - "Zdrav\xEDm t\u011B p\u0159\xEDteli. Z\xEDskal si u\u017E alespo\u0148 jednou

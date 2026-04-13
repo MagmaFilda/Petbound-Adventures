@@ -13,6 +13,7 @@ public class PlayerStats : MonoBehaviour
     public Transform petUISlotTemplate;
     public Shopkeeper[] shops;
     public QuestNPC[] questNpcs;
+    public InteractNPC[] interactiveNpcs;
 
     [HideInInspector]
     public int coins;
@@ -239,6 +240,7 @@ public class PlayerStats : MonoBehaviour
             }
             else
             {
+                GameObject.Find("Bob").GetComponent<SphereCollider>().enabled = false;
                 StartCoroutine(gameManager.LoadNormally());
             }
 
@@ -413,6 +415,7 @@ public class PlayerStats : MonoBehaviour
             if (loadedData.npcActivated[i])
             {
                 npc.activatedQuest = true;
+                yield return new WaitForSeconds(0.5f);
                 npc.LoadQuest();
             }
             if (loadedData.npcName[i] == "Bob" && loadedData.npcQuestNum[i] >= 4)
@@ -431,6 +434,7 @@ public class PlayerStats : MonoBehaviour
                 }
             }
         }
+        GameObject.Find("Bob").GetComponent<SphereCollider>().enabled = true;
     }
     private IEnumerator ResetClick()
     {
