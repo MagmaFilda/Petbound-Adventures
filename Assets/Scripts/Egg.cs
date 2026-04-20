@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using System.Collections;
 using TMPro;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class Egg : MonoBehaviour
 {
@@ -51,6 +52,16 @@ public class Egg : MonoBehaviour
         if (Mathf.Abs(testingChance - 100f) > 0.01f)
         {
             Debug.Log(template.name + "nemá správnì %");
+        }
+
+        int count = 0;
+        foreach (Transform petView in openUI.Find("Bg").Find("PetsPanel"))
+        {
+            mainUI.SetImage(petView.Find("PetImage").GetComponent<Image>(), "PetIcons/" + petTemplates[count].petName);
+            petView.Find("PetRarity").GetComponent<Image>().color = mainUI.SetRarityColor(petTemplates[count].rarity);
+            petView.Find("Percentage").GetComponent<TextMeshProUGUI>().text = chance[count] + "%";
+
+            count += 1;
         }
     }
     private void Update()

@@ -139,7 +139,7 @@ public class PlayerStats : MonoBehaviour
                 Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
             }
         }
-        if (Keyboard.current.escapeKey.wasPressedThisFrame && canMove)
+        if (Keyboard.current.escapeKey.wasPressedThisFrame && canMove && canShowInteract)
         {
             mainUI.OpenPanel(mainUI.transform.Find("MenuPanel"));
         }

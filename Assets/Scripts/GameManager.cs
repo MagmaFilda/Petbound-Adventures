@@ -1,6 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -243,7 +246,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(15);
         bob.parent.Find("NpcIcon").gameObject.SetActive(true);
         StartCoroutine(ShowUI(0));
-        StartCoroutine(TutorialNavigation());
+        StartCoroutine(TutorialNavigation(bob.parent)); // ne jen character, ale cely bob
     }
 
     private IEnumerator PlayAnimation(Transform character, Animator animator, string animName, float waitingTime, Vector3 charPosAfter, Quaternion charRotAfter, bool cameraCorection)
@@ -325,8 +328,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         mainUI.ClosePanel(inventory);
     }
-    private IEnumerator TutorialNavigation()
+    private IEnumerator TutorialNavigation(Transform bob)
     {
+        //Ukazka v inventari pro zakliknuti peta
         Transform indicatorPetArrow = Instantiate(petUITemplate, petContainer);
         indicatorPetArrow.Find("PetName").gameObject.SetActive(false);
         indicatorPetArrow.Find("DamageText").gameObject.SetActive(false);
@@ -334,6 +338,7 @@ public class GameManager : MonoBehaviour
         indicatorPetArrow.GetComponent<Button>().enabled = false;
         mainUI.SetImage(indicatorPetArrow.Find("Image").GetComponent<Image>(), "Images/ClickArrow");
 
+        //Blikani Peti btn pro znazorneni
         Image invBtn = mainUI.transform.Find("InvBtns").Find("InventoryButton").GetComponent<Image>();
         while (!inventory.gameObject.activeSelf)
         {
@@ -348,6 +353,7 @@ public class GameManager : MonoBehaviour
         }
         Destroy(indicatorPetArrow.gameObject);
 
+        //Hledani nejnizsiho breakables
         Transform dirtCaveArea = GameObject.Find("DirtCaveBA").transform;
         Transform lowestTierBreakable = dirtCaveArea.GetChild(0);
         for (int i = 0; i < dirtCaveArea.childCount; i++)
@@ -379,6 +385,7 @@ public class GameManager : MonoBehaviour
                 }
             }            
         }
+        //Nastaveni viditelnost health canvasu nasledovne
         Transform healthCanvas = lowestTierBreakable.Find("HealthCanvas");
         for (int i = 0; i < healthCanvas.childCount; i++)
         {
@@ -402,6 +409,60 @@ public class GameManager : MonoBehaviour
         {
             healthCanvas.GetChild(i).gameObject.SetActive(true);
         }
+        //Navedení hráèe k Bobovi
+        while (!playerStats.ActiveQuests[0].isCompleted)
+        {
+            yield return wait05s;
+        }
+        List<GameObject> arrows = new List<GameObject>();
+        int arrowCount = 10;
+        for (int i = 0; i < arrowCount; i++)
+        {
+            GameObject arrow = new GameObject();
+            SpriteRenderer arrowSpriteRenderer = arrow.AddComponent<SpriteRenderer>();
+            arrowSpriteRenderer.sprite = Resources.Load<Sprite>("Images/Arrow");
+            arrows.Add(arrow);
+        }
+
+        Vector3 end = bob.position;
+
+        while (playerStats.ActiveQuests.Count > 0)
+        {
+            Vector3 start = player.position;
+            arrowCount = Mathf.RoundToInt((end - start).magnitude);
+            while (arrowCount != arrows.Count)
+            {
+                if (arrowCount > arrows.Count)
+                {
+                    GameObject arrow = new GameObject();
+                    SpriteRenderer arrowSpriteRenderer = arrow.AddComponent<SpriteRenderer>();
+                    arrowSpriteRenderer.sprite = Resources.Load<Sprite>("Images/Arrow");
+                    arrows.Add(arrow);
+                }
+                else if (arrowCount < arrows.Count)
+                {
+                    Destroy(arrows[arrows.Count - 1]);
+                    arrows.RemoveAt(arrows.Count - 1);
+                }
+            }
+
+            for (int i = 0; i < arrowCount; i++)
+            {
+                float t = i / (float)arrowCount;
+                Vector3 pos = Vector3.Lerp(start, end, t);
+                Vector3 dir = (end - pos).normalized;
+
+                arrows[i].transform.forward = dir;
+                arrows[i].transform.rotation = Quaternion.Euler(0, arrows[i].transform.rotation.eulerAngles.y+89, 0);
+                arrows[i].transform.position = pos;             
+            }
+            yield return null;
+        }
+        foreach (var arrow in arrows)
+        {
+            Destroy(arrow);
+        }
+        arrows = null;
     }
 
     //Bob Cinematics

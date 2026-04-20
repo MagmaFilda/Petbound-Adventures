@@ -15,7 +15,7 @@ MonoBehaviour:
   id: quest_jane_3
   questName: "Nov\xE9 boty"
   required: 1
-  reward: 0
+  reward: 4500
   startOfQuest:
   - "V\xEDtej. Tak\u017Ee asi chce\u0161 v\u011Bd\u011Bt i jak z\xEDskat p\u0159edm\u011Bty
     po jejich vytvo\u0159en\xED."
@@ -28,7 +28,7 @@ MonoBehaviour:
   - "Jo a douf\xE1m, \u017Ee sis nechal n\u011Bjakou tu tr\xE1vu z minul\xE9 lokace..."
   endOfQuest:
   - "Tak to je skv\u011Bl\xE9, u\u017E v\xED\u0161 jak z\xEDskat i p\u0159edm\u011Bty
-    za pomoc\xED craftingu."
+    za pomoc\xED craftingu. Tady m\xE1\u0161 4500 coin\u016F jako odm\u011Bnu."
   - "To je k tomu jak to funguje asi v\u0161e. Te\u010F je \u010Das t\u011B tady
     v\xEDce provest. A\u017E to bude\u0161 cht\xEDt, v\xED\u0161 kde m\u011B najde\u0161
     :)."

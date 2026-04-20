@@ -114,7 +114,7 @@ public class MainUI : MonoBehaviour
             case Rarity.Legendary:
                 return Color.orange;
             default:
-                return Color.darkGray;
+                return Color.gray4;
         } 
     }
     public void SetResourceInv()
@@ -224,11 +224,18 @@ public class MainUI : MonoBehaviour
     }
 
     //Other
-    public void Conversation(bool status, string textInConversation)
+    public IEnumerator ConversationDialog(string[] allText, float delay)
     {
-        conversationText.parent.gameObject.SetActive(status);
-
-        conversationText.GetComponent<TextMeshProUGUI>().text = textInConversation;
+        playerStats.canShowInteract = false;
+        playerStats.canMove = false;
+        foreach (string text in allText)
+        {
+            Conversation(true, text);
+            yield return new WaitForSeconds(delay);
+        }
+        Conversation(false, string.Empty);
+        playerStats.canShowInteract = true;
+        playerStats.canMove = true;
     }
     public void ShowWarning(string warnText)
     {
@@ -258,6 +265,12 @@ public class MainUI : MonoBehaviour
         }
     }
 
+    private void Conversation(bool status, string textInConversation)
+    {
+        conversationText.parent.gameObject.SetActive(status);
+
+        conversationText.GetComponent<TextMeshProUGUI>().text = textInConversation;
+    }
     private IEnumerator StartWarning(string warnText)
     {
         warningPanel.Find("WarningText").GetComponent<TextMeshProUGUI>().text = warnText;

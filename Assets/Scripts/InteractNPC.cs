@@ -52,6 +52,8 @@ public class InteractNPC : MonoBehaviour
             {
                 if (activeQuest.template.id == quest.id)
                 {
+                    StartCoroutine(mainUI.ConversationDialog(quest.startOfQuest, 7f));
+                    openUI.gameObject.SetActive(false);
                     activeQuest.progress += 1;
                     break;
                 }

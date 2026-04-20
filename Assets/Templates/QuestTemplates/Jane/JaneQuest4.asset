@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6fd65e3f274b04184f4213a9700162, type: 3}
+  m_Name: JaneQuest4
+  m_EditorClassIdentifier: 
+  id: quest_jane_4
+  questName: 
+  required: 2
+  reward: 0
+  startOfQuest:
+  - "Tak jo, ohledn\u011B craftingu u\u017E v\xED\u0161 v\u0161e, te\u010F je \u010Das
+    na to pozn\xE1n\xED na\u0161\xED vesnice."
+  - "Ona nen\xED tak velk\xE1, tak je mo\u017En\xE9 \u017Ee u\u017E sis ji i pro\u0161el.
+    Ale stejn\u011B tady pro tebe m\xE1m \xFAkoly k ur\u010Den\xE9 k tomu to tady
+    proj\xEDt."
+  - "Asi jsi si u\u017E v\u0161iml toho st\xE1nku u vchodu do vesnice. To je Paul\u016Fv
+    st\xE1nek a cht\u011Bl by tam vym\u011Bnovat suroviny."
+  - "Podobn\u011B jako John. Ale nem\xE1 to schv\xE1len\xE9 u na\u0161eho starosty.
+    Proto bych pot\u0159ebovala, abys za n\xEDm za\u0161el."
+  - "A dal mu pap\xEDr, na kter\xE9m je v\u0161e pot\u0159ebn\xE9 pro otev\u0159en\xED
+    Paulova st\xE1nku."
+  - "K tomu t\xED d\xE1v\xE1m mapu, kterou otev\u0159e\u0161 kl\xE1vesou M, nebo
+    kdy\u017E klikne\u0161 na tu ikonu vpravo naho\u0159e."
+  - "Ozna\u010Dila jsem ti i m\xEDsto na\u0161eho starosty, kdyby sis do te\u010F
+    nev\u0161iml. Tu mapu ti budu postupn\u011B dopl\u0148ovat."
+  - "A aby jsi byl i p\u0159ipraven n\u011Bco u Paula i sm\u011Bnit, nat\u011B\u017E
+    je\u0161t\u011B 50 claye. Hodn\u011B \u0161t\u011Bst\xED :)."
+  endOfQuest:
+  - "To je skv\u011Bl\xE1 zpr\xE1va. A\u017E za mnou dojde\u0161 p\u0159\xED\u0161t\u011B,
+    \u0159eknu ti jak to \u0159e\u0161en\xED s Paulov\xEDm st\xE1nkem dopadlo."
+  - "A za to \u017Ee jsi to donesl ti d\xE1m 2000 coin\u016F. Fakt d\xEDky."
+  questsToComplete:
+  - {fileID: 11400000, guid: 74389f01a88126c419993f88504e82f5, type: 2}
+  - {fileID: 11400000, guid: b96918250488be84e890672581e77328, type: 2}

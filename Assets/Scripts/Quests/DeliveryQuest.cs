@@ -4,6 +4,6 @@ using UnityEngine;
 public class DeliveryQuest : QuestTemplate
 {
     [Header("QuestTypeAddons")]
-    public string npcToDeliver;
-    public override QuestType Type => QuestType.OpenEggs;
+    public string deliverNpcName;
+    public override QuestType Type => QuestType.DeliveryQuest;
 }

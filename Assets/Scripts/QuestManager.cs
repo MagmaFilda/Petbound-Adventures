@@ -99,10 +99,6 @@ public class QuestManager : MonoBehaviour
                 CreateQuestUI(questUI, partOfActiveQuest);
             }
         }
-        else if (newQuest.Type == QuestType.DeliveryQuest)
-        {
-            SetDeliveryNpc(newQuest, true);
-        }
         else
         {
             CreateQuestUI(questUI, activeQuest);
@@ -170,6 +166,12 @@ public class QuestManager : MonoBehaviour
             case QuestType.GetItem:
                 GetItemQuest itemQuest = quest.template as GetItemQuest;
                 title.text = "Získej: " + itemQuest.item.itemName;
+                break;
+            case QuestType.DeliveryQuest:
+                SetDeliveryNpc(quest.template, true);
+
+                DeliveryQuest deliverQuest = quest.template as DeliveryQuest;
+                title.text = "Doruè zásilku k " + deliverQuest.deliverNpcName;
                 break;
         }
         
@@ -262,8 +264,9 @@ public class QuestManager : MonoBehaviour
             updatingQuest.progress = questTemplate.required;
             updatingQuest.isCompleted = true;
 
-            if (questTemplate.Type == QuestType.DeliveryQuest)
+            if (questTemplate.Type == QuestType.DeliveryQuest && updatingQuest.progress == 1)
             {
+                updatingQuest.progress += 1;
                 SetDeliveryNpc(questTemplate, false);
             }
         }

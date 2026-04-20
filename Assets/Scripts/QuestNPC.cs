@@ -59,7 +59,7 @@ public class QuestNPC : MonoBehaviour
         if (actualQuestNum >= quests.Length)
         {
             string[] text = {"Dokonèil jsi všechny mé questy, musíš poèkat na další update ;)"};
-            StartCoroutine(ConversationDialog(text, 4f));
+            StartCoroutine(mainUI.ConversationDialog(text, 4f));
             return;
         }
 
@@ -72,7 +72,7 @@ public class QuestNPC : MonoBehaviour
     {
         QuestTemplate newQuest = quests[actualQuestNum];
         activeQuest = questManager.StartQuest(newQuest);
-        StartCoroutine(ConversationDialog(newQuest.startOfQuest, 7f));
+        StartCoroutine(mainUI.ConversationDialog(newQuest.startOfQuest, 7f));
         gameManager.TryNpcEvent(transform.name, actualQuestNum, "start");
         activatedQuest = true;
     }
@@ -92,7 +92,7 @@ public class QuestNPC : MonoBehaviour
                     return true;
                 }
                 string[] text = { "Nyní máš rozpracovaný jiný mùj quest, až ho budeš mít hotový pøijï za mnou znovu" };
-                StartCoroutine(ConversationDialog(text, 4f));
+                StartCoroutine(mainUI.ConversationDialog(text, 4f));
                 return true;
             }
         }
@@ -103,24 +103,10 @@ public class QuestNPC : MonoBehaviour
         activatedQuest = false;
         questManager.EndQuest(activeQuest);
 
-        StartCoroutine(ConversationDialog(quest.endOfQuest, 7f));
+        StartCoroutine(mainUI.ConversationDialog(quest.endOfQuest, 7f));
         playerStats.coins += quest.reward;
 
         gameManager.TryNpcEvent(transform.name, actualQuestNum, "end");
         actualQuestNum++;
-    }
-
-    private IEnumerator ConversationDialog(string[] allText, float delay)
-    {
-        playerStats.canShowInteract = false;
-        playerStats.canMove = false;
-        foreach (string text in allText)
-        {
-            mainUI.Conversation(true, text);
-            yield return new WaitForSeconds(delay);           
-        }
-        mainUI.Conversation(false, string.Empty);
-        playerStats.canShowInteract = true;
-        playerStats.canMove = true;
     }
 }
