@@ -59,7 +59,7 @@ public class QuestNPC : MonoBehaviour
         if (actualQuestNum >= quests.Length)
         {
             string[] text = {"Dokonèil jsi všechny mé questy, musíš poèkat na další update ;)"};
-            StartCoroutine(mainUI.ConversationDialog(text, 4f));
+            StartCoroutine(mainUI.ConversationDialog(text));
             return;
         }
 
@@ -72,7 +72,7 @@ public class QuestNPC : MonoBehaviour
     {
         QuestTemplate newQuest = quests[actualQuestNum];
         activeQuest = questManager.StartQuest(newQuest);
-        StartCoroutine(mainUI.ConversationDialog(newQuest.startOfQuest, 7f));
+        StartCoroutine(mainUI.ConversationDialog(newQuest.startOfQuest));
         gameManager.TryNpcEvent(transform.name, actualQuestNum, "start");
         activatedQuest = true;
     }
@@ -92,7 +92,7 @@ public class QuestNPC : MonoBehaviour
                     return true;
                 }
                 string[] text = { "Nyní máš rozpracovaný jiný mùj quest, až ho budeš mít hotový pøijï za mnou znovu" };
-                StartCoroutine(mainUI.ConversationDialog(text, 4f));
+                StartCoroutine(mainUI.ConversationDialog(text));
                 return true;
             }
         }
@@ -103,7 +103,7 @@ public class QuestNPC : MonoBehaviour
         activatedQuest = false;
         questManager.EndQuest(activeQuest);
 
-        StartCoroutine(mainUI.ConversationDialog(quest.endOfQuest, 7f));
+        StartCoroutine(mainUI.ConversationDialog(quest.endOfQuest));
         playerStats.coins += quest.reward;
 
         gameManager.TryNpcEvent(transform.name, actualQuestNum, "end");

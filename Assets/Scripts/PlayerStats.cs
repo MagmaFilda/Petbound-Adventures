@@ -57,6 +57,8 @@ public class PlayerStats : MonoBehaviour
     [HideInInspector]
     public bool canShowInteract = true;
     [HideInInspector]
+    public int dialogPart = 0;
+    [HideInInspector]
     public bool deleteMode = false;
 
     private GameManager gameManager;

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13656497c04dad84fb16b61cf5cba69b, type: 3}
+  m_Name: HrabacTemplate
+  m_EditorClassIdentifier: 
+  id: pet_hrabac
+  petName: Hrabac
+  rarity: 1
+  speed: 12
+  minDamage: 40
+  maxDamage: 46
+  petPrefab: {fileID: 4573344939415395701, guid: 4f0c11ca2b4405e4f8e510e3883aa82d, type: 3}

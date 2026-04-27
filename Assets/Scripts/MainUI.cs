@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class MainUI : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class MainUI : MonoBehaviour
     public Transform transferPanel;
 
     private PlayerStats playerStats;
+
+    private WaitForSeconds wait3s = new WaitForSeconds(3);
 
     private void Start()
     {
@@ -224,18 +227,30 @@ public class MainUI : MonoBehaviour
     }
 
     //Other
-    public IEnumerator ConversationDialog(string[] allText, float delay)
+    public IEnumerator ConversationDialog(string[] allText)
     {
         playerStats.canShowInteract = false;
         playerStats.canMove = false;
         foreach (string text in allText)
         {
             Conversation(true, text);
-            yield return new WaitForSeconds(delay);
+            yield return wait3s;
+            conversationText.parent.Find("ContinuePanel").gameObject.SetActive(true);
+            while (true)
+            {
+                if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame || Mouse.current.leftButton.wasPressedThisFrame)
+                {
+                    break;
+                }
+                yield return null;
+            }
+            conversationText.parent.Find("ContinuePanel").gameObject.SetActive(false);
+            playerStats.dialogPart += 1;
         }
         Conversation(false, string.Empty);
         playerStats.canShowInteract = true;
         playerStats.canMove = true;
+        playerStats.dialogPart = 0;
     }
     public void ShowWarning(string warnText)
     {

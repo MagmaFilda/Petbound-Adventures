@@ -181,13 +181,6 @@ public class QuestManager : MonoBehaviour
     {
         QuestTemplate questTemplate = updatingQuest.template;
 
-        if (questTemplate.Type == QuestType.MultipleQuest)
-        {
-            foreach (ActiveQuest quest in updatingQuest.otherActiveQuest)
-            {
-                UpdateQuestData(quest);
-            }
-        }
         switch (questTemplate.Type)
         {
             case QuestType.CollectCoins:
@@ -262,13 +255,12 @@ public class QuestManager : MonoBehaviour
         if (updatingQuest.progress >= questTemplate.required)
         {
             updatingQuest.progress = questTemplate.required;
-            updatingQuest.isCompleted = true;
-
-            if (questTemplate.Type == QuestType.DeliveryQuest && updatingQuest.progress == 1)
+            if (questTemplate.Type == QuestType.DeliveryQuest && !updatingQuest.isCompleted)
             {
-                updatingQuest.progress += 1;
                 SetDeliveryNpc(questTemplate, false);
             }
+
+            updatingQuest.isCompleted = true;        
         }
 
         UpdateQuestUI(updatingQuest); 

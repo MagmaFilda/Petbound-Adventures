@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class BreakableArea : MonoBehaviour
 {
@@ -72,25 +73,13 @@ public class BreakableArea : MonoBehaviour
                 newBreakable.position = spawnPos;
 
                 Bounds bounds = newBreakable.transform.GetComponent<BoxCollider>().bounds;
-                Vector3[] detectPositions =
-                {
-                    new Vector3(bounds.min.x+newBreakable.position.x, bounds.min.y + newBreakable.position.y, bounds.min.z+newBreakable.position.z),//corner
-                    new Vector3(bounds.min.x+newBreakable.position.x, bounds.min.y + newBreakable.position.y, bounds.max.z+newBreakable.position.z),//corner
-                    new Vector3(bounds.max.x+newBreakable.position.x, bounds.min.y + newBreakable.position.y, bounds.min.z+newBreakable.position.z),//corner
-                    new Vector3(bounds.max.x+newBreakable.position.x, bounds.min.y + newBreakable.position.y, bounds.max.z+newBreakable.position.z),//corner
-                    new Vector3(bounds.min.x+newBreakable.position.x, bounds.min.y + newBreakable.position.y, newBreakable.position.z),//middleOfSide
-                    new Vector3(bounds.max.x+newBreakable.position.x, bounds.min.y + newBreakable.position.y, newBreakable.position.z),//middleOfSide
-                    new Vector3(newBreakable.position.x, bounds.min.y + newBreakable.position.y, bounds.min.z+newBreakable.position.z),//middleOfSide
-                    new Vector3(newBreakable.position.x, bounds.min.y + newBreakable.position.y, bounds.max.z+newBreakable.position.z),//middleOfSide
-                    newBreakable.position,//middle
-                };
-
-                if (CanSpawn(detectPositions))
+                
+                if (CanSpawn(bounds, newBreakable.position))
                 {                                       
                     newBreakable.name = "Breakable";
                     breakablesInArea += 1;
                     if (tier == tier5Transform) { tier5Reserve -= 1; tier5Active = false; }
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSeconds(0.75f);
                     break;
                 }
                 if (att == 9)
@@ -109,19 +98,30 @@ public class BreakableArea : MonoBehaviour
         Destroy(newParticle.gameObject);
     }
 
-    private bool CanSpawn(Vector3[] posCorners)
+    private bool CanSpawn(Bounds bounds, Vector3 newBreakablePos)
     {
-        foreach (Vector3 pos in posCorners)
+        int count = 6;
+        for (int x = 0; x <= count; x++)
         {
-            //Debug.DrawRay(pos + Vector3.up * 0.1f, Vector3.down * spawnHeight, Color.red, 1f); -> test raycastu
-            if (Physics.Raycast(pos + Vector3.up * 0.1f, Vector3.down, out RaycastHit hit, spawnHeight))
+            for (int z = 0; z <= count; z++)
             {
-                if (hit.transform.name == "Breakable")
+                float percentX = x / (float)count;
+                float percentZ = z / (float)count;
+
+                Vector3 point = new Vector3(Mathf.Lerp(bounds.min.x+newBreakablePos.x, bounds.max.x + newBreakablePos.x, percentX),
+                    bounds.min.y + newBreakablePos.y,
+                    Mathf.Lerp(bounds.min.z + newBreakablePos.z, bounds.max.z + newBreakablePos.z, percentZ));
+
+                //Debug.DrawRay(point + Vector3.up * 0.1f, Vector3.down * spawnHeight, Color.red, 1f); //-> test raycastu
+                if (Physics.Raycast(point + Vector3.up * 0.1f, Vector3.down, out RaycastHit hit, spawnHeight))
                 {
-                    return false;
+                    if (hit.transform.CompareTag("Breakable"))
+                    {
+                        return false;
+                    }
                 }
             }
-        }        
+        }    
         return true;
     }
 

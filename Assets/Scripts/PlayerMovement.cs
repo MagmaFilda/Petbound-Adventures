@@ -24,8 +24,13 @@ public class PlayerMovement : MonoBehaviour
     private float doRotateCamera;
     private float cameraPitch = 0f;
     private float cameraYaw = 0f;
+    private float zoomValue;
+    private float minCameraDistance = 2;
+    private float maxCameraDistance = 8;
     private Vector3 playerVelocity;
     private Vector2 cameraMove;
+
+    private float newDistance;
 
     private PlayerStats playerStats;
     private CinemachineThirdPersonFollow zoomCamera;
@@ -43,8 +48,8 @@ public class PlayerMovement : MonoBehaviour
 
         playerStats = PlayerStats.Instance;
         zoomCamera = cameraTransform.Find("Third Person Aim Camera").GetComponent<CinemachineThirdPersonFollow>();
+        zoomValue = zoomCamera.CameraDistance;
     }
-
     private void Update()
     {
         if (playerStats.canMove)
@@ -55,6 +60,24 @@ public class PlayerMovement : MonoBehaviour
         {
             CameraMovement();
         }
+    }
+    private void LateUpdate()
+    {
+        Vector3 direction = (zoomCamera.transform.position - character.position).normalized;
+        Ray ray = new Ray(character.position, direction);
+
+        newDistance = zoomValue;
+        if (Physics.SphereCast(ray, 0.5f, out RaycastHit hit, zoomCamera.CameraDistance))
+        {
+            newDistance = Mathf.Clamp(hit.distance, 0, maxCameraDistance);
+        }
+        else
+        {
+            newDistance = zoomValue;
+        }
+
+        if (zoomCamera.CameraDistance - 0.1f > newDistance) { zoomCamera.CameraDistance = newDistance; }
+        else { zoomCamera.CameraDistance = Mathf.Lerp(zoomCamera.CameraDistance, newDistance, Time.deltaTime * 2); }
     }
 
     private void MovePlayer()
@@ -141,8 +164,9 @@ public class PlayerMovement : MonoBehaviour
             if (zoomPower != 0)
             {
                 zoomCamera.CameraDistance += (-zoomPower / 2);
-                if (zoomCamera.CameraDistance < 2) { zoomCamera.CameraDistance = 2; }
-                else if (zoomCamera.CameraDistance > 8) { zoomCamera.CameraDistance = 8; }
+                if (zoomCamera.CameraDistance < minCameraDistance) { zoomCamera.CameraDistance = minCameraDistance; }
+                else if (zoomCamera.CameraDistance > maxCameraDistance) { zoomCamera.CameraDistance = maxCameraDistance; }
+                zoomValue = zoomCamera.CameraDistance;
 
                 if (tutorialPanel.gameObject.activeSelf && tutorialPanel.Find("ZoomImg").gameObject.activeSelf)
                 {

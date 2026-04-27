@@ -41,8 +41,8 @@ public class GameManager : MonoBehaviour
 
     private WaitForEndOfFrame waitEndFrame = new WaitForEndOfFrame();
     private WaitForSeconds wait05s = new WaitForSeconds(0.5f);
+    private WaitForSeconds wait3s = new WaitForSeconds(3);
     private WaitForSeconds wait7s = new WaitForSeconds(7);
-    private WaitForSeconds wait14s = new WaitForSeconds(14);
 
     private float defaultFadeSpeed = 20; // nastaveno pro 60fps
     private float cameraDefaultLength = 1.2f;
@@ -158,6 +158,15 @@ public class GameManager : MonoBehaviour
         StartCoroutine(CameraFade(cameraPoint, fadeTime));
     }
 
+    private void MoveEvent(bool status)
+    {
+        playerStats.canMove = status;
+    }
+    private void RotateEvent(bool status)
+    {
+        playerStats.canRotateCamera = status;
+    }
+
     public IEnumerator LoadNormally()
     {
         playerStats.canMove = true;
@@ -218,45 +227,65 @@ public class GameManager : MonoBehaviour
         bob.position = startBobPoint.position;
         bob.rotation = startBobPoint.rotation;
 
-        StartCoroutine(PlayAnimation(player, playerAnimator, "StartAnimation", 7.5f, startMovementPoint.position, startMovementPoint.rotation, true));
-        StartCoroutine(RotateStop(10));
-        StartCoroutine(MoveStop(64));
+        StartCoroutine(PlayAnimation(player, playerAnimator, "StartAnimation", true));
+        RotateEvent(false);
+        MoveEvent(false);
         fadePanel.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(3.3f);
-        StartCoroutine(PlayAnimation(bob, bobAnimator, "BobStart", 4, bob.position, bob.rotation, false));
-        yield return new WaitForSeconds(4);
-        StartCoroutine(PlayAnimation(bob, bobAnimator, "Wave", 56, bobDefaultPos, bobDefaultRot, false));
+        StartCoroutine(PlayAnimation(bob, bobAnimator, "BobStart", false));
+        yield return new WaitForSeconds(4.2f);
+        player.position = startMovementPoint.position;
+        player.rotation = startMovementPoint.rotation;
+        StartCoroutine(PlayAnimation(bob, bobAnimator, "Wave", false));
+
         bob.parent.GetComponent<QuestNPC>().StartQuest();
         yield return new WaitForSeconds(4);
+        RotateEvent(true);
         tutorialPanel.SetActive(true);
-        yield return new WaitForSeconds(25);
 
+        while (playerStats.dialogPart != 4)
+        {
+            yield return null;
+        }
         Transform newPet = Instantiate(petUITemplate, petContainer);
         newPet.GetComponent<PetInInventory>().UnEquipPet(petTemplates[0], 1); // 0 = Zizala   
         petShowAnimator.transform.Find("NewPetPanel").Find("PetName").GetComponent<TextMeshProUGUI>().text = "Zizala";
         petShowAnimator.Play("PetShow");
-        yield return new WaitForSeconds(6);
-        StartCoroutine(RotateStop(8));
+
+        while (playerStats.dialogPart != 5)
+        {
+            yield return null;
+        }
+        yield return wait05s;
+        RotateEvent(false);
         SetCamera(playerCamera.transform, false);
         SetCamera(cinematicPoints.Find("StartBreakableShow"), 7, 1.5f);
-        yield return new WaitForSeconds(7);
+        yield return wait7s;
         SetCamera(playerCamera.transform, 2, 1.5f);
+        yield return new WaitForSeconds(2);
+        RotateEvent(true);
 
-        yield return new WaitForSeconds(15);
+        while (playerStats.dialogPart != 0)
+        {
+            yield return null;
+        }
+        bob.position = bobDefaultPos;
+        bob.rotation = bobDefaultRot;
         bob.parent.Find("NpcIcon").gameObject.SetActive(true);
         StartCoroutine(ShowUI(0));
         StartCoroutine(TutorialNavigation(bob.parent)); // ne jen character, ale cely bob
+
+        MoveEvent(true);
     }
 
-    private IEnumerator PlayAnimation(Transform character, Animator animator, string animName, float waitingTime, Vector3 charPosAfter, Quaternion charRotAfter, bool cameraCorection)
+    private IEnumerator PlayAnimation(Transform character, Animator animator, string animName, bool cameraCorection)
     {
-        //character a jeho animator, animace co ma spustit, delay pred zacatkem, cas jak dlouho animace trva, kam se pak ma hrac presunout, pripadna korekce kamery)
         animator.Play(animName);
-        yield return new WaitForSeconds(waitingTime);
 
-        character.position = charPosAfter;
-        character.rotation = charRotAfter;
+        yield return null;
+        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+        yield return new WaitForSeconds(state.length);
 
         if (cameraCorection)
         {
@@ -308,19 +337,6 @@ public class GameManager : MonoBehaviour
             yield return waitEndFrame;
         }
         fading = false;
-    }
-
-    private IEnumerator MoveStop(float delay)
-    {
-        playerStats.canMove = false;
-        yield return new WaitForSeconds(delay);
-        playerStats.canMove = true;
-    }
-    private IEnumerator RotateStop(float delay)
-    {
-        playerStats.canRotateCamera = false;
-        yield return new WaitForSeconds(delay);
-        playerStats.canRotateCamera = true;
     }
 
     private IEnumerator ShowUI(float delay)
@@ -468,45 +484,63 @@ public class GameManager : MonoBehaviour
     //Bob Cinematics
     private IEnumerator BobQuest1()
     {
-        yield return wait7s;
-        StartCoroutine(RotateStop(10));
+        while (playerStats.dialogPart != 1)
+        {
+            yield return null;
+        }
+        RotateEvent(false);
         SetCamera(playerCamera.transform, false);
         SetCamera(cinematicPoints.Find("BobQuest1"), 7, 4);
 
         yield return new WaitForSeconds(1.5f);
         Transform john = GameObject.Find("John").transform.Find("Character");
-        StartCoroutine(PlayAnimation(john, john.GetComponent<Animator>(), "Wave", 2, john.position, john.rotation, false));
+        StartCoroutine(PlayAnimation(john, john.GetComponent<Animator>(), "Wave", false));
         yield return new WaitForSeconds(5.5f);
         SetCamera(playerCamera.transform, 3, 4);
+        yield return wait3s;
+        RotateEvent(true);
     }
     private IEnumerator BobQuest2()
     {
-        yield return wait7s;
-        StartCoroutine(RotateStop(19));
+        while (playerStats.dialogPart != 1)
+        {
+            yield return null;
+        }
+        RotateEvent(false);
         SetCamera(playerCamera.transform, false);
         SetCamera(cinematicPoints.Find("BobQuest2"), 14, 4);
         mainUI.transform.Find("InvBtns").gameObject.SetActive(false);
         mainUI.transform.Find("QuestUI").gameObject.SetActive(false);
 
-        yield return wait14s;
+        yield return wait7s;
         SetCamera(playerCamera.transform, 3, 4);
+        yield return wait3s;
         StartCoroutine(ShowUI(0));
+        RotateEvent(true);
     }
     private IEnumerator BobQuest3()
     {
-        yield return wait14s;
-        StartCoroutine(RotateStop(18));
+        while (playerStats.dialogPart != 2)
+        {
+            yield return null;
+        }
+        RotateEvent(false);
         SetCamera(playerCamera.transform, false);
         SetCamera(cinematicPoints.Find("BobQuest3"), 14, 3);
         GameObject.Find("Storage").transform.Find("Storage").position = new Vector3(5.59f, 1.62f, -19.33f);
 
-        yield return wait14s;
+        yield return wait7s;
         SetCamera(playerCamera.transform, 3, 3);
+        yield return wait3s;
+        RotateEvent(true);
     }
     private IEnumerator BobQuest5()
     {
-        yield return wait7s;
-        StartCoroutine(RotateStop(14));
+        while (playerStats.dialogPart != 1)
+        {
+            yield return null;
+        }
+        RotateEvent(false);
         SetCamera(playerCamera.transform, false);
         SetCamera(cinematicPoints.Find("BobQuest5a"), 4, 3);
         
@@ -515,41 +549,58 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(5);
         SetCamera(playerCamera.transform, 3, 2);
+        yield return wait3s;
+        RotateEvent(true);
     }
     private IEnumerator BobQuest6()
     {
-        yield return wait14s;
-        StartCoroutine(RotateStop(14));
+        while (playerStats.dialogPart != 2)
+        {
+            yield return null;
+        }
+        RotateEvent(false);
         SetCamera(playerCamera.transform, false);
         SetCamera(cinematicPoints.Find("BobQuest6"), 14, 3);
 
         yield return new WaitForSeconds(2);
         Transform frank = GameObject.Find("Frank").transform.Find("Character");
-        StartCoroutine(PlayAnimation(frank, frank.GetComponent<Animator>(), "Wave", 2, frank.position, frank.rotation, false));
+        StartCoroutine(PlayAnimation(frank, frank.GetComponent<Animator>(), "Wave", false));
 
         yield return new WaitForSeconds(12);
         SetCamera(playerCamera.transform, 3, 2);
+        yield return wait3s;
+        RotateEvent(true);
     }
 
     // Jane Cinematics
     private IEnumerator JaneQuest2()
     {
-        yield return wait7s;
-        StartCoroutine(RotateStop(24));
+        while (playerStats.dialogPart != 1)
+        {
+            yield return null;
+        }
+        RotateEvent(false);
         SetCamera(playerCamera.transform, false);
         SetCamera(cinematicPoints.Find("JaneQuest2"), 21, 1);
 
         yield return new WaitForSeconds(21);
         SetCamera(playerCamera.transform, 2, 1);
+        yield return new WaitForSeconds(2);
+        RotateEvent(true);
     }
     private IEnumerator JaneQuest3()
     {
-        yield return wait14s;
-        StartCoroutine(RotateStop(10));
+        while (playerStats.dialogPart != 2)
+        {
+            yield return null;
+        }
+        RotateEvent(false);
         SetCamera(playerCamera.transform, false);
         SetCamera(cinematicPoints.Find("JaneQuest3"), 7, 1);
 
         yield return wait7s;
         SetCamera(playerCamera.transform, 2, 1);
+        yield return new WaitForSeconds(2);
+        RotateEvent(true);
     }
 }

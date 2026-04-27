@@ -17,7 +17,7 @@ MonoBehaviour:
   typeOfItem: 1
   upgrades: 0100000000000000
   upgradeValues:
-  - 200
+  - 250
   - 15
   price: 0
   rebuyable: 0
