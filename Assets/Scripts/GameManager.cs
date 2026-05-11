@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using TMPro;
 using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,6 +28,7 @@ public class GameManager : MonoBehaviour
 
     [Header("QuestThings")]
     public ItemTemplate[] keys;
+    public MapTemplate[] mapParts;
 
     private PlayerStats playerStats;
 
@@ -111,6 +110,13 @@ public class GameManager : MonoBehaviour
                             GameObject.Find("VillageGate").GetComponent<BoxCollider>().enabled = false;
                         }
                         break;
+                    case 14:
+                        if (special == "end")
+                        {
+                            playerStats.canShowInteract = true;
+                            mainUI.OpenPanel(mainUI.transform.Find("EndPanel"));
+                        }
+                        break;
                 }
                 break;
             case "Jane":
@@ -127,9 +133,55 @@ public class GameManager : MonoBehaviour
                         {
                             StartCoroutine(JaneQuest3());
                         }
+                        break;
+                    case 3:
+                        if (special == "start")
+                        {
+                            StartCoroutine(JaneQuest4());
+                            playerStats.OwnedMaps.Add(mapParts[0]); //ta hl. mapa
+                            mainUI.transform.Find("MapBtn").gameObject.SetActive(true);
+                        }
+                        if (special == "end")
+                        {
+                            playerStats.OwnedMaps.Add(mapParts[1]); //stanek
+                            mainUI.transform.Find("Map").Find("Trader").gameObject.SetActive(false);
+                            GameObject.Find("Paul").GetComponent<SphereCollider>().enabled = true;
+                            GameObject.Find("Paul").transform.Find("NpcIcon").gameObject.SetActive(true);
+                        }
+                        break;
+                    case 4:
+                        if (special == "start")
+                        {
+                            StartCoroutine(JaneQuest5());
+                            playerStats.OwnedMaps.Add(mapParts[2]); //house1
+                            mainUI.transform.Find("Map").Find("House1").gameObject.SetActive(false);
+                        }
+                        break;
+                    case 5:
+                        if (special == "start")
+                        {
+                            playerStats.OwnedMaps.Add(mapParts[3]); //bobuv house
+                            mainUI.transform.Find("Map").Find("Bob").gameObject.SetActive(false);
+                        }
+                        break;
+                    case 7:
+                        if (special == "start")
+                        {
+                            StartCoroutine(JaneQuest8());
+                            playerStats.OwnedMaps.Add(mapParts[4]);
+                            mainUI.transform.Find("Map").Find("RightSide1").gameObject.SetActive(false);
+                            mainUI.transform.Find("Map").Find("RightSide2").gameObject.SetActive(false);
+                        }
+                        break;
+                    case 8:
+                        if (special == "start")
+                        {
+                            playerStats.OwnedMaps.Add(mapParts[5]);
+                            mainUI.transform.Find("Map").Find("SecretHouse").gameObject.SetActive(false);
+                        }
                         else if (special == "end")
                         {
-                            mainUI.OpenPanel(mainUI.transform.Find("EndPanel"));
+                            playerStats.maxEquippedPets++;
                         }
                         break;
                 }
@@ -276,6 +328,8 @@ public class GameManager : MonoBehaviour
         StartCoroutine(ShowUI(0));
         StartCoroutine(TutorialNavigation(bob.parent)); // ne jen character, ale cely bob
 
+        mainUI.transform.Find("EggOpenBg").gameObject.SetActive(false);
+        mainUI.transform.Find("MenuBtn").gameObject.SetActive(true);
         MoveEvent(true);
     }
 
@@ -528,6 +582,7 @@ public class GameManager : MonoBehaviour
         SetCamera(playerCamera.transform, false);
         SetCamera(cinematicPoints.Find("BobQuest3"), 14, 3);
         GameObject.Find("Storage").transform.Find("Storage").position = new Vector3(5.59f, 1.62f, -19.33f);
+        GameObject.Find("Storage").transform.Find("NpcIcon").gameObject.SetActive(true);
 
         yield return wait7s;
         SetCamera(playerCamera.transform, 3, 3);
@@ -581,9 +636,9 @@ public class GameManager : MonoBehaviour
         }
         RotateEvent(false);
         SetCamera(playerCamera.transform, false);
-        SetCamera(cinematicPoints.Find("JaneQuest2"), 21, 1);
+        SetCamera(cinematicPoints.Find("JaneQuest2"), 7, 1);
 
-        yield return new WaitForSeconds(21);
+        yield return wait7s;
         SetCamera(playerCamera.transform, 2, 1);
         yield return new WaitForSeconds(2);
         RotateEvent(true);
@@ -601,6 +656,51 @@ public class GameManager : MonoBehaviour
         yield return wait7s;
         SetCamera(playerCamera.transform, 2, 1);
         yield return new WaitForSeconds(2);
+        RotateEvent(true);
+    }
+    private IEnumerator JaneQuest4()
+    {
+        while (playerStats.dialogPart != 2)
+        {
+            yield return null;
+        }
+        RotateEvent(false);
+        SetCamera(playerCamera.transform, false);
+        SetCamera(cinematicPoints.Find("JaneQuest4"), 7, 3);
+
+        yield return wait7s;
+        SetCamera(playerCamera.transform, 4, 3);
+        yield return new WaitForSeconds(4);
+        RotateEvent(true);
+    }
+    private IEnumerator JaneQuest5()
+    {
+        while (playerStats.dialogPart != 1)
+        {
+            yield return null;
+        }
+        RotateEvent(false);
+        SetCamera(playerCamera.transform, false);
+        SetCamera(cinematicPoints.Find("JaneQuest5"), 7, 3);
+
+        yield return wait7s;
+        SetCamera(playerCamera.transform, 4, 3);
+        yield return new WaitForSeconds(4);
+        RotateEvent(true);
+    }
+    private IEnumerator JaneQuest8()
+    {
+        while (playerStats.dialogPart != 1)
+        {
+            yield return null;
+        }
+        RotateEvent(false);
+        SetCamera(playerCamera.transform, false);
+        SetCamera(cinematicPoints.Find("JaneQuest8"), 7, 2);
+
+        yield return wait7s;
+        SetCamera(playerCamera.transform, 3, 2);
+        yield return new WaitForSeconds(3);
         RotateEvent(true);
     }
 }

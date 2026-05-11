@@ -54,6 +54,7 @@ public class Storage : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             openUI.gameObject.SetActive(true);
+            transform.parent.Find("NpcIcon").gameObject.SetActive(false);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -61,12 +62,14 @@ public class Storage : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             openUI.gameObject.SetActive(false);
+            transform.parent.Find("NpcIcon").gameObject.SetActive(true);
         }
     }
 
     private void SetStorageInv()
     {
         mainUI.OpenPanel(resourceInv);
+        playerStats.canShowInteract = true;
         mainUI.SetResourceInv();
         resourceInv.Find("ExitBtn").gameObject.SetActive(false);
         resourceInv.GetComponent<RectTransform>().localScale = new Vector2(0.6f, 0.6f);

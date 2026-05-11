@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6fd65e3f274b04184f4213a9700162, type: 3}
+  m_Name: JaneQuest6
+  m_EditorClassIdentifier: 
+  id: quest_jane_6
+  questName: 
+  required: 0
+  reward: 3000
+  startOfQuest:
+  - "Posledn\xED d\u016Fm co je\u0161t\u011B nem\xE1\u0161 ozna\u010Den\xFD na map\u011B
+    u vstupu na\u0161\xED vesnice je Bob\u016Fv d\u016Fm. V\xEDm, \u017Ee ho chce
+    te\u010F n\u011Bjak vylep\u0161ovat."
+  - "To je, ale te\u010F jedno. Cht\u011Bla bych ti je\u0161t\u011B up\u0159esnit
+    i dal\u0161\xED v\u011Bci tady a to hlavn\u011B t\u011B\u017Eebn\xED lokace."
+  - "Jsou tady p\u0159esn\u011B t\u0159i. Ka\u017Ed\xE1 je, ale trochu j\xEDn\xE1
+    i kdy\u017E tak nevypadaj\xED. Vypozorovali jsme, \u017Ee tam jsou asi jin\xE9
+    \u0161ance, na objevov\xE1n\xED r\u016Fzn\xFDch \xFArovn\xED t\u011B\u017Eebn\xEDch
+    objekt\u016F."
+  - "No a aby jsi to l\xE9pe vypozoroval i ty cht\u011Bla bych, aby jsi tady vyt\u011B\u017Eil
+    ur\u010Dit\xFD po\u010Det od v\u0161ech \xFArovn\xED t\u011B\u017Eebn\xEDch objekt\u016F."
+  - "P\u0159esn\u011Bji 50, 30, 15, 8, a 3 t\u011B\u017Eebn\xEDch objekt\u016F 1.,
+    2., 3., 4. a 5. \xFArovn\u011B."
+  - "Jo a je\u0161t\u011B. Jestli u\u017E ti Bob \u0159\xEDkal, \u017Ee ty t\u011B\u017Eebn\xED
+    lokace jdou dot\u011B\u017Eit, tak se plete. Zkou\u0161ela jsem to u\u017E, ale
+    prost\u011B to nejde."
+  - "Sly\u0161ela jsem, \u017Ee tu p\u0159ed sv\xFDm domem chce zlikvidovat, tak
+    to jsem zv\u011Bdav\xE1 :D."
+  endOfQuest:
+  - "Tak jo, tohle u\u017E bylo trochu na d\xFDl \u017Ee ? Ale, tak alespo\u0148
+    jsi snad na\u0161et\u0159il hodn\u011B pen\u011Bz na dal\u0161\xED m\u016Fj \xFAkol
+    to bude pot\u0159eba."
+  - "Tady m\xE1\u0161 3000 coin\u016F, budou se ti hodit."
+  questsToComplete:
+  - {fileID: 11400000, guid: b619c0ce6d1a2304c8eee3942fd999c1, type: 2}
+  - {fileID: 11400000, guid: 45060d0ed17aa51458fb52fb37ac25b0, type: 2}
+  - {fileID: 11400000, guid: db3237e1f1ebe3546863ab52fe26a142, type: 2}
+  - {fileID: 11400000, guid: 34cd7b29f0d663f45be12f6bc428118a, type: 2}
+  - {fileID: 11400000, guid: c2ef778c9695f1c4ab3840479d2f247c, type: 2}

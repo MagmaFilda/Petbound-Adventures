@@ -19,3 +19,4 @@ MonoBehaviour:
   startOfQuest: []
   endOfQuest: []
   requiredResource: 2
+  giveAfterComplete: 0

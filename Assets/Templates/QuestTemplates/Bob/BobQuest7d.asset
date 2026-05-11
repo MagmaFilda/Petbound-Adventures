@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: quest_bob_7d
   questName: "Vstup do na\u0161\xED vesnice"
-  required: 100
+  required: 70
   reward: 0
   startOfQuest: []
   endOfQuest: []
   requiredResource: 1
+  giveAfterComplete: 0

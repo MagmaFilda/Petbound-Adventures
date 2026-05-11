@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13656497c04dad84fb16b61cf5cba69b, type: 3}
+  m_Name: HrabavkaTemplate
+  m_EditorClassIdentifier: 
+  id: pet_hrabavka
+  petName: Hrabavka
+  rarity: 1
+  speed: 10
+  minDamage: 60
+  maxDamage: 68
+  petPrefab: {fileID: 8316752746549250303, guid: 22967351b53d2724d956c53de39051d4, type: 3}

@@ -55,6 +55,14 @@ public class Breakable : MonoBehaviour
             {
                 QuestManager.Instance.tiersDetection[tier] += 1;
             }
+            if (!QuestManager.Instance.breakableAreaNamesDetection.ContainsKey(transform.parent.name))
+            {
+                QuestManager.Instance.breakableAreaNamesDetection.Add(transform.parent.name, 1);
+            }
+            else
+            {
+                QuestManager.Instance.breakableAreaNamesDetection[transform.parent.name] += 1;
+            }
 
             for (int reward = 0; reward < rewards.Length; reward++)
             {

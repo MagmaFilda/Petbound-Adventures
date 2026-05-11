@@ -31,6 +31,7 @@ public class SaveData
 
     public List<string> ownedItems = new List<string>();
     public List<string> equippedItems = new List<string>();
+    public List<string> ownedMaps = new List<string>();
     public List<string> boughtUpgradesNames = new List<string>();
     public List<int> boughtUpgradesValues = new List<int>();
 

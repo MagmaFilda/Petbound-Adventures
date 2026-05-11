@@ -70,7 +70,7 @@ public class Trader : MonoBehaviour
     {
         mainUI.ClearAllChilds(offerContainer);
 
-        foreach (Resource offerName in tradeValues.Keys)
+        foreach (Resource offerName in availableResources)
         {
             if (playerStats.PlayerResources[offerName] > 0)
             {

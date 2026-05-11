@@ -15,7 +15,7 @@ MonoBehaviour:
   id: quest_jane_4
   questName: 
   required: 2
-  reward: 0
+  reward: 2000
   startOfQuest:
   - "Tak jo, ohledn\u011B craftingu u\u017E v\xED\u0161 v\u0161e, te\u010F je \u010Das
     na to pozn\xE1n\xED na\u0161\xED vesnice."
@@ -30,7 +30,7 @@ MonoBehaviour:
     Paulova st\xE1nku."
   - "K tomu t\xED d\xE1v\xE1m mapu, kterou otev\u0159e\u0161 kl\xE1vesou M, nebo
     kdy\u017E klikne\u0161 na tu ikonu vpravo naho\u0159e."
-  - "Ozna\u010Dila jsem ti i m\xEDsto na\u0161eho starosty, kdyby sis do te\u010F
+  - "M\xEDsto na\u0161eho starosty vid\xED\u0161 i na map\u011B, kdyby sis do te\u010F
     nev\u0161iml. Tu mapu ti budu postupn\u011B dopl\u0148ovat."
   - "A aby jsi byl i p\u0159ipraven n\u011Bco u Paula i sm\u011Bnit, nat\u011B\u017E
     je\u0161t\u011B 50 claye. Hodn\u011B \u0161t\u011Bst\xED :)."

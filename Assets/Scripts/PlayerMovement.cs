@@ -63,21 +63,23 @@ public class PlayerMovement : MonoBehaviour
     }
     private void LateUpdate()
     {
-        Vector3 direction = (zoomCamera.transform.position - character.position).normalized;
-        Ray ray = new Ray(character.position, direction);
+        if (playerStats.canRotateCamera)
+        {
+            Vector3 direction = (zoomCamera.transform.position - character.position).normalized;
+            Ray ray = new Ray(character.position, direction);
 
-        newDistance = zoomValue;
-        if (Physics.SphereCast(ray, 0.5f, out RaycastHit hit, zoomCamera.CameraDistance))
-        {
-            newDistance = Mathf.Clamp(hit.distance, 0, maxCameraDistance);
-        }
-        else
-        {
             newDistance = zoomValue;
-        }
+            if (Physics.SphereCast(ray, 0.5f, out RaycastHit hit, zoomCamera.CameraDistance))
+            {
+                if (!hit.transform.CompareTag("Breakable") && !hit.transform.CompareTag("DontZoomCamera"))
+                {
+                    newDistance = Mathf.Clamp(hit.distance, 0, maxCameraDistance);
+                }              
+            }
 
-        if (zoomCamera.CameraDistance - 0.1f > newDistance) { zoomCamera.CameraDistance = newDistance; }
-        else { zoomCamera.CameraDistance = Mathf.Lerp(zoomCamera.CameraDistance, newDistance, Time.deltaTime * 2); }
+            if (zoomCamera.CameraDistance - 0.1f > newDistance) { zoomCamera.CameraDistance = newDistance; }
+            else { zoomCamera.CameraDistance = Mathf.Lerp(zoomCamera.CameraDistance, newDistance, Time.deltaTime * 3); }
+        }     
     }
 
     private void MovePlayer()

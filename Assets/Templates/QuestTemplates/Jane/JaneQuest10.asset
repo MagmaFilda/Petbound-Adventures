@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6fd65e3f274b04184f4213a9700162, type: 3}
+  m_Name: JaneQuest10
+  m_EditorClassIdentifier: 
+  id: quest_jane_10
+  questName: 
+  required: 10
+  reward: 50000
+  startOfQuest:
+  - "V\xEDt\xE1m t\u011B u toho nejt\u011B\u017E\xEDho co si v n\xE1\u0161\xED vesnici
+    a mo\u017En\xE1 i celkov\u011B tady za\u017Eil. ULTIM\xC1TN\xCD quest v\u0161eho."
+  - "Tohle dok\xE1zalo jen minimum lid\xED. Bude\u0161 jedn\xEDm z nich ? No to u\u017E
+    je na tob\u011B. Tak za\u010Dnu s vyjmenov\xE1v\xE1n\xEDm."
+  - "Nejd\u0159\xEDve to chce doz\xEDskat v\u0161echny p\u0159edm\u011Bty u n\xE1s.
+    Z\xEDskej tedy ten keramick\xFD batoh. Pom\u016F\u017Ee ti to ur\u010Dit\u011B
+    v pln\u011Bn\xED tohoto questu."
+  - "Nejd\u0159\xEDve to chce doz\xEDskat v\u0161echny p\u0159edm\u011Bty u n\xE1s.
+    Z\xEDskej tedy ten keramick\xFD batoh. Pom\u016F\u017Ee ti to ur\u010Dit\u011B
+    v pln\u011Bn\xED tohoto questu."
+  - "D\xE1le otev\u0159i tady jak\xE9koliv 5 vaj\xED\u010Dek. Ale mus\xED to b\xFDt
+    co jsou u n\xE1s ve vesnici."
+  - "Z\xEDskej 8 ceramici, 100 brick\u016F a 1000 claye. K tomu zni\u010D tady ve
+    vesnici 200 t\u011B\u017Eebn\xEDch objekt\u016F."
+  - "Z toho je\u0161t\u011B, aby 10 bylo 5. \xFArovn\u011B a 25 t\xE9 4. \xFArovn\u011B."
+  - "No a to by snad m\u011Blo b\xFDt v\u0161... jo po\u010Dky. Samoz\u0159ejm\u011B
+    je\u0161te doru\u010Dov\xE1n\xED."
+  - "Budu d\u011Blat ve\u010D\xEDrek u m\u011B doma a zvu v\u0161echny obyvatele
+    vesnice. Je\u0161t\u011B jsem to, ale zapomn\u011Bla dodat Jackovi a starostovi."
+  - "Tak jim to doru\u010D d\xEDky. No a to u\u017E je snad v\u0161e :). Pohodi\u010Dka
+    nebo ?"
+  endOfQuest:
+  - "GRATULUJU!!! Tady je 50000 coin\u016F. A tohle je ofici\xE1ln\u011B v\u0161e,
+    minim\xE1ln\u011B z moj\xED strany. M\u011Bj se a ahoj"
+  questsToComplete:
+  - {fileID: 11400000, guid: d335e08f46d6abb4ab262d690ac0adbb, type: 2}
+  - {fileID: 11400000, guid: 50981456711b6d445929abb52c79fab2, type: 2}
+  - {fileID: 11400000, guid: 69748f825857229459f724e774a003ce, type: 2}
+  - {fileID: 11400000, guid: 1e6cbe302f2c33f4a9bc6ccb0a46ee36, type: 2}
+  - {fileID: 11400000, guid: cc6433b1bd224ef44978d183456250fb, type: 2}
+  - {fileID: 11400000, guid: 470b2743eb950df4791e27fcfe86623b, type: 2}
+  - {fileID: 11400000, guid: 3745d26d74000504fb4fe7d038268245, type: 2}
+  - {fileID: 11400000, guid: 2087cd0f73dc70e49bbfec53c4d3d251, type: 2}
+  - {fileID: 11400000, guid: 5e9387740f13ba149bc31546f3b43d2f, type: 2}
+  - {fileID: 11400000, guid: 43ed77092156de14795eb6e972c8dc9b, type: 2}

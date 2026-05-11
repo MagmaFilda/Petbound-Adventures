@@ -11,5 +11,6 @@ public class PetTemplate : ScriptableObject
     public float speed;
     public int minDamage;
     public int maxDamage;
+    public bool flying = false;
     public Transform petPrefab;
 }

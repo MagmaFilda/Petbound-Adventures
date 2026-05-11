@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6fd65e3f274b04184f4213a9700162, type: 3}
+  m_Name: BobQuest11
+  m_EditorClassIdentifier: 
+  id: quest_bob_11
+  questName: 
+  required: 3
+  reward: 2000
+  startOfQuest:
+  - "Ahoj, no asi jsi si v\u0161iml, ale p\u0159ed m\xFDm domem, pokud v\xED\u0161
+    jak\xFD to je, se neust\xE1le objevuj\xED nov\xE9 t\u011B\u017Eebn\xED objekty."
+  - "Up\u0159\xEDmn\u011B celkem m\u011B to za\u010D\xEDn\xE1 \u0161tv\xE1t, a proto
+    se to n\u011Bjak te\u010F sna\u017E\xEDm jakoby uklidit."
+  - "Kdy\u017E tam n\u011Bjak\xE9 t\u011B\u017Eebn\xED objekty zni\u010D\xED\u0161,
+    mo\u017En\xE1 to pom\u016F\u017Ee, ale ja nev\xEDm. No zkus zni\u010Dit 20, 10
+    a 5 t\u011B\u017Eebn\xEDch objekt\u016F 1., 2. a 3. \xFArovn\u011B."
+  endOfQuest:
+  - "Tak uvid\xEDme jestli to pom\u016F\u017Ee, n\u011Bjak to je\u0161t\u011B zkus\xEDm,
+    vymyslet. Ale d\xEDky :). Tady m\xE1\u0161 2000 coin\u016F."
+  - "P\u0159\xED\u0161t\u011B zase p\u0159\xEDprava na stavbu. Tak pak p\u0159ij\u010F."
+  questsToComplete:
+  - {fileID: 11400000, guid: b6f60b525fc5d1d408a3edfaa1f7b82e, type: 2}
+  - {fileID: 11400000, guid: 8a3f3887e69a27e44b456b37ae38e3be, type: 2}
+  - {fileID: 11400000, guid: 33d9864d8f59d9a43ac98251413c6991, type: 2}

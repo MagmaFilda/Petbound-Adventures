@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6fd65e3f274b04184f4213a9700162, type: 3}
+  m_Name: BobQuest14
+  m_EditorClassIdentifier: 
+  id: quest_bob_14
+  questName: 
+  required: 5
+  reward: 0
+  startOfQuest:
+  - "Ahoj, p\u0159ipravil jsem pro tebe takov\xFD opravdu posledn\xED rozlu\u010Duj\xEDc\xED
+    se quest."
+  - "Budu jen cht\xEDt, aby si otev\u0159el ka\u017Ed\xE9 vaj\xED\u010Dko 3x. To
+    je v\u0161e, za to ti d\xE1m ten kl\xED\u010D."
+  - "Ber to fakt jako takov\xE9 rozlou\u010Den\xED :). D\xEDky moc za tvoji pr\xE1ci,
+    fakt si toho cen\xEDm..."
+  endOfQuest:
+  - "Tak a je to... Bude\u0161 mi chyb\u011Bt :(. Tady je ten kl\xED\u010D. Gratuluju
+    ti, dok\xE1zal jsi to. Mysl\xEDm, \u017Ee u\u017E jsi opravdu p\u0159ipraven."
+  - "Snad si na n\xE1s n\u011Bkdy vzpomene\u0161 a je\u0161t\u011B se tu zastav\xED\u0161.
+    D\xEDky za chv\xEDle str\xE1ven\xE9 s tebou. M\u011Bj se a hodn\u011B \u0161t\u011Bst\xED
+    do budoucna!"
+  questsToComplete:
+  - {fileID: 11400000, guid: 59839fa3a2e2be54ea4f2e11ed3e44ba, type: 2}
+  - {fileID: 11400000, guid: 7df19f7df31643a4b961313696875d31, type: 2}
+  - {fileID: 11400000, guid: bf0aee1be5301834e91e2c004b4593c0, type: 2}
+  - {fileID: 11400000, guid: ffcffb20d90f0db49b6bf1299951f77f, type: 2}
+  - {fileID: 11400000, guid: 7b40e9a7d7346104f91d5abfd98b4f71, type: 2}

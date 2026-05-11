@@ -34,17 +34,21 @@ public class MainUI : MonoBehaviour
     //Main Panels
     public void OpenPanel(Transform openingPanel)
     {
-        playerStats.canShowInteract = false;
-
-        if (openingPanel == transform.Find("Inventory"))
+        if (playerStats.canShowInteract)
         {
-            transform.Find("Inventory").Find("MaxPets").GetComponent<TextMeshProUGUI>().text = (playerStats.PetsInInventory.Count + playerStats.EquippedPets.Count) + "/" + playerStats.maxPets;
-        }
+            playerStats.canShowInteract = false;
 
-        btns.gameObject.SetActive(false);
-        coinsText.parent.gameObject.SetActive(false);
-        questPanel.gameObject.SetActive(false);
-        openingPanel.gameObject.SetActive(true);
+            if (openingPanel == transform.Find("Inventory"))
+            {
+                transform.Find("Inventory").Find("MaxPets").GetComponent<TextMeshProUGUI>().text = (playerStats.PetsInInventory.Count + playerStats.EquippedPets.Count) + "/" + playerStats.maxPets;
+                transform.Find("Inventory").Find("Equip").Find("EquipPetsCount").GetComponent<TextMeshProUGUI>().text = "/" + playerStats.maxEquippedPets;
+            }
+
+            btns.gameObject.SetActive(false);
+            coinsText.parent.gameObject.SetActive(false);
+            questPanel.gameObject.SetActive(false);
+            openingPanel.gameObject.SetActive(true);
+        }     
     }
     public void ClosePanel(Transform closingPanel)
     {

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6fd65e3f274b04184f4213a9700162, type: 3}
+  m_Name: BobQuest9
+  m_EditorClassIdentifier: 
+  id: quest_bob_9
+  questName: 
+  required: 2
+  reward: 1000
+  startOfQuest:
+  - "Tak jo, zase jsi dok\xE1zal, \u017Ee ti m\u016F\u017Eu sv\u011B\u0159it dal\u0161\xED
+    \xFAkoly. No m\xE1m v pl\xE1nu na sv\xE9m domu p\u0159idat dal\u0161\xED m\xEDstnost."
+  - "Pot\u0159eboval jsem na to, ale stavebn\xED povolen\xED a to jsem od starosty
+    z\xEDskal. Jen pot\u0159ebuju abys mu donesl tenhle pap\xEDr."
+  - "Tam u\u017E je v\u0161e dovypln\u011Bn\xE9, jen se mu to mus\xED don\xE9st."
+  - "No a k tomu bych rovnou pot\u0159eboval n\u011Bjak\xFD ten materi\xE1l a to
+    p\u0159esn\u011B na st\u011Bchu. To je 50 tr\xE1vy. A\u017E to v\u0161e bude\u0161
+    m\xEDt p\u0159ij\u010F za mnou."
+  endOfQuest:
+  - "V\xEDdim, \u017Ee jsi to zase zvl\xE1dnul. D\xEDky moc! Tak od p\u0159\xED\u0161t\u011B
+    u\u017E se na tu stavbu m\u016F\u017Eem pln\u011B vrhnout :)."
+  - "Jo a jako odm\u011Bnu ti d\xE1v\xE1m 1000 coin\u016F."
+  questsToComplete:
+  - {fileID: 11400000, guid: 75b9f617e8912a947a0f7893efa8bd1d, type: 2}
+  - {fileID: 11400000, guid: bc31b21b569019a4ab6490d69952281e, type: 2}

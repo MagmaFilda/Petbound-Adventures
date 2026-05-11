@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24bd7f16832670c4bacd1666a2168342, type: 3}
+  m_Name: BobQuest9a
+  m_EditorClassIdentifier: 
+  id: quest_bob_9a
+  questName: 
+  required: 1
+  reward: 0
+  startOfQuest:
+  - "Ahoj, jo tak u\u017E je to vy\u0159e\u0161en\xE9. \u0158ekni Bobovi, \u017Ee
+    m\u016F\u017Ee za\u010D\xEDt stavit."
+  endOfQuest: []
+  deliverNpcName: starostovi

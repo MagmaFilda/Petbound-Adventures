@@ -117,7 +117,13 @@ public class Egg : MonoBehaviour
 
     private PetTemplate GetPet()
     {
+        //int att = 0;
         int roll = Random.Range(0, 101);
+        //while (roll < 101-chance[chance.Length-1])
+        //{
+        //    roll = Random.Range(0, 101);
+        //    att++;
+        //}
         float actualChance = 0f;
         PetTemplate returningPet = petTemplates[0];
 
@@ -127,6 +133,7 @@ public class Egg : MonoBehaviour
             if (roll <= actualChance)
             {
                 returningPet = petTemplates[i];
+                //Debug.Log(att + ". pokus, padlo -> " + roll);
                 break;
             }
         }

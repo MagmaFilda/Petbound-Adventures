@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cd64188c4922f04bb4bb88fd666827c, type: 3}
+  m_Name: BrickyEgg
+  m_EditorClassIdentifier: 
+  eggName: "Ciheln\xE9 vejce"
+  petTemplates:
+  - {fileID: 11400000, guid: b951bd89cf3c0674aad459deb90a3ffe, type: 2}
+  - {fileID: 11400000, guid: c3b34e425e9c5cb42a95c28a378d9578, type: 2}
+  - {fileID: 11400000, guid: ea0bc9bb388259746ae5a963730b9847, type: 2}
+  chance:
+  - 60
+  - 35
+  - 5
+  price: 15000

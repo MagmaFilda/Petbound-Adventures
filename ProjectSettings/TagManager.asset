@@ -8,6 +8,7 @@ TagManager:
   - Breakable
   - EquipPanel
   - QuestNPC
+  - DontZoomCamera
   layers:
   - Default
   - TransparentFX

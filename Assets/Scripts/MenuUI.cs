@@ -11,6 +11,7 @@ public class MenuUI : MonoBehaviour
     public Image fadePanel;
     public Button continueBtn;
     public Button newBtn;
+    public Transform creditsPanel;
 
     private string path;
 
@@ -64,6 +65,14 @@ public class MenuUI : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
+    }
+    public void OpenCredits()
+    {
+        creditsPanel.gameObject.SetActive(true);
+    }
+    public void CloseCredits()
+    {
+        creditsPanel.gameObject.SetActive(false);
     }
 
     private IEnumerator GameStart(bool newGame)

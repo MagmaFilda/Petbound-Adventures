@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6fd65e3f274b04184f4213a9700162, type: 3}
+  m_Name: BobQuest10
+  m_EditorClassIdentifier: 
+  id: quest_bob_10
+  questName: 
+  required: 2
+  reward: 2000
+  startOfQuest:
+  - "Je \u010Das na sehn\xE1n\xED n\u011Bjak\xE9ho toho materi\xE1lu. Pro za\u010D\xE1tek
+    bych pot\u0159eboval 150 hl\xEDny a 50 claye pros\xEDm."
+  - "Ano nic v\xEDc slo\u017Eit\xE9ho. Z toho se toti\u017E d\u011Blaj\xED spoje
+    mezi cihly. Tak hodn\u011B \u0161t\u011Bst\xED."
+  endOfQuest:
+  - "Tak jo, to by byly spoje. No te\u010F ti d\xE1m chvili\u010Dku pauzu od no\u0161en\xED
+    materi\xE1lu. Ale m\xE1m n\u011Bco jin\xE9ho speci\xE1ln\xEDho."
+  - "Tvoje odm\u011Bna je 2000 coin\u016F"
+  questsToComplete:
+  - {fileID: 11400000, guid: 95e0219d92977ac4b9ae6725b2f00e23, type: 2}
+  - {fileID: 11400000, guid: 714684426162d9549adf1e9c5a9c5a64, type: 2}

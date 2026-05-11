@@ -20,3 +20,5 @@ MonoBehaviour:
   endOfQuest: []
   anyTiers: 0
   allowedTiers: 04000000
+  anyArea: 1
+  allowedAreaNames: []

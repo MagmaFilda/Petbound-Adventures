@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7bf2ae94939b9d49ad9eb8f4434232d, type: 3}
+  m_Name: JaneQuest7
+  m_EditorClassIdentifier: 
+  id: quest_jane_7
+  questName: "Tak snadn\xE9, ale drah\xE9"
+  required: 2
+  reward: 1
+  startOfQuest:
+  - "T\xEDmhle questem, zahajuju te\u010F s\xE9rii 3 quest\u016F, kter\xE9 kdy\u017E
+    spln\xED\u0161, tak ti umo\u017En\xEDm m\xEDt nasazen\xE9ho 4. peta."
+  - "A prvn\xED quest nen\xED vubec slo\u017Eit\xFD. T\xEDm, \u017Ee se to bude odehr\xE1vata
+    okolo pet\u016F, tak by to m\u011Blo i petama za\u010D\xEDt."
+  - "Otev\u0159i 2 ciheln\xE9 vaj\xED\u010Dka. Nic v\xEDc, nic m\xED\u0148. Douf\xE1m,
+    \u017Ee m\xE1\u0161 na\u0161et\u0159eno dostatek pen\u011Bz. Hodn\u011B \u0161t\u011Bst\xED."
+  endOfQuest:
+  - "Ber to tak, alespo\u0148 m\xE1\u0161 te\u010F snad siln\u011Bj\u0161\xED pety
+    :). Ale odm\u011Bna bude velmi d\u016Fle\u017Eit\xE1."
+  - "Tohle nejde z\xEDskat jen tak kde, tak\u017Ee si t\xE9hle nab\xEDdky va\u017E.
+    Dal\u0161\xED quest se bude zase to\u010Dit okolo uk\xE1zky vesnice."
+  anyEggs: 0
+  allowedEggs:
+  - {fileID: 11400000, guid: 1517a4bb3c6eaf049aa81da347c13382, type: 2}

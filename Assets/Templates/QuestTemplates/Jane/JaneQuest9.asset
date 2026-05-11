@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7bf2ae94939b9d49ad9eb8f4434232d, type: 3}
+  m_Name: JaneQuest9
+  m_EditorClassIdentifier: 
+  id: quest_jane_9
+  questName: 4 peti najednou
+  required: 1
+  reward: 5000
+  startOfQuest:
+  - "Fin\xE1le tohoto trojquestu. Za to, ale odm\u011Bna neuv\u011B\u0159iteln\xE1.
+    Nebo tedy minim\xE1ln\u011B m\u011B to p\u0159\xEDjde nesm\xEDrn\u011B u\u017Eite\u010Dn\xE9."
+  - "Pokud spln\xED\u0161 tenhle velmi zase jednoduch\xFD quest, tak to bude tv\xE9.
+    Vlastn\u011B je to je\u0161t\u011B jednodu\u0161\xED ne\u017E ten 1. co jsem
+    ti dala."
+  - "Otev\u0159i jen 1 vaj\xED\u010Dko. Tajemn\xE9 vaj\xED\u010Dko. Ne\u0159eknu
+    ti, ale kde se nach\xE1z\xED. N\xE1pov\u011Bda mo\u017En\xE1 pro tebe bude mapa."
+  - "Ta u\u017E je te\u010F mimochodem kone\u010Dn\u011B kompletn\xED. No jo, tak
+    hodn\u011B \u0161t\u011Bst\xED."
+  endOfQuest:
+  - "Gratuluju! D\xE1v\xE1m ti teda to 4. m\xEDsto pro nasazen\xED peta. Tv\xE1 odm\u011Bna
+    k tomu je je\u0161t\u011B alespo\u0148 5000 coin\u016F."
+  - "M\xE1m pro tebe je\u0161t\u011B, ale jeden quest. U\u017E \xFApln\u011B posledn\xED,
+    ale re\xE1ln\u011B vlastn\u011B upln\u011B nepovinn\xFD."
+  - "D\xE1m ti za n\u011Bj jen po\u0159\xE1dnou odm\u011Bnu. Ve v\xFD\u0161i 50000
+    coin\u016F. Bude to takov\xE1 kompletizace quest\u016F v na\u0161\xED vesnici."
+  - "Pokud se odv\xE1\u017E\xED\u0161, v\xED\u0161 kde m\u011B hledat ;)."
+  anyEggs: 0
+  allowedEggs:
+  - {fileID: 11400000, guid: 69a70f6016771644c979de674bdba97b, type: 2}

@@ -44,6 +44,7 @@ public class PlayerStats : MonoBehaviour
     [Header("Items")]
     public List<ItemTemplate> OwnedItems;
     public List<ItemTemplate> EquippedItems;
+    public List<MapTemplate> OwnedMaps;
     public Dictionary<ItemTemplate, int> BoughtUpgrades;
 
     [Header("Stats")]
@@ -73,8 +74,9 @@ public class PlayerStats : MonoBehaviour
     private Transform targetBreakable;
 
     private string path;
-    private PetTemplate[] petTemplates;
+    private List<PetTemplate> petTemplates = new List<PetTemplate>();
     private ItemTemplate[] itemTemplates;
+    private MapTemplate[] mapTemplates;
 
     private void Awake()
     {
@@ -118,8 +120,16 @@ public class PlayerStats : MonoBehaviour
        
         mainUI = FindFirstObjectByType<MainUI>();
 
-        petTemplates = Resources.LoadAll<PetTemplate>("Templates/PetTemplates/DirtCave");
+        foreach (PetTemplate p in Resources.LoadAll<PetTemplate>("Templates/PetTemplates/DirtCave"))
+        {
+            petTemplates.Add(p);
+        }
+        foreach (PetTemplate p in Resources.LoadAll<PetTemplate>("Templates/PetTemplates/DirtVillage"))
+        {
+            petTemplates.Add(p);
+        }
         itemTemplates = Resources.LoadAll<ItemTemplate>("Templates/ItemTemplates");
+        mapTemplates = Resources.LoadAll<MapTemplate>("Templates/MapTemplates");
 
         LoadData();
     }
@@ -144,6 +154,10 @@ public class PlayerStats : MonoBehaviour
         if (Keyboard.current.escapeKey.wasPressedThisFrame && canMove && canShowInteract)
         {
             mainUI.OpenPanel(mainUI.transform.Find("MenuPanel"));
+        }
+        if (Keyboard.current.mKey.wasPressedThisFrame && canMove && canShowInteract && OwnedMaps.Contains(gameManager.mapParts[0]))
+        {
+            mainUI.OpenPanel(mainUI.transform.Find("Map"));
         }
 
     }
@@ -210,6 +224,10 @@ public class PlayerStats : MonoBehaviour
         {
             savingData.equippedItems.Add(item.id);
         }
+        foreach (var map in OwnedMaps)
+        {
+            savingData.ownedMaps.Add(map.id);
+        }
         foreach(var upgrade in BoughtUpgrades)
         {
             savingData.boughtUpgradesNames.Add(upgrade.Key.id);
@@ -244,6 +262,8 @@ public class PlayerStats : MonoBehaviour
             {
                 GameObject.Find("Bob").GetComponent<SphereCollider>().enabled = false;
                 StartCoroutine(gameManager.LoadNormally());
+                mainUI.transform.Find("EggOpenBg").gameObject.SetActive(false);
+                mainUI.transform.Find("MenuBtn").gameObject.SetActive(true);
             }
 
             coins = loadedData.coins;
@@ -303,11 +323,12 @@ public class PlayerStats : MonoBehaviour
                     if (itemTemp.id == itemID)
                     {
                         OwnedItems.Add(itemTemp);
-                        if (itemTemp.typeOfItem == ItemType.Key) { GameObject.Find("VillageGate").GetComponent<BoxCollider>().enabled = false; }
+                        if (itemTemp.typeOfItem == ItemType.Key) { GameObject.Find("VillageGate").GetComponent<BoxCollider>().enabled = false; }                       
                         break;
                     }
                 }
             }
+
             foreach (var itemID in loadedData.equippedItems)
             {
                 foreach (ItemTemplate itemTemp in itemTemplates)
@@ -334,6 +355,42 @@ public class PlayerStats : MonoBehaviour
                         }
                         break;
                     }
+                }
+            }
+            foreach (var mapID in loadedData.ownedMaps)
+            {
+                foreach (MapTemplate mapTemplate in mapTemplates)
+                {
+                    if (mapID == mapTemplate.id)
+                    {
+                        OwnedMaps.Add(mapTemplate);
+
+                        if (mapTemplate.id == "map_dirt_village")
+                        {
+                            mainUI.transform.Find("MapBtn").gameObject.SetActive(true);
+                        }
+                        else if (mapTemplate.id == "map_stanek")
+                        {
+                            mainUI.transform.Find("Map").Find("Trader").gameObject.SetActive(false);
+                        }
+                        else if (mapTemplate.id == "map_house1")
+                        {
+                            mainUI.transform.Find("Map").Find("House1").gameObject.SetActive(false);
+                        }
+                        else if (mapTemplate.id == "map_bob_house")
+                        {
+                            mainUI.transform.Find("Map").Find("Bob").gameObject.SetActive(false);
+                        }
+                        else if (mapTemplate.id == "map_right_side")
+                        {
+                            mainUI.transform.Find("Map").Find("RightSide1").gameObject.SetActive(false);
+                            mainUI.transform.Find("Map").Find("RightSide2").gameObject.SetActive(false);
+                        }
+                        else if (mapTemplate.id == "map_secret_house")
+                        {
+                            mainUI.transform.Find("Map").Find("SecretHouse").gameObject.SetActive(false);
+                        }
+                    }               
                 }
             }
             for (int i = 0; i < loadedData.boughtUpgradesNames.Count; i++)
@@ -407,7 +464,7 @@ public class PlayerStats : MonoBehaviour
 
     private IEnumerator LoadQuests(SaveData loadedData)
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3);
 
         for (int i = 0; i < loadedData.npcName.Count; i++)
         {
@@ -420,9 +477,27 @@ public class PlayerStats : MonoBehaviour
                 yield return new WaitForSeconds(0.5f);
                 npc.LoadQuest();
             }
-            if (loadedData.npcName[i] == "Bob" && loadedData.npcQuestNum[i] >= 4)
+            if (loadedData.npcName[i] == "Bob")
             {
-                GameObject.Find("Storage").transform.Find("Storage").position = new Vector3(5.59f, 1.62f, -19.33f);
+                if (loadedData.npcQuestNum[i] >= 4)
+                {
+                    GameObject.Find("Storage").transform.Find("Storage").position = new Vector3(5.59f, 1.62f, -19.33f);
+                    GameObject.Find("Storage").transform.Find("NpcIcon").gameObject.SetActive(true);
+                }
+                if (loadedData.npcQuestNum[i] >= 12)
+                {
+                    GameObject.Find("Bob").transform.position = GameObject.Find("CinematicPoints").transform.Find("BobPositionBuilding").position;
+                }
+                if (loadedData.npcQuestNum[i] >= 13)
+                {
+                    Transform bobHouse = GameObject.Find("DirtVillage").transform.Find("BobHouse");
+                    bobHouse.Find("SecondRoom").position = bobHouse.Find("SecondRoomPosition").position;
+                }
+            }
+            if (loadedData.npcName[i] == "Jane" && loadedData.npcQuestNum[i] >= 4)
+            {
+                GameObject.Find("Paul").GetComponent<SphereCollider>().enabled = true;
+                GameObject.Find("Paul").transform.Find("NpcIcon").gameObject.SetActive(true);
             }
         }
         for (int i = 0; i < loadedData.quests.Count; i++)

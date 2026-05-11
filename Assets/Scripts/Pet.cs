@@ -20,6 +20,8 @@ public class Pet : MonoBehaviour
     private Transform petPositions;
     private Transform[] positions;
 
+    private float size;
+
     private Breakable breakable;
 
     private void Awake()
@@ -32,7 +34,9 @@ public class Pet : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         petPositions = player.Find("EquippedPetSlots");
         positions = petPositions.GetComponentsInChildren<Transform>();
-        
+
+        size = (transform.GetComponent<BoxCollider>().size.y*0.8f) / 2;
+
         FindFreeSlot();
     }
     private void Update()
@@ -69,7 +73,7 @@ public class Pet : MonoBehaviour
             breakable = breakableTarget.GetComponent<Breakable>();
             if (!breakableTarget.Find("HealthCanvas").gameObject.activeSelf) { breakable.ShowHealthBar(); }
 
-            if (transform.position != breakableTarget.position)
+            if (breakableTarget.position.x != transform.position.x && breakableTarget.position.z != transform.position.z)
             {
                 GetToPositon(breakableTarget.position, transform.rotation);
             }
@@ -105,6 +109,16 @@ public class Pet : MonoBehaviour
     }
     private void GetToPositon(Vector3 followingPosition, Quaternion followingRotation)
     {
+        if (!template.flying)
+        {
+            if (Physics.Raycast(followingPosition, Vector3.down, out RaycastHit hit, 10f))
+            {
+                if (hit.distance > 0.2f)
+                {
+                    followingPosition = new Vector3(followingPosition.x, followingPosition.y - hit.distance + size, followingPosition.z);
+                }      
+            }
+        }      
         transform.position = Vector3.MoveTowards(transform.position, followingPosition, speed * Time.deltaTime);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, followingRotation, 1);
     }

@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 925a0fe2e95f7cd4fb5420451033c339, type: 3}
+  m_Name: BobQuest12
+  m_EditorClassIdentifier: 
+  id: quest_bob_12
+  questName: "Posledn\xED pot\u0159ebn\xFD materi\xE1l"
+  required: 80
+  reward: 12000
+  startOfQuest:
+  - "Ahoj :). P\u0159em\xFD\u0161lel jsem, a\u017E u mi vlastn\u011B jen chyb\xED
+    suroviny na zdi a to jsou bricky. Hl\xEDnu u\u017E si mi d\xE1val a n\u011Bjakou
+    si je\u0161t\u011B se\u017Eenu s\xE1m."
+  - "Bude to p\u0159esn\u011Bji 80 brick\u016F, ale taky jsem p\u0159em\xFD\u0161lel,
+    \u017Ee kdy\u017E mi takhle pom\xE1h\xE1\u0161 a jestli mi tohle donese\u0161,
+    tak ti d\xE1m kl\xED\u010D k planin\xE1m."
+  - "Ano, j\xE1 v\xEDm je to naprosto \u0161\xEDlen\xE9, ale d\xE1m ti k nim p\u0159\xEDstup.
+    Tam u\u017E bude\u0161 m\xEDt mnohem v\xEDce volnosti k rozhodov\xE1n\xED."
+  - "Tak\u017Ee pokud mi donese\u0161 t\u011Bch 80 brick\u016F, tak ti ho asi i d\xE1m.
+    Ka\u017Edop\xE1dne te\u010F kv\u016Fli t\xE9 stavb\u011B se budu p\u0159esouvat
+    k m\xE9mu domu."
+  - "Tak\u017Ee pokud bys m\u011B n\u011Bkdy pozd\u011Bji hledal mo\u017En\xE1 budu
+    tam ;)"
+  endOfQuest:
+  - "Perfektn\xED, m\u016F\u017Eu se vrhnout to kone\u010Dn\u011B dostavit, tady
+    m\xE1\u0161 12000 coin\u016F. No, ale vlastn\u011B je\u0161t\u011B p\u0159ed
+    t\xEDm ne\u017E ti d\xE1m ten kl\xED\u010D..."
+  - "Promi\u0148 je\u0161t\u011B jsem si to trochu rozmyslel a pot\u0159eboval bych
+    je\u0161t\u011B 2 v\u011Bci. A\u017E bude\u0161 m\xEDt \u010Das, tak se pros\xEDm
+    stav."
+  requiredResource: 3
+  giveAfterComplete: 1

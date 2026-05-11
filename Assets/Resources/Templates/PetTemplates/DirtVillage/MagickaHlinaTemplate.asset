@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13656497c04dad84fb16b61cf5cba69b, type: 3}
+  m_Name: MagickaHlinaTemplate
+  m_EditorClassIdentifier: 
+  id: pet_dirt
+  petName: Magicka hlina
+  rarity: 0
+  speed: 12
+  minDamage: 75
+  maxDamage: 80
+  flying: 1
+  petPrefab: {fileID: 8310073647704404453, guid: 90637dda2c58198448896d43fb67cb78, type: 3}

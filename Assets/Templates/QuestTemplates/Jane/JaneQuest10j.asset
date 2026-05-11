@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24bd7f16832670c4bacd1666a2168342, type: 3}
+  m_Name: JaneQuest10j
+  m_EditorClassIdentifier: 
+  id: quest_jane_10j
+  questName: "ULTIM\xC1TN\xCD quest"
+  required: 1
+  reward: 0
+  startOfQuest:
+  - "M\u016F\u017Ee\u0161 pros\xEDm Jane pak jen vy\u0159\xEDdit, \u017Ee se velmi
+    r\xE1d z\xFA\u010Dastn\xEDm :). D\xEDky moc za p\u0159ed\xE1n\xED."
+  endOfQuest: []
+  deliverNpcName: starostovi

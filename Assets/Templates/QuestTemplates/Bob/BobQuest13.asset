@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eb33981c83b1e64483f93e953bb5cbb, type: 3}
+  m_Name: BobQuest13
+  m_EditorClassIdentifier: 
+  id: quest_bob_13
+  questName: "Test t\u011B\u017Eebn\xEDch objekt\u016F"
+  required: 1000
+  reward: 10000
+  startOfQuest:
+  - "\u010Cau, no je\u0161t\u011B ne\u017E odejde\u0161 budu pot\u0159ebovat n\u011Bco
+    zkusit a ty si ide\xE1ln\xED kandid\xE1t."
+  - "Cht\u011Bl bych v\xEDc pochopit ty t\u011B\u017Eebn\xED lokace. Pro\u0161t\u011B
+    do nekone\u010Dna generuj\xED ty t\u011B\u017Eebn\xED objekty a nikdy to neskon\u010D\xED
+    ?"
+  - "Minim\xE1ln\u011B to tak vypad\xE1, divn\xE9 je, \u017Ee d\u0159\xEDve to tady
+    nebylo a pak se to tu najednou objevilo. Z ni\u010Deho nic..."
+  - "Zvl\xE1\u0161tn\xED no, museli se pak v\u0161ude tady po sv\u011Bt\u011B upravovat
+    m\xEDsta, t\u0159eba tady u n\xE1s ve vesnici."
+  - "Ten st\xE1nek b\xFDval v\xEDce vzadu, ale jak se objevila ta lokace, tak to
+    za\u010Dalo padat na st\u0159echu toho st\xE1nku, tak jsme ho museli posunout."
+  - "No a i te\u010F to ob\u010Das na n\u011Bj spadne. Nav\xEDc to vypad\xE1, \u017Ee
+    se to sna\u017E\xED nepadat na sebe, ale ob\u010Das se to prost\u011B na sob\u011B
+    zasekne."
+  - "A vznikaj\xED pak takov\xE9 divn\xE9 v\u011B\u017Ee. Nav\xEDc to n\u011Bkdy
+    i za\u010Dne ignorovat gravitaci a levituje to. Prost\u011B zvl\xE1\u0161tn\xED."
+  - "Tak\u017Ee kdy\u017E jich te\u010F zni\u010D\xED\u0161 kdekoliv 1000, tak mo\u017En\xE1
+    dostanu n\u011Bjak\xFD vzorek a p\u0159\xEDjdu na to co s t\xEDm."
+  - "Sta\u010D\xED je jen ni\u010Dit a kdekoliv. Asi bych to d\u011Blal pokud je\u0161t\u011B
+    d\u011Bl\xE1\u0161 questy pro Jane, tak s t\xEDm, a\u0165 si \u0161\u011Bt\u0159\xED\u0161
+    \u010Das."
+  - "Tak hodn\u011B \u0161t\u011Bst\xED!"
+  endOfQuest:
+  - "Hmmm, dob\u0159e no... Tady m\xE1\u0161 za tv\u016Fj \u010Das 10000 coin\u016F,
+    vych\xE1\u017E\xED to 10 coin\u016F za t\u011B\u017Eebn\xED objekt. Co\u017E
+    mi p\u0159\xEDjde f\xE9r..."
+  - "Uvid\xEDme zkus\xEDm se na ty v\xFDsledky mrknout. Pokud tedy chce\u0161 ten
+    kl\xED\u010D k t\u011Bm planin\xE1m, tak dojdi a u\u017E opravdu ti d\xE1m posledn\xED
+    m\u016Fj quest."
+  anyTiers: 1
+  allowedTiers: 
+  anyArea: 1
+  allowedAreaNames: []

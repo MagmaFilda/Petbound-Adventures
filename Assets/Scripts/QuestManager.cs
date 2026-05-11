@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
-using UnityEngine.InputSystem.iOS;
 
 public class QuestManager : MonoBehaviour
 {
@@ -21,6 +19,7 @@ public class QuestManager : MonoBehaviour
     [HideInInspector]
     public Dictionary<Tier, int> tiersDetection;
     public Dictionary<EggTemplate, int> eggTemplatesDetection;
+    public Dictionary<string, int> breakableAreaNamesDetection;
 
     private int coinsFrameBefore;
     private int eggsFrameBefore;
@@ -36,6 +35,7 @@ public class QuestManager : MonoBehaviour
 
     bool canClearEggTemplateDetection = true;
     bool canClearTierDetection = true;
+    bool canClearAreaDetection = true;
 
     private void Awake()
     {
@@ -48,6 +48,7 @@ public class QuestManager : MonoBehaviour
         storageDifference = new Dictionary<Resource, int>();
         tiersDetection = new Dictionary<Tier, int>();
         eggTemplatesDetection = new Dictionary<EggTemplate, int>();
+        breakableAreaNamesDetection = new Dictionary<string, int>();
     }
     private void Start()
     {
@@ -75,8 +76,10 @@ public class QuestManager : MonoBehaviour
 
         if (canClearEggTemplateDetection) { eggTemplatesDetection.Clear(); }
         if (canClearTierDetection) { tiersDetection.Clear(); }
+        if (canClearAreaDetection) { breakableAreaNamesDetection.Clear(); }
         canClearEggTemplateDetection = true;
-        canClearTierDetection = true;     
+        canClearTierDetection = true;   
+        canClearAreaDetection = true;
 
         ResetDifferences();
     }
@@ -110,6 +113,15 @@ public class QuestManager : MonoBehaviour
     {
         playerStats.ActiveQuests.Remove(quest);
 
+        if (quest.template.Type == QuestType.GetResources)
+        {
+            GetResourcesQuest getResourceQuest = quest.template as GetResourcesQuest;
+            if (getResourceQuest.giveAfterComplete)
+            {
+                playerStats.PlayerResources[getResourceQuest.requiredResource] -= getResourceQuest.required;
+            }
+        }
+
         if (quest.template.Type == QuestType.MultipleQuest)
         {
             foreach (var partQuest in quest.otherActiveQuest)
@@ -136,7 +148,14 @@ public class QuestManager : MonoBehaviour
         {
             case QuestType.GetResources:
                 GetResourcesQuest resourceQuest = quest.template as GetResourcesQuest;
-                title.text = "Nasbírej " + resourceQuest.requiredResource;
+                if (resourceQuest.giveAfterComplete)
+                {
+                    title.text = "Dones mi " + resourceQuest.requiredResource;
+                }
+                else
+                {
+                    title.text = "Nasbírej " + resourceQuest.requiredResource;
+                }             
                 break;
             case QuestType.CollectCoins:
                 title.text = "Získej coiny";
@@ -149,18 +168,26 @@ public class QuestManager : MonoBehaviour
                 }
                 else
                 {
-                    title.text = "Otevøi " + eggQuest.allowedEggs[0].eggName;
+                    if (eggQuest.allowedEggs.Length == 1)
+                    {
+                        title.text = "Otevøi " + eggQuest.allowedEggs[0].eggName;
+                    }
+                    else
+                    {
+                        title.text = "Otevøi vajíèka hlinìné vesnici";
+                    }
                 }
                 break;
             case QuestType.DestroyBreakables:
                 DestroyBreakablesQuest breakablesQuest = quest.template as DestroyBreakablesQuest;
-                if (breakablesQuest.anyTiers)
+                title.text = "Zniè tìžební objekty";
+                if (!breakablesQuest.anyTiers)
                 {
-                    title.text = "Zniè tìžební objekty";
+                    title.text += " úrovnì " + breakablesQuest.allowedTiers[0].ToString()[4];
                 }
-                else
+                if (!breakablesQuest.anyArea)
                 {
-                    title.text = "Zniè tìžební objekty úrovnì " + breakablesQuest.allowedTiers[0].ToString()[4];
+                    title.text += " v lokaci " + breakablesQuest.allowedAreaNames[0];
                 }
                 break;
             case QuestType.GetItem:
@@ -207,11 +234,11 @@ public class QuestManager : MonoBehaviour
                 break;
             case QuestType.DestroyBreakables:
                 DestroyBreakablesQuest breakablesQuest = questTemplate as DestroyBreakablesQuest;
-                if (breakablesQuest.anyTiers)
+                if (breakablesQuest.anyTiers && breakablesQuest.anyArea)
                 {
                     updatingQuest.progress += breakablesDifference;
                 }
-                else
+                else if (!breakablesQuest.anyTiers && breakablesQuest.anyArea)
                 {
                     canClearTierDetection = false;
                     foreach (Tier allowedTier in breakablesQuest.allowedTiers)
@@ -223,10 +250,60 @@ public class QuestManager : MonoBehaviour
                         }
                     }
                 }
+                else if (breakablesQuest.anyTiers && !breakablesQuest.anyArea)
+                {
+                    canClearAreaDetection = false;
+                    foreach (string allowedArea in breakablesQuest.allowedAreaNames)
+                    {
+                        if (breakableAreaNamesDetection.ContainsKey(allowedArea))
+                        {
+                            updatingQuest.progress += breakableAreaNamesDetection[allowedArea];
+                            breakableAreaNamesDetection.Remove(allowedArea);
+                        }
+                    }
+                }
+                else
+                {
+                    canClearAreaDetection = false;
+                    canClearTierDetection = false;
+                    bool foundTier = false;
+                    Tier maybeFoundTier = Tier.Tier1;
+                    foreach (Tier allowedTier in breakablesQuest.allowedTiers)
+                    {
+                        if (tiersDetection.ContainsKey(allowedTier))
+                        {
+                            foundTier = true;
+                            maybeFoundTier = allowedTier;                           
+                        }
+                    }
+                    if (foundTier)
+                    {
+                        foreach (string allowedArea in breakablesQuest.allowedAreaNames)
+                        {
+                            if (breakableAreaNamesDetection.ContainsKey(allowedArea))
+                            {
+                                updatingQuest.progress += breakableAreaNamesDetection[allowedArea];
+                                breakableAreaNamesDetection.Remove(allowedArea);
+                                tiersDetection.Remove(maybeFoundTier);
+                            }
+                        }
+                    }                  
+                }
                 break;
             case QuestType.GetResources:
                 GetResourcesQuest getResourceQuest = questTemplate as GetResourcesQuest;
-                updatingQuest.progress += resourcesDifference[getResourceQuest.requiredResource] - storageDifference[getResourceQuest.requiredResource];
+                if (getResourceQuest.giveAfterComplete)
+                {
+                    updatingQuest.progress = playerStats.PlayerResources[getResourceQuest.requiredResource];
+                    if (updatingQuest.progress < questTemplate.required && updatingQuest.isCompleted)
+                    {
+                        updatingQuest.isCompleted = false;
+                    }
+                }
+                else
+                {
+                    updatingQuest.progress += resourcesDifference[getResourceQuest.requiredResource] - storageDifference[getResourceQuest.requiredResource];
+                }           
                 break;
             case QuestType.MultipleQuest:
                 bool canComplete = true;

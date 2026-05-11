@@ -58,7 +58,7 @@ public class QuestNPC : MonoBehaviour
 
         if (actualQuestNum >= quests.Length)
         {
-            string[] text = {"Dokonèil jsi všechny mé questy, musíš poèkat na další update ;)"};
+            string[] text = {"Dokonèil jsi už všechny mé questy..."};
             StartCoroutine(mainUI.ConversationDialog(text));
             return;
         }
