@@ -69,7 +69,7 @@ public class Trader : MonoBehaviour
     private void SetOffers()
     {
         mainUI.ClearAllChilds(offerContainer);
-
+        
         foreach (Resource offerName in availableResources)
         {
             if (playerStats.PlayerResources[offerName] > 0)
@@ -137,10 +137,15 @@ public class Trader : MonoBehaviour
                 int newValue = Random.Range(minReward[i], maxReward[i] + 1);
                 tradeValues[availableResources[i]] = newValue;
             }
-            if (traderUI.gameObject.activeSelf)
+            if (!traderUI.gameObject.activeSelf)
             {
+                yield return null;
                 SetOffers();
-            }          
+            }
+            else
+            {
+                yield return null;
+            }
             yield return wait120s;
         }
     }

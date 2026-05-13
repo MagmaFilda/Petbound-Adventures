@@ -3329,7 +3329,7 @@ GameObject:
   - component: {fileID: 97344905}
   m_Layer: 0
   m_Name: LeftArm
-  m_TagString: Untagged
+  m_TagString: DontZoomCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5644,9 +5644,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1811911606646161071, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 2407539902507136586, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
+      objectReference: {fileID: 0}
     - target: {fileID: 3345049429020951940, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
       propertyPath: m_Name
       value: Character
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431124673861673339, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
       objectReference: {fileID: 0}
     - target: {fileID: 4178844150573316920, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -5664,6 +5676,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 4324033ef4fa53d4db382502ef0c53fb, type: 2}
+    - target: {fileID: 7717002464546875588, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9654,7 +9670,7 @@ GameObject:
   - component: {fileID: 250111607}
   m_Layer: 0
   m_Name: LeftHand
-  m_TagString: Untagged
+  m_TagString: DontZoomCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21268,7 +21284,7 @@ GameObject:
   - component: {fileID: 483097953}
   m_Layer: 0
   m_Name: LeftHand
-  m_TagString: Untagged
+  m_TagString: DontZoomCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22133,7 +22149,7 @@ GameObject:
   - component: {fileID: 504647630}
   m_Layer: 0
   m_Name: LeftArm
-  m_TagString: Untagged
+  m_TagString: DontZoomCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23298,7 +23314,7 @@ GameObject:
   - component: {fileID: 545982578}
   m_Layer: 0
   m_Name: RightHand
-  m_TagString: Untagged
+  m_TagString: DontZoomCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26687,7 +26703,7 @@ GameObject:
   - component: {fileID: 637773446}
   m_Layer: 0
   m_Name: RightHand
-  m_TagString: Untagged
+  m_TagString: DontZoomCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36302,7 +36318,7 @@ GameObject:
   - component: {fileID: 926579634}
   m_Layer: 0
   m_Name: RightArm
-  m_TagString: Untagged
+  m_TagString: DontZoomCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44069,7 +44085,7 @@ GameObject:
   - component: {fileID: 1152486837}
   m_Layer: 0
   m_Name: RightHand
-  m_TagString: Untagged
+  m_TagString: DontZoomCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44799,7 +44815,7 @@ GameObject:
   - component: {fileID: 1168789890}
   m_Layer: 0
   m_Name: LeftArm
-  m_TagString: Untagged
+  m_TagString: DontZoomCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47379,7 +47395,7 @@ GameObject:
   - component: {fileID: 1229842088}
   m_Layer: 0
   m_Name: RightArm
-  m_TagString: Untagged
+  m_TagString: DontZoomCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49783,7 +49799,7 @@ GameObject:
   - component: {fileID: 1292228337}
   m_Layer: 0
   m_Name: LeftHand
-  m_TagString: Untagged
+  m_TagString: DontZoomCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -61806,9 +61822,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1811911606646161071, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 2407539902507136586, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
+      objectReference: {fileID: 0}
     - target: {fileID: 3345049429020951940, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
       propertyPath: m_Name
       value: Character
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431124673861673339, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
       objectReference: {fileID: 0}
     - target: {fileID: 4178844150573316920, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -61822,6 +61850,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 732972eab5207354f9f23e5e0bbe59f1, type: 2}
+    - target: {fileID: 7717002464546875588, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -72478,7 +72510,7 @@ GameObject:
   - component: {fileID: 2020065480}
   m_Layer: 0
   m_Name: RightArm
-  m_TagString: Untagged
+  m_TagString: DontZoomCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74399,9 +74431,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1811911606646161071, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 2407539902507136586, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
+      objectReference: {fileID: 0}
     - target: {fileID: 3345049429020951940, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
       propertyPath: m_Name
       value: Character
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431124673861673339, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
       objectReference: {fileID: 0}
     - target: {fileID: 4178844150573316920, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -74415,6 +74459,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: e8f3398796881e94eb6e245b0bb84200, type: 2}
+    - target: {fileID: 7717002464546875588, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -78221,9 +78269,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1811911606646161071, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 2407539902507136586, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
+      objectReference: {fileID: 0}
     - target: {fileID: 3345049429020951940, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
       propertyPath: m_Name
       value: Character
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431124673861673339, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
       objectReference: {fileID: 0}
     - target: {fileID: 4178844150573316920, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -78237,6 +78297,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: a6016d5a6721cde4e91b830278271dbe, type: 2}
+    - target: {fileID: 7717002464546875588, guid: bf8b132cb530b234dbc4890c1dde3771, type: 3}
+      propertyPath: m_TagString
+      value: DontZoomCamera
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -78437,11 +78501,11 @@ SceneRoots:
   - {fileID: 2129217243}
   - {fileID: 813172808}
   - {fileID: 1715075505}
-  - {fileID: 1165693457}
   - {fileID: 1250571690}
   - {fileID: 1646353866}
   - {fileID: 1452127903}
   - {fileID: 1223951687}
+  - {fileID: 1165693457}
   - {fileID: 88340547}
   - {fileID: 459890341}
   - {fileID: 670434871}

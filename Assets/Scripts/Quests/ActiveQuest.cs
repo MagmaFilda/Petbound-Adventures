@@ -7,6 +7,7 @@ public class ActiveQuest
     public Transform questUI;
     public int progress;
     public bool isCompleted;
+    public bool startedNavigation;
 
     public List<ActiveQuest> otherActiveQuest;
 
@@ -15,6 +16,7 @@ public class ActiveQuest
         template = setTemplate;
         progress = 0;
         isCompleted = false;
+        startedNavigation = false;
         if (template.Type != QuestType.MultipleQuest) { otherActiveQuest = null; }
         else { otherActiveQuest = new List<ActiveQuest>(); }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using System.Collections;
 
 public class QuestManager : MonoBehaviour
 {
@@ -306,18 +307,18 @@ public class QuestManager : MonoBehaviour
                 }           
                 break;
             case QuestType.MultipleQuest:
-                bool canComplete = true;
+                bool canComplete = true;              
                 foreach (ActiveQuest questPart in updatingQuest.otherActiveQuest)
                 {
                     if (!questPart.isCompleted) { canComplete = false; break; }
                 }
                 if (canComplete)
-                {
-                    updatingQuest.isCompleted = true;
+                {                
+                    updatingQuest.progress = updatingQuest.template.required;
                 }
                 else
                 {
-                    updatingQuest.isCompleted = false;
+                    updatingQuest.progress = 0;
                 }
                 break;
             case QuestType.GetItem:
@@ -337,7 +338,36 @@ public class QuestManager : MonoBehaviour
                 SetDeliveryNpc(questTemplate, false);
             }
 
-            updatingQuest.isCompleted = true;        
+            updatingQuest.isCompleted = true;
+            
+            if (!updatingQuest.startedNavigation)
+            {
+                if (questTemplate.Type == QuestType.MultipleQuest)
+                {
+                    StartCoroutine(NavigateAfterComplete(questTemplate));
+                    updatingQuest.startedNavigation = true;
+
+                }
+                else
+                {
+                    foreach (var quest in playerStats.ActiveQuests)
+                    {
+                        if (quest.template.Type == QuestType.MultipleQuest)
+                        {
+                            foreach (var part in quest.otherActiveQuest)
+                            {
+                                if (part == updatingQuest)
+                                {
+                                    updatingQuest.startedNavigation = true;
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    StartCoroutine(NavigateAfterComplete(questTemplate));
+                    updatingQuest.startedNavigation = true;
+                }           
+            }           
         }
 
         UpdateQuestUI(updatingQuest); 
@@ -447,5 +477,71 @@ public class QuestManager : MonoBehaviour
             }
             if (canBreak) { break; }
         }
+    }
+    
+    private IEnumerator NavigateAfterComplete(QuestTemplate completedQuest)
+    {
+        Transform targetNpc = GameObject.Find("Bob").transform;
+        foreach (var npc in playerStats.questNpcs)
+        {
+            foreach (var quest in npc.quests)
+            {
+                if (quest == completedQuest)
+                {
+                    targetNpc = npc.transform;
+                }
+            }
+        }
+
+        List<GameObject> arrows = new List<GameObject>();
+        int arrowCount = 10;
+        for (int i = 0; i < arrowCount; i++)
+        {
+            GameObject arrow = new GameObject();
+            SpriteRenderer arrowSpriteRenderer = arrow.AddComponent<SpriteRenderer>();
+            arrowSpriteRenderer.sprite = Resources.Load<Sprite>("Images/Arrow");
+            arrows.Add(arrow);
+        }
+
+        Vector3 end = targetNpc.position;
+        int questCount = playerStats.ActiveQuests.Count;
+
+        while (playerStats.ActiveQuests.Count == questCount)
+        {
+            Vector3 start = playerStats.transform.position;
+            arrowCount = Mathf.RoundToInt((end - start).magnitude);
+            while (arrowCount != arrows.Count)
+            {
+                if (arrowCount > arrows.Count)
+                {
+                    GameObject arrow = new GameObject();
+                    SpriteRenderer arrowSpriteRenderer = arrow.AddComponent<SpriteRenderer>();
+                    arrowSpriteRenderer.sprite = Resources.Load<Sprite>("Images/Arrow");
+                    arrows.Add(arrow);
+                }
+                else if (arrowCount < arrows.Count)
+                {
+                    Destroy(arrows[arrows.Count - 1]);
+                    arrows.RemoveAt(arrows.Count - 1);
+                }
+            }
+
+            for (int i = 0; i < arrowCount; i++)
+            {
+                float t = i / (float)arrowCount;
+                Vector3 pos = Vector3.Lerp(start, end, t);
+                Vector3 dir = (end - pos).normalized;
+
+                arrows[i].transform.forward = dir;
+                arrows[i].transform.rotation = Quaternion.Euler(0, arrows[i].transform.rotation.eulerAngles.y + 89, 0);
+                arrows[i].transform.position = pos;
+            }
+            yield return null;
+        }
+        foreach (var arrow in arrows)
+        {
+            Destroy(arrow);
+        }
+        arrows = null;
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -478,61 +477,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < healthCanvas.childCount; i++)
         {
             healthCanvas.GetChild(i).gameObject.SetActive(true);
-        }
-        //Navedení hráèe k Bobovi
-        while (!playerStats.ActiveQuests[0].isCompleted)
-        {
-            yield return wait05s;
-        }
-        List<GameObject> arrows = new List<GameObject>();
-        int arrowCount = 10;
-        for (int i = 0; i < arrowCount; i++)
-        {
-            GameObject arrow = new GameObject();
-            SpriteRenderer arrowSpriteRenderer = arrow.AddComponent<SpriteRenderer>();
-            arrowSpriteRenderer.sprite = Resources.Load<Sprite>("Images/Arrow");
-            arrows.Add(arrow);
-        }
-
-        Vector3 end = bob.position;
-
-        while (playerStats.ActiveQuests.Count > 0)
-        {
-            Vector3 start = player.position;
-            arrowCount = Mathf.RoundToInt((end - start).magnitude);
-            while (arrowCount != arrows.Count)
-            {
-                if (arrowCount > arrows.Count)
-                {
-                    GameObject arrow = new GameObject();
-                    SpriteRenderer arrowSpriteRenderer = arrow.AddComponent<SpriteRenderer>();
-                    arrowSpriteRenderer.sprite = Resources.Load<Sprite>("Images/Arrow");
-                    arrows.Add(arrow);
-                }
-                else if (arrowCount < arrows.Count)
-                {
-                    Destroy(arrows[arrows.Count - 1]);
-                    arrows.RemoveAt(arrows.Count - 1);
-                }
-            }
-
-            for (int i = 0; i < arrowCount; i++)
-            {
-                float t = i / (float)arrowCount;
-                Vector3 pos = Vector3.Lerp(start, end, t);
-                Vector3 dir = (end - pos).normalized;
-
-                arrows[i].transform.forward = dir;
-                arrows[i].transform.rotation = Quaternion.Euler(0, arrows[i].transform.rotation.eulerAngles.y+89, 0);
-                arrows[i].transform.position = pos;             
-            }
-            yield return null;
-        }
-        foreach (var arrow in arrows)
-        {
-            Destroy(arrow);
-        }
-        arrows = null;
+        }        
     }
 
     //Bob Cinematics
