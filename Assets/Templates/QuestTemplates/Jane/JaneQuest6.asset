@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: quest_jane_6
   questName: 
-  required: 0
-  reward: 3000
+  required: 5
+  reward: 5000
   startOfQuest:
   - "Posledn\xED d\u016Fm co je\u0161t\u011B nem\xE1\u0161 ozna\u010Den\xFD na map\u011B
     u vstupu na\u0161\xED vesnice je Bob\u016Fv d\u016Fm. V\xEDm, \u017Ee ho chce
@@ -39,7 +39,7 @@ MonoBehaviour:
   - "Tak jo, tohle u\u017E bylo trochu na d\xFDl \u017Ee ? Ale, tak alespo\u0148
     jsi snad na\u0161et\u0159il hodn\u011B pen\u011Bz na dal\u0161\xED m\u016Fj \xFAkol
     to bude pot\u0159eba."
-  - "Tady m\xE1\u0161 3000 coin\u016F, budou se ti hodit."
+  - "Tady m\xE1\u0161 5000 coin\u016F, budou se ti hodit."
   questsToComplete:
   - {fileID: 11400000, guid: b619c0ce6d1a2304c8eee3942fd999c1, type: 2}
   - {fileID: 11400000, guid: 45060d0ed17aa51458fb52fb37ac25b0, type: 2}

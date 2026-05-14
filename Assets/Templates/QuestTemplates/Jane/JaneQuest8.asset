@@ -15,7 +15,7 @@ MonoBehaviour:
   id: quest_jane_8
   questName: 
   required: 2
-  reward: 22000
+  reward: 27000
   startOfQuest:
   - "Tohle je tedy v po\u0159ad\xED 2. \xFAkol ze t\u0159\xED. \u0158\xEDkala jsem,
     \u017Ee to bude v\xEDce ohledn\u011B t\xE9 uk\xE1zky."
@@ -40,7 +40,7 @@ MonoBehaviour:
   - "To je n\xE1dhera. Tak jo kone\u010Dn\u011B u\u017E m\xE1m ty kv\u011Btin\xE1\u010De.
     D\xEDky moc. Pak si za mnou p\u0159ij\u010F pro ten posledn\xED \xFAkol z t\u011Bch
     t\u0159\xED."
-  - "Jo a tady je tv\xE1 odm\u011Bna 22000 coin\u016F d\xEDky moc."
+  - "Jo a tady je tv\xE1 odm\u011Bna 27000 coin\u016F d\xEDky moc."
   questsToComplete:
   - {fileID: 11400000, guid: 5f44d1bb4918bfd4e8d8fcbe4ead79a7, type: 2}
   - {fileID: 11400000, guid: 04d78a832b52bf44e838780a801371c0, type: 2}

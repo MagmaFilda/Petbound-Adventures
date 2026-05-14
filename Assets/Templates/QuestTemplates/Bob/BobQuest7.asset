@@ -15,7 +15,7 @@ MonoBehaviour:
   id: quest_bob_7
   questName: 
   required: 4
-  reward: 0
+  reward: 1000
   startOfQuest:
   - "Nebudu to protahovat. Posledn\xED quest z tohoto trojquestu. Up\u0159\xEDmn\u011B
     do t\xE9hle f\xE1ze se u\u017E moc cestovatel\u016F nedostalo."
@@ -28,8 +28,8 @@ MonoBehaviour:
     2500 hl\xEDny a 70 tr\xE1vy. Hodn\u011B \u0161t\u011Bst\xED."
   endOfQuest:
   - "Asi jsi ten vyj\xEDme\u010Dn\xFD. Gratuluju ti a tady je ten vytou\u017Een\xFD
-    kl\xED\u010D. Nyn\xED m\u016F\u017Ee\u0161 do na\u0161\xED vesnice. Sta\u010D\xED
-    jen proj\xEDt br\xE1nou."
+    kl\xED\u010D a 1000 coin\u016F. Nyn\xED m\u016F\u017Ee\u0161 do na\u0161\xED
+    vesnice. Sta\u010D\xED jen proj\xEDt br\xE1nou."
   - "Kdyby jsi, ale p\u0159ece jenom cht\u011Bl, m\u016F\u017Ee\u0161 za mnou zase
     n\u011Bkdy doj\xEDt :). Tak ahoj!"
   questsToComplete:

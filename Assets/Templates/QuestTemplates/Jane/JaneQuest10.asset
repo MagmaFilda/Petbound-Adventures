@@ -15,7 +15,7 @@ MonoBehaviour:
   id: quest_jane_10
   questName: 
   required: 10
-  reward: 50000
+  reward: 65000
   startOfQuest:
   - "V\xEDt\xE1m t\u011B u toho nejt\u011B\u017E\xEDho co si v n\xE1\u0161\xED vesnici
     a mo\u017En\xE1 i celkov\u011B tady za\u017Eil. ULTIM\xC1TN\xCD quest v\u0161eho."
@@ -39,7 +39,7 @@ MonoBehaviour:
   - "Tak jim to doru\u010D d\xEDky. No a to u\u017E je snad v\u0161e :). Pohodi\u010Dka
     nebo ?"
   endOfQuest:
-  - "GRATULUJU!!! Tady je 50000 coin\u016F. A tohle je ofici\xE1ln\u011B v\u0161e,
+  - "GRATULUJU!!! Tady je 65000 coin\u016F. A tohle je ofici\xE1ln\u011B v\u0161e,
     minim\xE1ln\u011B z moj\xED strany. M\u011Bj se a ahoj"
   questsToComplete:
   - {fileID: 11400000, guid: d335e08f46d6abb4ab262d690ac0adbb, type: 2}

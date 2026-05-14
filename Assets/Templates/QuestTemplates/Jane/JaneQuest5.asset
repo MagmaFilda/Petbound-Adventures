@@ -15,7 +15,7 @@ MonoBehaviour:
   id: quest_jane_5
   questName: 
   required: 2
-  reward: 800
+  reward: 1000
   startOfQuest:
   - "V\u0161e se da\u0159\xED, Paul u\u017E sv\u016Fj st\xE1nek otev\u0159el a nyn\xED
     u\u017E u n\u011Bho m\u016F\u017Ee\u0161 sm\u011Bnovat stejn\u011B jako u Johna."
@@ -26,7 +26,7 @@ MonoBehaviour:
   - "Doru\u010D mu to pros\xEDm. No a k tomu zkus je\u0161t\u011B n\u011Bjakou z\xEDskat
     i pro sebe. Bude se ti je\u0161t\u011B ur\u010Dit\u011B hodit :)."
   endOfQuest:
-  - "D\xEDky, \u017Ee mi takhle pom\xE1h\xE1\u0161 tady m\xE1\u0161 800 coin\u016F"
+  - "D\xEDky, \u017Ee mi takhle pom\xE1h\xE1\u0161 tady m\xE1\u0161 1000 coin\u016F"
   questsToComplete:
   - {fileID: 11400000, guid: daafe867aee8dfb46b8568c4012ea871, type: 2}
   - {fileID: 11400000, guid: c43467594414ef5469de1350c60a16f2, type: 2}

@@ -15,7 +15,7 @@ MonoBehaviour:
   id: quest_bob_11
   questName: 
   required: 3
-  reward: 2000
+  reward: 2500
   startOfQuest:
   - "Ahoj, no asi jsi si v\u0161iml, ale p\u0159ed m\xFDm domem, pokud v\xED\u0161
     jak\xFD to je, se neust\xE1le objevuj\xED nov\xE9 t\u011B\u017Eebn\xED objekty."
@@ -26,7 +26,7 @@ MonoBehaviour:
     a 5 t\u011B\u017Eebn\xEDch objekt\u016F 1., 2. a 3. \xFArovn\u011B."
   endOfQuest:
   - "Tak uvid\xEDme jestli to pom\u016F\u017Ee, n\u011Bjak to je\u0161t\u011B zkus\xEDm,
-    vymyslet. Ale d\xEDky :). Tady m\xE1\u0161 2000 coin\u016F."
+    vymyslet. Ale d\xEDky :). Tady m\xE1\u0161 2500 coin\u016F."
   - "P\u0159\xED\u0161t\u011B zase p\u0159\xEDprava na stavbu. Tak pak p\u0159ij\u010F."
   questsToComplete:
   - {fileID: 11400000, guid: b6f60b525fc5d1d408a3edfaa1f7b82e, type: 2}

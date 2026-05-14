@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tier: 4
   recources: 0300000002000000
-  health: 15000
+  health: 12500
   rewards: 030000000f000000

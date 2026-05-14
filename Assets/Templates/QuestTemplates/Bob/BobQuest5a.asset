@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: quest_bob_5a
   questName: 
-  required: 15
+  required: 12
   reward: 0
   startOfQuest: []
   endOfQuest: []

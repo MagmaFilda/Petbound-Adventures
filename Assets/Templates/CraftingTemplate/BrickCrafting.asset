@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: BrickCrafting
   m_EditorClassIdentifier: 
   needResources: 0000000002000000
-  needAmounts: 140000000a000000
+  needAmounts: 1400000008000000
   resultResource: 3
   resultItem: {fileID: 0}
